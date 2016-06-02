@@ -18,7 +18,7 @@ import javax.swing.JFrame;
  *
  * @author tatad6701
  */
-public class Wallmania extends JComponent implements KeyListener {
+public class Run extends JComponent implements KeyListener {
 
     // Height and Width of our game
     static final int WIDTH = 800;
@@ -182,7 +182,7 @@ public class Wallmania extends JComponent implements KeyListener {
         JFrame frame = new JFrame("My Game");
 
         // creates an instance of my game
-        Wallmania game = new Wallmania();
+        Run game = new Run();
         // sets the size of my game
         game.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         // adds the game to the window
