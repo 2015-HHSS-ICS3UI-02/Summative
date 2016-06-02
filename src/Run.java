@@ -63,21 +63,27 @@ public class Run extends JComponent implements KeyListener {
 
         // GAME DRAWING GOES HERE 
         // Draw background image
+
         g.drawImage(Triangles, 0, 0, 800, 600, null);
-        // Create player ball
-        g.setColor(Color.DARK_GRAY);
-        g.fillOval(P1.x, P1.y, P1.width, P1.height);
+        if (health > 0) {
+            // Create player ball
+            g.setColor(Color.DARK_GRAY);
+            g.fillOval(P1.x, P1.y, P1.width, P1.height);
 
-        // Create first minion
-        g.setColor(Color.white);
-        for (int i = 0; i < minions.length; i++) {
-            g.fill3DRect(minions[i].x, minions[i].y, minions[i].width, minions[i].height, true);
+            // Create first minion
+            g.setColor(Color.white);
+            for (int i = 0; i < minions.length; i++) {
+                g.fill3DRect(minions[i].x, minions[i].y, minions[i].width, minions[i].height, true);
+            }
+
+            // draw scores
+            g.setFont(gameFont);
+            g.drawString("Health: " + health, WIDTH / 2 - 350, 20);
+        } else if (health <= 0) {
+            // draw scores
+            g.setFont(gameFont);
+            g.drawString("You Dead ", 400, 350);
         }
-
-        // draw scores
-        g.setFont(gameFont);
-        g.drawString("Health: " + health, WIDTH / 2 - 350, 20);
-
 
 
         // GAME DRAWING ENDS HERE
