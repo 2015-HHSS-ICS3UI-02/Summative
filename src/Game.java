@@ -4,9 +4,14 @@
  */
 
 
-
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -16,34 +21,43 @@ import javax.swing.JFrame;
  */
 
 
-public class Game extends JComponent{
+public class Game extends JComponent implements KeyListener{
 
     // Height and Width of our game
-    static final int WIDTH = 800;
-    static final int HEIGHT = 600;
+    static final int WIDTH = 1000;
+    static final int HEIGHT = 800;
     
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
     long desiredFPS = 60;
     long desiredTime = (1000)/desiredFPS;
     
-
+    double xpos = 0;
+    double ypos = 0;
+    double xspeed = 0;
+    double yspeed = 0;
     
+    boolean ynegative_accel = false;
+    boolean ypositive_accel = false;
+    boolean xnegative_accel = false;
+    boolean xpositive_accel = false;
+           
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
     @Override
     public void paintComponent(Graphics g)
     {
+        Graphics2D g2d = (Graphics2D)g;
         // always clear the screen first!
         g.clearRect(0, 0, WIDTH, HEIGHT);
         
         // GAME DRAWING GOES HERE 
         
+        g.fillRect((int)xpos, (int)ypos, 4, 4);
         
         // GAME DRAWING ENDS HERE
     }
-    
     
     // The main game loop
     // In here is where all the logic for my game will go
@@ -65,7 +79,21 @@ public class Game extends JComponent{
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
             
+            if(ynegative_accel == true){
+                yspeed = yspeed - 0.1;
+            }
+            if(ypositive_accel == true){
+                yspeed = yspeed + 0.1;
+            }
+            if(xnegative_accel == true){
+                xspeed = xspeed - 0.1;
+            }
+            if(xpositive_accel == true){
+                xspeed = xspeed + 0.1;
+            }
             
+            xpos = xpos + xspeed;
+            ypos = ypos + yspeed;
 
             // GAME LOGIC ENDS HERE 
             
@@ -96,14 +124,14 @@ public class Game extends JComponent{
     public static void main(String[] args) {
         // creates a windows to show my game
         JFrame frame = new JFrame("My Game");
-       
+        
         // creates an instance of my game
         Game game = new Game();
         // sets the size of my game
         game.setPreferredSize(new Dimension(WIDTH,HEIGHT));
         // adds the game to the window
         frame.add(game);
-         
+        
         // sets some options and size of the window automatically
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -113,5 +141,37 @@ public class Game extends JComponent{
         
         // starts my game loop
         game.run();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+       int key = e.getKeyCode();
+       if(key == KeyEvent.VK_W){
+           ynegative_accel = true;
+       } else if(key == KeyEvent.VK_S){
+           ypositive_accel = true;
+       } else if(key == KeyEvent.VK_A){
+           xnegative_accel = true;
+       } else if(key == KeyEvent.VK_D){
+           xpositive_accel = true;
+       }
+    }
+    
+    @Override
+    public void keyReleased(KeyEvent e) {
+       int key = e.getKeyCode();
+       if(key == KeyEvent.VK_W){
+           ynegative_accel = false;
+       } else if(key == KeyEvent.VK_S){
+           ypositive_accel = false;
+       } else if(key == KeyEvent.VK_A){
+           xnegative_accel = false;
+       } else if(key == KeyEvent.VK_D){
+           xpositive_accel = false;
+       }
     }
 }
