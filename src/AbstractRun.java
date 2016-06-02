@@ -18,7 +18,7 @@ import javax.swing.JFrame;
  *
  * @author tatad6701
  */
-public class Run extends JComponent implements KeyListener {
+public class AbstractRun extends JComponent implements KeyListener {
 
     // Height and Width of our game
     static final int WIDTH = 800;
@@ -27,21 +27,22 @@ public class Run extends JComponent implements KeyListener {
     // you just need to select an approproate framerate
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
-    // Create players 
+
+    // Create player(s) 
     Rectangle P1 = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 30, 30);
+
     // Ball control and speed
     int[] moveX = {1, -1, 1, -1};
-    int[] moveY = {1, 1, -1, 1};
-    int speed = 20;
+    int[] moveY = {1, 1, -1, -1};
+    int speed = 3;
+
     // Create the minions
-    Rectangle minion = new Rectangle(50, HEIGHT / 2 - 40, 10, 10);
+    Rectangle minion = new Rectangle(70, HEIGHT / 2 - 40, 10, 10);
     Rectangle minion2 = new Rectangle(40, HEIGHT / 2 - 40, 10, 10);
-    Rectangle minion3 = new Rectangle(30, HEIGHT / 2 - 40, 10, 10);
-    Rectangle minion4 = new Rectangle(20, HEIGHT / 2 - 40, 10, 10);
+    Rectangle minion3 = new Rectangle(50, HEIGHT / 2 - 5, 10, 10);
+    Rectangle minion4 = new Rectangle(5, HEIGHT / 2 - 20, 10, 10);
     Rectangle[] minions = {minion, minion2, minion3, minion4};
-    //ai on/off
-    boolean ai1 = false;
-    boolean ai2 = true;
+
     // Player controls
     boolean p1Up = false;
     boolean p1Down = false;
@@ -50,8 +51,8 @@ public class Run extends JComponent implements KeyListener {
     // Display the players health
     int health = 100;
     // Game Font
-    Font gameFont = new Font("Arial", Font.PLAIN, 12);
-    BufferedImage Triangles = ImageHelper.loadImage("Triangles.png");
+    Font gameFont = new Font("Arial", Font.PLAIN, 14);
+    BufferedImage Triangles = ImageHelper.loadImage("Abstract 1.jpg");
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
@@ -63,7 +64,6 @@ public class Run extends JComponent implements KeyListener {
 
         // GAME DRAWING GOES HERE 
         // Draw background image
-
         g.drawImage(Triangles, 0, 0, 800, 600, null);
         if (health > 0) {
             // Create player ball
@@ -80,11 +80,46 @@ public class Run extends JComponent implements KeyListener {
             g.setFont(gameFont);
             g.drawString("Health: " + health, WIDTH / 2 - 350, 20);
         } else if (health <= 0) {
-            // draw scores
+            // What happens at the end of the game
+            // You died! Game Over!
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(340, 280, 140, 30);
+            g.setColor(Color.white);
             g.setFont(gameFont);
-            g.drawString("You Dead ", 400, 350);
-        }
+            g.drawString("Game Over! ", 376, 300);
+            // Play again?
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(110, 280, 140, 30);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Play Again", 150, 300);
+            // Game Modes
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(569, 280, 140, 30);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Game Modes", 600, 300);
 
+            //Stamps for design on each option at the end of the game
+            // 'Play Again' stamps
+            g.setColor(Color.CYAN);
+            g.fillOval(110, 280, 7, 7);
+            g.fillOval(242, 280, 7, 7);
+            g.fillOval(110, 302, 7, 7);
+            g.fillOval(242, 302, 7, 7);
+            // 'Game Over' stamps
+            g.fillOval(340, 280, 7, 7);
+            g.fillOval(472, 280, 7, 7);
+            g.fillOval(340, 302, 7, 7);
+            g.fillOval(472, 302, 7, 7);
+            // 'Game Modes' stamps
+            g.fillOval(568, 280, 7, 7);
+            g.fillOval(701, 280, 7, 7);
+            g.fillOval(568, 302, 7, 7);
+            g.fillOval(701, 302, 7, 7);
+
+            // Health background rectangle
+        }
 
         // GAME DRAWING ENDS HERE
     }
@@ -144,27 +179,20 @@ public class Run extends JComponent implements KeyListener {
                 P1.x = P1.x + speed;
             }
 
-            // Do the minions hit the player 
+            // For loop used to interact when minions hit the player 
             for (int i = 0; i < minions.length; i++) {
                 if (minions[i].intersects(P1)) {
                     health = health - 25;
+                    // If player health is 0, game ends 
+                    if (health == -25) {
+                        break;
+                    }
                 }
             }
 
-            // If player health is 0, game ends 
-            if (health == -25) {
-                break;
-            }
-
-
-
-
             // GAME LOGIC ENDS HERE 
-
             // update the drawing (calls paintComponent)
             repaint();
-
-
 
             // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
             // USING SOME SIMPLE MATH
@@ -188,7 +216,7 @@ public class Run extends JComponent implements KeyListener {
         JFrame frame = new JFrame("My Game");
 
         // creates an instance of my game
-        Run game = new Run();
+        AbstractRun game = new AbstractRun();
         // sets the size of my game
         game.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         // adds the game to the window
