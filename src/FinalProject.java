@@ -205,6 +205,11 @@ public class FinalProject extends JComponent implements KeyListener {
         I[2][1][0] = true;
         I[2][2][0] = false;
         I[2][3][0] = false;
+        I[3][0][0] = false;
+        I[3][1][0] = true;
+        I[3][2][0] = false;
+        I[3][3][0] = false;
+        
 
         //rotation 2
         I[0][0][1] = false;
@@ -233,6 +238,10 @@ public class FinalProject extends JComponent implements KeyListener {
         I[2][1][2] = true;
         I[2][2][2] = false;
         I[2][3][2] = false;
+        I[3][0][0] = false;
+        I[3][1][0] = true;
+        I[3][2][0] = false;
+        I[3][3][0] = false;
 
         //rotation 4
         I[0][0][3] = false;
@@ -250,51 +259,65 @@ public class FinalProject extends JComponent implements KeyListener {
 
         //Z block
         //rotation 1
-        Z[0][0][0] = true;
-        Z[0][1][0] = true;
-        Z[0][2][0] = false;
+        Z[0][0][0] = false;
+        Z[0][1][0] = false;
+        Z[0][2][0] = true;
         Z[1][0][0] = false;
         Z[1][1][0] = true;
         Z[1][2][0] = true;
         Z[2][0][0] = false;
-        Z[2][1][0] = false;
+        Z[2][1][0] = true;
         Z[2][2][0] = false;
 
         //rotation 2
         Z[0][0][1] = false;
-        Z[0][1][1] = true;
+        Z[0][1][1] = false;
         Z[0][2][1] = false;
         Z[1][0][1] = true;
         Z[1][1][1] = true;
         Z[1][2][1] = false;
-        Z[2][0][1] = true;
-        Z[2][1][1] = false;
-        Z[2][2][1] = false;
+        Z[2][0][1] = false;
+        Z[2][1][1] = true;
+        Z[2][2][1] = true;
+        
         //rotation 3
-        Z[0][0][2] = false;
-        Z[0][1][2] = false;
-        Z[0][2][2] = false;
-        Z[1][0][2] = true;
-        Z[1][1][2] = true;
-        Z[1][2][2] = false;
-        Z[2][0][2] = false;
-        Z[2][1][2] = true;
-        Z[2][2][2] = true;
+        Z[0][0][0] = false;
+        Z[0][1][0] = false;
+        Z[0][2][0] = true;
+        Z[1][0][0] = false;
+        Z[1][1][0] = true;
+        Z[1][2][0] = true;
+        Z[2][0][0] = false;
+        Z[2][1][0] = true;
+        Z[2][2][0] = false;
+        
         //rotation 4
-        Z[0][0][3] = false;
-        Z[0][1][3] = false;
-        Z[0][2][3] = true;
-        Z[1][0][3] = false;
-        Z[1][1][3] = true;
-        Z[1][2][3] = true;
-        Z[2][0][3] = false;
-        Z[2][1][3] = true;
-        Z[2][2][3] = false;
+        Z[0][0][1] = false;
+        Z[0][1][1] = false;
+        Z[0][2][1] = false;
+        Z[1][0][1] = true;
+        Z[1][1][1] = true;
+        Z[1][2][1] = false;
+        Z[2][0][1] = false;
+        Z[2][1][1] = true;
+        Z[2][2][1] = true;
 
 
         //S block
         //rotation 1
-        S[0][0][0] = false;
+        S[0][0][1] = false;
+        S[0][1][1] = true;
+        S[0][2][1] = false;
+        S[1][0][1] = false;
+        S[1][1][1] = true;
+        S[1][2][1] = true;
+        S[2][0][1] = false;
+        S[2][1][1] = false;
+        S[2][2][1] = true;
+       
+
+        //rotation 2
+         S[0][0][0] = false;
         S[0][1][0] = true;
         S[0][2][0] = true;
         S[1][0][0] = true;
@@ -304,55 +327,44 @@ public class FinalProject extends JComponent implements KeyListener {
         S[2][1][0] = false;
         S[2][2][0] = false;
 
-        //rotation 2
-        S[0][0][1] = true;
-        S[0][1][1] = false;
-        S[0][2][1] = false;
-        S[1][0][1] = true;
-        S[1][1][1] = true;
-        S[1][2][1] = false;
-        S[2][0][1] = false;
-        S[2][1][1] = true;
-        S[2][2][1] = false;
-
         //rotation 3
-        S[0][0][2] = false;
-        S[0][1][2] = false;
-        S[0][2][2] = false;
-        S[1][0][2] = false;
-        S[1][1][2] = true;
-        S[1][2][2] = true;
-        S[2][0][2] = true;
-        S[2][1][2] = true;
-        S[2][2][2] = false;
+        S[0][0][1] = false;
+        S[0][1][1] = true;
+        S[0][2][1] = false;
+        S[1][0][1] = false;
+        S[1][1][1] = true;
+        S[1][2][1] = true;
+        S[2][0][1] = false;
+        S[2][1][1] = false;
+        S[2][2][1] = true;
 
 
         //rotation 4
-        S[0][0][3] = false;
-        S[0][1][3] = true;
-        S[0][2][3] = false;
-        S[1][0][3] = false;
-        S[1][1][3] = true;
-        S[1][2][3] = true;
-        S[2][0][3] = false;
-        S[2][1][3] = false;
-        S[2][2][3] = true;
+         S[0][0][0] = false;
+        S[0][1][0] = true;
+        S[0][2][0] = true;
+        S[1][0][0] = true;
+        S[1][1][0] = true;
+        S[1][2][0] = false;
+        S[2][0][0] = false;
+        S[2][1][0] = false;
+        S[2][2][0] = false;
 
 
         //L block
         //rotation 1
         L[0][0][0] = false;
         L[0][1][0] = false;
-        L[0][2][0] = false;
-        L[1][0][0] = false;
-        L[1][1][0] = false;
+        L[0][2][0] = true;
+        L[1][0][0] = true;
+        L[1][1][0] = true;
         L[1][2][0] = true;
-        L[2][0][0] = true;
-        L[2][1][0] = true;
-        L[2][2][0] = true;
+        L[2][0][0] = false;
+        L[2][1][0] = false;
+        L[2][2][0] = false;
 
         //rotation 2
-        L[0][0][1] = true;
+        L[0][0][1] = false;
         L[0][1][1] = true;
         L[0][2][1] = false;
         L[1][0][1] = false;
@@ -360,7 +372,7 @@ public class FinalProject extends JComponent implements KeyListener {
         L[1][2][1] = false;
         L[2][0][1] = false;
         L[2][1][1] = true;
-        L[2][2][1] = false;
+        L[2][2][1] = true;
 
         //rotation 3
         L[0][0][2] = false;
@@ -374,60 +386,60 @@ public class FinalProject extends JComponent implements KeyListener {
         L[2][2][2] = false;
 
         //rotation 4
-        L[0][0][3] = false;
-        L[0][1][3] = true;
-        L[0][2][3] = false;
-        L[1][0][3] = false;
-        L[1][1][3] = true;
-        L[1][2][3] = false;
-        L[2][0][3] = false;
-        L[2][1][3] = true;
-        L[2][2][3] = true;
+        L[0][0][1] = true;
+        L[0][1][1] = true;
+        L[0][2][1] = false;
+        L[1][0][1] = false;
+        L[1][1][1] = true;
+        L[1][2][1] = false;
+        L[2][0][1] = false;
+        L[2][1][1] = true;
+        L[2][2][1] = false;
 
 
         //J block
         //rotation 1
-        J[0][0][0] = false;
+        J[0][0][0] = true;
         J[0][1][0] = false;
         J[0][2][0] = false;
         J[1][0][0] = true;
-        J[1][1][0] = false;
-        J[1][2][0] = false;
-        J[2][0][0] = true;
-        J[2][1][0] = true;
-        J[2][2][0] = true;
+        J[1][1][0] = true;
+        J[1][2][0] = true;
+        J[2][0][0] = false;
+        J[2][1][0] = false;
+        J[2][2][0] = false;
 
         //rotation 2
         J[0][0][1] = false;
-        J[0][1][1] = false;
+        J[0][1][1] = true;
         J[0][2][1] = true;
         J[1][0][1] = false;
-        J[1][1][1] = false;
-        J[1][2][1] = true;
+        J[1][1][1] = true;
+        J[1][2][1] = false;
         J[2][0][1] = false;
         J[2][1][1] = true;
-        J[2][2][1] = true;
+        J[2][2][1] = false;
 
         //rotation 3
-        J[0][0][2] = true;
-        J[0][1][2] = true;
-        J[0][2][2] = true;
-        J[1][0][2] = false;
-        J[1][1][2] = false;
+        J[0][0][2] = false;
+        J[0][1][2] = false;
+        J[0][2][2] = false;
+        J[1][0][2] = true;
+        J[1][1][2] = true;
         J[1][2][2] = true;
         J[2][0][2] = false;
         J[2][1][2] = false;
-        J[2][2][2] = false;
+        J[2][2][2] = true;
 
         //rotation 4
-        J[0][0][3] = true;
+        J[0][0][3] = false;
         J[0][1][3] = true;
         J[0][2][3] = false;
-        J[1][0][3] = true;
-        J[1][1][3] = false;
+        J[1][0][3] = false;
+        J[1][1][3] = true;
         J[1][2][3] = false;
         J[2][0][3] = true;
-        J[2][1][3] = false;
+        J[2][1][3] = true;
         J[2][2][3] = false;
 
         //O block
@@ -485,7 +497,8 @@ public class FinalProject extends JComponent implements KeyListener {
 
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
-            y = y + down * speed;
+//            y = y + down * speed;
+            
            
             // GAME LOGIC ENDS HERE 
 
@@ -554,9 +567,9 @@ public class FinalProject extends JComponent implements KeyListener {
         if (key == KeyEvent.VK_LEFT) {
             x = x - 30;
         }
-        if(key == KeyEvent.VK_DOWN){
-            y = y + 0;
-        }
+//        if(key == KeyEvent.VK_DOWN){
+//            y = y +30;
+//        }
 
 
     }
