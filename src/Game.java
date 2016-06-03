@@ -36,12 +36,15 @@ public class Game extends JComponent implements KeyListener{
     double ypos = 0;
     double xspeed = 0;
     double yspeed = 0;
+    double dist = 0;
+    double angle = 0;
     
     boolean ynegative_accel = false;
     boolean ypositive_accel = false;
     boolean xnegative_accel = false;
     boolean xpositive_accel = false;
-           
+    Font gameFont = new Font("Arial", Font.PLAIN, 40);
+    
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
@@ -53,8 +56,11 @@ public class Game extends JComponent implements KeyListener{
         g.clearRect(0, 0, WIDTH, HEIGHT);
         
         // GAME DRAWING GOES HERE 
-        
-        g.fillRect((int)xpos, (int)ypos, 4, 4);
+        g.setFont(gameFont);
+        g.fillRect((int)xpos, (int)ypos, 2, 2);
+        g.fillOval(500, 400, 10, 10);
+        g.drawString(("" + dist),(WIDTH/2 - 400),50);
+        g.drawString(("" + angle),(WIDTH/2 + 100),50);
         
         // GAME DRAWING ENDS HERE
     }
@@ -79,22 +85,28 @@ public class Game extends JComponent implements KeyListener{
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
             
+            Font gameFont = new Font("Arial", Font.PLAIN, 40);
+            
+            dist = Math.sqrt(Math.pow(xpos - 500, 2) + Math.pow(ypos - 400,2));
+          
+            angle = Math.tan((ypos - 400) / (xpos - 500));
+            
             if(ynegative_accel == true){
-                yspeed = yspeed - 0.1;
+                yspeed = yspeed - 0.02;
             }
             if(ypositive_accel == true){
-                yspeed = yspeed + 0.1;
+                yspeed = yspeed + 0.02;
             }
             if(xnegative_accel == true){
-                xspeed = xspeed - 0.1;
+                xspeed = xspeed - 0.02;
             }
             if(xpositive_accel == true){
-                xspeed = xspeed + 0.1;
+                xspeed = xspeed + 0.02;
             }
             
             xpos = xpos + xspeed;
             ypos = ypos + yspeed;
-
+            
             // GAME LOGIC ENDS HERE 
             
             // update the drawing (calls paintComponent)
@@ -139,6 +151,8 @@ public class Game extends JComponent implements KeyListener{
         // shows the window to the user
         frame.setVisible(true);
         
+        
+        frame.addKeyListener(game);
         // starts my game loop
         game.run();
     }
