@@ -36,10 +36,10 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     int[] moveY = {1, 1, -1, -1};
     int speed = 15;
     // Create the minions
-    Rectangle minion = new Rectangle(70, 150, 10, 10);
-    Rectangle minion2 = new Rectangle(40, 400, 10, 10);
-    Rectangle minion3 = new Rectangle(50, HEIGHT / 2 - 5, 10, 10);
-    Rectangle minion4 = new Rectangle(5, HEIGHT / 2 - 20, 10, 10);
+    Rectangle minion = new Rectangle(300, 150, 10, 10);
+    Rectangle minion2 = new Rectangle(600, 500, 10, 10);
+    Rectangle minion3 = new Rectangle(100, 300, 10, 10);
+    Rectangle minion4 = new Rectangle(2, 600, 10, 10);
     // Create array for minions to be easily drawn
     Rectangle[] minions = {minion, minion2, minion3, minion4};
     // Player controls
@@ -51,6 +51,11 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     boolean alt = false;
     // Display the players health
     int health = 100;
+    // Health square integers
+    Rectangle health1 = new Rectangle(6, 5, 20, 20);
+    Rectangle health2 = new Rectangle(26, 5, 20, 20);
+    Rectangle health3 = new Rectangle(46, 5, 20, 20);
+    Rectangle health4 = new Rectangle(66, 5, 20, 20);
     // Game Font
     Font gameFont = new Font("Arial", Font.PLAIN, 14);
     // Create background image for the player and game itself
@@ -117,8 +122,18 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
 
                 // Draw health
                 // Health background rectangle
+                // First health square
                 g.setColor(Color.red);
-                g.fillRect(6, 5, 80, 20);
+                g.fillRect(6, 5, 20, 20);
+                // Second health square
+                g.setColor(Color.red);
+                g.fillRect(26, 5, 20, 20);
+                // Third health square
+                g.setColor(Color.red);
+                g.fillRect(46, 5, 20, 20);
+                // Fourth health square
+                g.setColor(Color.red);
+                g.fillRect(66, 5, 20, 20);
                 g.setColor(Color.white);
                 g.setFont(gameFont);
                 g.drawString("Health: " + health, 10, 20);
@@ -127,19 +142,19 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                 // You died! Game Over!
                 g.setColor(Color.DARK_GRAY);
                 g.fillRect(340, 280, 140, 30);
-                g.setColor(Color.white);
+                g.setColor(Color.cyan);
                 g.setFont(gameFont);
                 g.drawString("Game Over! ", 376, 300);
                 // Play again?
                 g.setColor(Color.DARK_GRAY);
                 g.fillRect(110, 280, 140, 30);
-                g.setColor(Color.white);
+                g.setColor(Color.cyan);
                 g.setFont(gameFont);
                 g.drawString("Play Again", 150, 300);
                 // Game Modes
                 g.setColor(Color.DARK_GRAY);
                 g.fillRect(569, 280, 140, 30);
-                g.setColor(Color.white);
+                g.setColor(Color.cyan);
                 g.setFont(gameFont);
                 g.drawString("Game Modes", 600, 300);
 
@@ -160,7 +175,6 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                 g.fillOval(701, 280, 7, 7);
                 g.fillOval(568, 302, 7, 7);
                 g.fillOval(701, 302, 7, 7);
-
 
             }
         }
@@ -183,7 +197,6 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             startTime = System.currentTimeMillis();
 
             // GAME LOGIC STARTS HERE 
-
             // menu logic
             if (alt) {
             } else {
