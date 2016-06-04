@@ -29,21 +29,29 @@ public class Game extends JComponent implements KeyListener{
     
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
-    long desiredFPS = 60;
+    long desiredFPS = 144;
     long desiredTime = (1000)/desiredFPS;
     
-    double xpos = 0;
-    double ypos = 0;
-    double xspeed = 0;
-    double yspeed = 0;
-    double dist = 0;
-    double angle = 0;
+    double xpos = 0;                                                                    //player x position
+    double ypos = 0;                                                                    //player y position
+    double xspeed = 0;                                                                  //player x velocity
+    double yspeed = 0;                                                                  //player y velocity
+    double xpos1 = 500;                                                                 //object 1 x position
+    double ypos1 = 400;                                                                 //object 1 y position
+    double mass1 = 1000;                                                                   //mass of object 1
+    double dist1 = 0;                                                                   //player distance from object 1
+    double angle1 = 0;                                                                  //player angle from object 1
+    double gforce1 = 0;                                                                 //player gforce from object 1
+    
+    
+    
+    int count = 0;
     
     boolean ynegative_accel = false;
     boolean ypositive_accel = false;
     boolean xnegative_accel = false;
     boolean xpositive_accel = false;
-    Font gameFont = new Font("Arial", Font.PLAIN, 40);
+    Font gameFont = new Font("Arial", Font.PLAIN, 14);
     
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
@@ -58,9 +66,10 @@ public class Game extends JComponent implements KeyListener{
         // GAME DRAWING GOES HERE 
         g.setFont(gameFont);
         g.fillRect((int)xpos, (int)ypos, 2, 2);
-        g.fillOval(500, 400, 10, 10);
-        g.drawString(("" + dist),(WIDTH/2 - 400),50);
-        g.drawString(("" + angle),(WIDTH/2 + 100),50);
+        g.fillOval(495, 395, 10, 10);
+        g.drawString(("Distance:" + dist1),760,20);
+        g.drawString(("Angle:" + angle1),760,40);
+        g.drawString(("Gravitation:" + gforce1),760,60);
         
         // GAME DRAWING ENDS HERE
     }
@@ -85,23 +94,28 @@ public class Game extends JComponent implements KeyListener{
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
             
-            Font gameFont = new Font("Arial", Font.PLAIN, 40);
+            Font gameFont = new Font("Arial", Font.PLAIN, 40);                              //Sets font          
             
-            dist = Math.sqrt(Math.pow(xpos - 500, 2) + Math.pow(ypos - 400,2));
-          
-            angle = Math.tan((ypos - 400) / (xpos - 500));
+            dist1 = Math.sqrt(Math.pow((xpos - xpos1), 2) + Math.pow((ypos - ypos1),2));    //Finds distance to object 1
             
-            if(ynegative_accel == true){
-                yspeed = yspeed - 0.02;
+            gforce1 = mass1 / Math.pow(dist1, 2);                                              //Finds gforce of object 1
+            
+            angle1 = Math.atan2((ypos - ypos1),(xpos - xpos1));                             //finds angle to object 1
+            
+            xspeed = xspeed - gforce1 * Math.cos(angle1);                                   //Adds components of gforce onto player
+            yspeed = yspeed - gforce1 * Math.sin(angle1);
+            
+            if(ynegative_accel == true){                                                    //Engages acceleration based on player keystrokes
+                yspeed = yspeed - 0.01;
             }
             if(ypositive_accel == true){
-                yspeed = yspeed + 0.02;
+                yspeed = yspeed + 0.01;
             }
             if(xnegative_accel == true){
-                xspeed = xspeed - 0.02;
+                xspeed = xspeed - 0.01;
             }
             if(xpositive_accel == true){
-                xspeed = xspeed + 0.02;
+                xspeed = xspeed + 0.01;
             }
             
             xpos = xpos + xspeed;
