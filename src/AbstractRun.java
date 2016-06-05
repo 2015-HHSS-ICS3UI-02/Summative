@@ -34,7 +34,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     // Ball control and speed
     int[] moveX = {1, -1, 1, -1};
     int[] moveY = {1, 1, -1, -1};
-    int speed = 15;
+    int speed = 3;
     // Create the minions
     Rectangle minion = new Rectangle(300, 150, 10, 10);
     Rectangle minion2 = new Rectangle(600, 500, 10, 10);
@@ -51,7 +51,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     boolean alt = false;
     // Display the players health
     int health = 100;
-    // Health square integers
+    // Health square integers DO I NEED THIS?!?!?!?!?!?!?!!?!?!?!!??
     Rectangle health1 = new Rectangle(6, 5, 20, 20);
     Rectangle health2 = new Rectangle(26, 5, 20, 20);
     Rectangle health3 = new Rectangle(46, 5, 20, 20);
@@ -80,29 +80,34 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.fillRect(340, 280, 140, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
-            g.drawString("Game Over! ", 376, 300);
+            g.drawString("Game Modes ", 370, 300);
+
             // 'Game Modes' stamps
             g.fillOval(340, 280, 7, 7);
             g.fillOval(472, 280, 7, 7);
             g.fillOval(340, 302, 7, 7);
             g.fillOval(472, 302, 7, 7);
+
             // 'Options'
             g.setColor(Color.DARK_GRAY);
             g.fillRect(569, 280, 140, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
             g.drawString("Options", 615, 300);
+
             // 'Options' stamps
             g.fillOval(569, 280, 7, 7);
             g.fillOval(701, 280, 7, 7);
             g.fillOval(569, 302, 7, 7);
             g.fillOval(701, 302, 7, 7);
+
             // 'Game Controls'
             g.setColor(Color.DARK_GRAY);
             g.fillRect(110, 280, 140, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
             g.drawString("Game Controls", 135, 300);
+
             // 'Game Controls' stamps
             g.fillOval(110, 280, 7, 7);
             g.fillOval(242, 280, 7, 7);
@@ -120,8 +125,11 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                     g.fill3DRect(minions[i].x, minions[i].y, minions[i].width, minions[i].height, true);
                 }
 
-                // Draw health
+                // Draw health bar
                 // Health background rectangle
+                // Entire health background to show the amount of health was lost
+                g.setColor(Color.black);
+                g.fillRect(6, 5, 80, 20);
                 // First health square
                 g.setColor(Color.red);
                 g.fillRect(6, 5, 20, 20);
@@ -138,20 +146,23 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                 g.setFont(gameFont);
                 g.drawString("Health: " + health, 10, 20);
             } else if (health <= 0) {
+
                 // What happens at the end of the game
                 // You died! Game Over!
                 g.setColor(Color.DARK_GRAY);
                 g.fillRect(340, 280, 140, 30);
                 g.setColor(Color.cyan);
                 g.setFont(gameFont);
-                g.drawString("Game Over! ", 376, 300);
-                // Play again?
+                g.drawString("Game Over! ", 374, 300);
+
+                // Play again option
                 g.setColor(Color.DARK_GRAY);
                 g.fillRect(110, 280, 140, 30);
                 g.setColor(Color.cyan);
                 g.setFont(gameFont);
-                g.drawString("Play Again", 150, 300);
-                // Game Modes
+                g.drawString("Play Again", 149, 300);
+
+                // Game Modes option
                 g.setColor(Color.DARK_GRAY);
                 g.fillRect(569, 280, 140, 30);
                 g.setColor(Color.cyan);
