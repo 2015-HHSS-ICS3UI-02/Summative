@@ -29,24 +29,27 @@ public class Game extends JComponent implements KeyListener{
     
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
-    long desiredFPS = 144;
+    long desiredFPS = 120;
     long desiredTime = (1000)/desiredFPS;
     
     double xpos = 0;                                                                    //player x position
     double ypos = 0;                                                                    //player y position
+    double fuel = 100;                                                                  //player fuel for acceleration
     double xspeed = 0;                                                                  //player x velocity
     double yspeed = 0;                                                                  //player y velocity
     double xpos1 = 500;                                                                 //object 1 x position
     double ypos1 = 400;                                                                 //object 1 y position
-    double mass1 = 1000;                                                                   //mass of object 1
+    double mass1 = 50;                                                                  //mass of object 1
     double dist1 = 0;                                                                   //player distance from object 1
     double angle1 = 0;                                                                  //player angle from object 1
     double gforce1 = 0;                                                                 //player gforce from object 1
     
+    int count = 0;                                                                      //counts frames for traces
+    int mission = 0;                                                                    //each int is a mission
     
     
-    int count = 0;
-    
+    boolean pause = false;                                                              //boolean for game paused
+    boolean reset = true;                                                              //boolean to reset game
     boolean ynegative_accel = false;
     boolean ypositive_accel = false;
     boolean xnegative_accel = false;
@@ -70,7 +73,7 @@ public class Game extends JComponent implements KeyListener{
         g.drawString(("Distance:" + dist1),760,20);
         g.drawString(("Angle:" + angle1),760,40);
         g.drawString(("Gravitation:" + gforce1),760,60);
-        
+        g.drawString(("Fuel:" + fuel),760,80);   
         // GAME DRAWING ENDS HERE
     }
     
@@ -96,26 +99,42 @@ public class Game extends JComponent implements KeyListener{
             
             Font gameFont = new Font("Arial", Font.PLAIN, 40);                              //Sets font          
             
+            if(mission == 0 && reset == true){                                                             
+                xpos = 400;                                                                  
+                ypos = 400;                                                              
+                fuel = 100;                                                               
+                xspeed = 0;                                                                
+                yspeed = 0.708;                                                                  
+                xpos1 = 500;                                                                
+                ypos1 = 400;                                                                
+                mass1 = 50;                                                                  
+                reset = false;
+            }
+            
             dist1 = Math.sqrt(Math.pow((xpos - xpos1), 2) + Math.pow((ypos - ypos1),2));    //Finds distance to object 1
             
-            gforce1 = mass1 / Math.pow(dist1, 2);                                              //Finds gforce of object 1
+            gforce1 = mass1 / Math.pow(dist1, 2);                                           //Finds gforce of object 1
             
-            angle1 = Math.atan2((ypos - ypos1),(xpos - xpos1));                             //finds angle to object 1
+            angle1 = Math.atan2((ypos - ypos1),(xpos - xpos1));                              //finds angle to object 1
             
-            xspeed = xspeed - gforce1 * Math.cos(angle1);                                   //Adds components of gforce onto player
+            xspeed = xspeed - gforce1 * Math.cos(angle1);                                    //Adds components of gforce onto player
             yspeed = yspeed - gforce1 * Math.sin(angle1);
             
-            if(ynegative_accel == true){                                                    //Engages acceleration based on player keystrokes
+            if(ynegative_accel == true && fuel > 0){                                          //Engages acceleration based on player keystrokes
                 yspeed = yspeed - 0.01;
+                fuel = fuel - 1;
             }
-            if(ypositive_accel == true){
+            if(ypositive_accel == true && fuel > 0){
                 yspeed = yspeed + 0.01;
+                fuel = fuel - 1;
             }
-            if(xnegative_accel == true){
+            if(xnegative_accel == true && fuel > 0){
                 xspeed = xspeed - 0.01;
+                fuel = fuel - 1;
             }
-            if(xpositive_accel == true){
+            if(xpositive_accel == true && fuel > 0){
                 xspeed = xspeed + 0.01;
+                fuel = fuel - 1;
             }
             
             xpos = xpos + xspeed;
@@ -186,7 +205,10 @@ public class Game extends JComponent implements KeyListener{
            xnegative_accel = true;
        } else if(key == KeyEvent.VK_D){
            xpositive_accel = true;
+       }else if(key == KeyEvent.VK_R){
+           reset = true;
        }
+       
     }
     
     @Override
