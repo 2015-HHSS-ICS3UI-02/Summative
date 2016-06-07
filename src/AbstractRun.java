@@ -30,16 +30,18 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
     // Create player(s) 
-    Rectangle P1 = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 30, 30);
+    Rectangle P1 = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 35, 35);
     // Ball control and speed
     int[] moveX = {1, -1, 1, -1};
     int[] moveY = {1, 1, -1, -1};
     int speed = 3;
+    //screen setting :  3 - normal game
+    int screen = 3;
     // Create the minions
-    Rectangle minion = new Rectangle(300, 150, 10, 10);
-    Rectangle minion2 = new Rectangle(600, 500, 10, 10);
-    Rectangle minion3 = new Rectangle(100, 300, 10, 10);
-    Rectangle minion4 = new Rectangle(2, 600, 10, 10);
+    Rectangle minion = new Rectangle(70, 150, 10, 10);
+    Rectangle minion2 = new Rectangle(40, 400, 10, 10);
+    Rectangle minion3 = new Rectangle(50, HEIGHT / 2 - 5, 10, 10);
+    Rectangle minion4 = new Rectangle(5, HEIGHT / 2 - 20, 10, 10);
     // Create array for minions to be easily drawn
     Rectangle[] minions = {minion, minion2, minion3, minion4};
     // Player controls
@@ -51,15 +53,11 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     boolean alt = false;
     // Display the players health
     int health = 100;
-    // Health square integers DO I NEED THIS?!?!?!?!?!?!?!!?!?!?!!??
-    Rectangle health1 = new Rectangle(6, 5, 20, 20);
-    Rectangle health2 = new Rectangle(26, 5, 20, 20);
-    Rectangle health3 = new Rectangle(46, 5, 20, 20);
-    Rectangle health4 = new Rectangle(66, 5, 20, 20);
     // Game Font
     Font gameFont = new Font("Arial", Font.PLAIN, 14);
     // Create background image for the player and game itself
     BufferedImage Triangles = ImageHelper.loadImage("Abstract 1.jpg");
+    BufferedImage PlayerMinion = ImageHelper.loadImage("minion.png");
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
@@ -80,7 +78,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.fillRect(340, 280, 140, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
-            g.drawString("Game Modes ", 370, 300);
+            g.drawString("Game Over! ", 376, 300);
 
             // 'Game Modes' stamps
             g.fillOval(340, 280, 7, 7);
@@ -113,11 +111,13 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.fillOval(242, 280, 7, 7);
             g.fillOval(110, 302, 7, 7);
             g.fillOval(242, 302, 7, 7);
+
         } else {
-            if (health > 0) {
+            if (health > 0 && screen == 3) {
                 // Create player ball
                 g.setColor(Color.DARK_GRAY);
                 g.fillOval(P1.x, P1.y, P1.width, P1.height);
+                g.drawImage(PlayerMinion, P1.x, P1.y, P1.width, P1.height, null);
 
                 // Create first minion
                 g.setColor(Color.white);
@@ -125,47 +125,31 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                     g.fill3DRect(minions[i].x, minions[i].y, minions[i].width, minions[i].height, true);
                 }
 
-                // Draw health bar
+                // Draw health
                 // Health background rectangle
-                // Entire health background to show the amount of health was lost
-                g.setColor(Color.black);
-                g.fillRect(6, 5, 80, 20);
-                // First health square
                 g.setColor(Color.red);
-                g.fillRect(6, 5, 20, 20);
-                // Second health square
-                g.setColor(Color.red);
-                g.fillRect(26, 5, 20, 20);
-                // Third health square
-                g.setColor(Color.red);
-                g.fillRect(46, 5, 20, 20);
-                // Fourth health square
-                g.setColor(Color.red);
-                g.fillRect(66, 5, 20, 20);
+                g.fillRect(6, 5, 80 * health / 100, 20);
                 g.setColor(Color.white);
                 g.setFont(gameFont);
                 g.drawString("Health: " + health, 10, 20);
-            } else if (health <= 0) {
-
+            } else if (health <= 0 && screen == 4) {
                 // What happens at the end of the game
                 // You died! Game Over!
                 g.setColor(Color.DARK_GRAY);
                 g.fillRect(340, 280, 140, 30);
-                g.setColor(Color.cyan);
+                g.setColor(Color.white);
                 g.setFont(gameFont);
-                g.drawString("Game Over! ", 374, 300);
-
-                // Play again option
+                g.drawString("Game Over! ", 376, 300);
+                // Play again?
                 g.setColor(Color.DARK_GRAY);
                 g.fillRect(110, 280, 140, 30);
-                g.setColor(Color.cyan);
+                g.setColor(Color.white);
                 g.setFont(gameFont);
-                g.drawString("Play Again", 149, 300);
-
-                // Game Modes option
+                g.drawString("Play Again", 150, 300);
+                // Game Modes
                 g.setColor(Color.DARK_GRAY);
                 g.fillRect(569, 280, 140, 30);
-                g.setColor(Color.cyan);
+                g.setColor(Color.white);
                 g.setFont(gameFont);
                 g.drawString("Game Modes", 600, 300);
 
@@ -186,6 +170,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                 g.fillOval(701, 280, 7, 7);
                 g.fillOval(568, 302, 7, 7);
                 g.fillOval(701, 302, 7, 7);
+
 
             }
         }
@@ -208,75 +193,87 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             startTime = System.currentTimeMillis();
 
             // GAME LOGIC STARTS HERE 
+
             // menu logic
-            if (alt) {
-            } else {
+            if (screen == 3) {
 
-                // Array that goes through all minions and collisions with screen
-                for (int i = 0; i < minions.length; i++) {
-                    minions[i].x = minions[i].x + moveX[i] * speed;
-                    minions[i].y = minions[i].y + moveY[i] * speed;
-                    // ball world collisions
-                    // did bottom of ball hit bottom of screen?
-                    if (minions[i].y + minions[i].height > HEIGHT) {
-                        moveY[i] = -1;
-                    }
-                    // ball hit top of screen?
-                    if (minions[i].y < 0) {
-                        moveY[i] = 1;
-                    }
-                    // did right of ball hit right of screen?
-                    if (minions[i].x + minions[i].width > WIDTH) {
-                        moveX[i] = -1;
-                    }
-                    // ball hit left of screen?
-                    if (minions[i].x < 0) {
-                        moveX[i] = 1;
-                    }
-                }
 
-                // make player ball move
-                // if W pressed, move p1 up
-                if (p1Up && P1.y > 0) {
-                    P1.y = P1.y - speed;
-                    // If S is pressed, move p1 down
-                } else if (p1Down && P1.y + P1.height < HEIGHT) {
-                    P1.y = P1.y + speed;
-                }
+                if (alt) {
+                } else {
 
-                // If D pressed, move p1 right
-                if (p1Left && P1.x > 0) {
-                    P1.x = P1.x - speed;
-                } else if (p1Right && P1.x + P1.width < WIDTH) {
-                    P1.x = P1.x + speed;
-                }
+                    // Array that goes through all minions and collisions with screen
+                    for (int i = 0; i < minions.length; i++) {
+                        minions[i].x = minions[i].x + moveX[i] * speed;
+                        minions[i].y = minions[i].y + moveY[i] * speed;
+                        // ball world collisions
+                        // did bottom of ball hit bottom of screen?
+                        if (minions[i].y + minions[i].height > HEIGHT) {
+                            moveY[i] = -1;
+                        }
+                        // ball hit top of screen?
+                        if (minions[i].y < 0) {
+                            moveY[i] = 1;
+                        }
+                        // did right of ball hit right of screen?
+                        if (minions[i].x + minions[i].width > WIDTH) {
+                            moveX[i] = -1;
+                        }
+                        // ball hit left of screen?
+                        if (minions[i].x < 0) {
+                            moveX[i] = 1;
+                        }
+                    }
 
-                // For loop used to interact when minions hit the player 
-                for (int i = 0; i < minions.length; i++) {
-                    if (minions[i].intersects(P1)) {
-                        health = health - 25;
-                        // If player health is 0, game ends 
-                        if (health == -25) {
-                            break;
+                    // make player ball move
+                    // if W pressed, move p1 up
+                    if (p1Up && P1.y > 0) {
+                        P1.y = P1.y - speed;
+                        // If S is pressed, move p1 down
+                    } else if (p1Down && P1.y + P1.height < HEIGHT) {
+                        P1.y = P1.y + speed;
+                    }
+
+                    // If D pressed, move p1 right
+                    if (p1Left && P1.x > 0) {
+                        P1.x = P1.x - speed;
+                    } else if (p1Right && P1.x + P1.width < WIDTH) {
+                        P1.x = P1.x + speed;
+                    }
+
+                    // For loop used to interact when minions hit the player 
+                    for (int i = 0; i < minions.length; i++) {
+                        if (minions[i].intersects(P1)) {
+                            health = health - 25;
+                            // If player health is 0, game ends 
+                            if (health == -25) {
+                                screen = 4;
+                            }
+                        }
+                    }
+                    // For loop used to interact when minions hit the player to bounce off
+                    for (int i = 0; i < minions.length; i++) {
+                        if (minions[i].intersects(P1)) {
+                            moveX[i] = -moveX[i];
+                            moveY[i] = -moveY[i];
                         }
                     }
                 }
-            }
 
-            // GAME LOGIC ENDS HERE 
-            // update the drawing (calls paintComponent)
-            repaint();
+                // GAME LOGIC ENDS HERE 
+                // update the drawing (calls paintComponent)
+                repaint();
 
-            // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
-            // USING SOME SIMPLE MATH
-            deltaTime = System.currentTimeMillis() - startTime;
-            if (deltaTime > desiredTime) {
-                //took too much time, don't wait
-            } else {
-                try {
-                    Thread.sleep(desiredTime - deltaTime);
-                } catch (Exception e) {
-                };
+                // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
+                // USING SOME SIMPLE MATH
+                deltaTime = System.currentTimeMillis() - startTime;
+                if (deltaTime > desiredTime) {
+                    //took too much time, don't wait
+                } else {
+                    try {
+                        Thread.sleep(desiredTime - deltaTime);
+                    } catch (Exception e) {
+                    };
+                }
             }
         }
     }
