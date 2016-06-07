@@ -82,10 +82,11 @@ public class Game extends JComponent implements KeyListener{
         g.drawString(("Gravitation:" + gforce1),760,60);
         g.drawString(("Fuel:" + fuel),760,80);   
         g.drawString(("M.E.T.:" + count + " seconds"),760,100);  
-        g.drawString(("Mission " + mission),470,20); 
+        g.drawString(("Mission " + mission),470,20);
+        g.drawString(objective,385,40); 
         g.fillRect(m_end.x, m_end.y, m_end.width, m_end.height);
         if(won == true){
-                g.drawString(("You have completed the mission! Unpause to continue to the next mission"),260,700); 
+                g.drawString(("You have completed the mission! Reset to continue to the next mission."),260,700); 
         }
         if(pause == true){
                g.setFont(bigFont);
@@ -118,45 +119,45 @@ public class Game extends JComponent implements KeyListener{
             //MISSION SELECTION
             
             if(pause == false){
-            
-            if(mission == 1 && reset == true){                                                             
-                won = false;
-                xpos = 300;                                                                  
-                ypos = 400;                                                              
-                fuel = 20;                                                               
-                xspeed = 0;                                                                
-                yspeed = 0.2;                                                                  
-                xpos1 = 500;                                                                
-                ypos1 = 400;                                                                
-                mass1 = 50;                                                                  
-                maxtime = 2000;
-                m_end = new Rectangle(590, 350, 10, 100);
-                reset = false;
-                objective = "Get the spacecraft to the objective";  
+            if(mission == 1){
+                if(reset == true){                                                             
+                    won = false;
+                    xpos = 300;                                                                  
+                    ypos = 400;                                                              
+                    fuel = 20;                                                               
+                    xspeed = 0;                                                                
+                    yspeed = 0.2;                                                                  
+                    xpos1 = 500;                                                                
+                    ypos1 = 400;                                                                
+                    mass1 = 50;                                                                  
+                    maxtime = 2000;
+                    m_end = new Rectangle(590, 350, 10, 100);
+                    reset = false;
+                    objective = "Fly the spacecraft through the zone";  
+                }
+                if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width) && won == false){
+                    won = true;
+                    mission = mission + 1;
+                }
             }
-            
-            if(mission == 2 && reset == true){                                                             
-                won = false;
-                xpos = 200;                                                                  
-                ypos = 400;                                                              
-                fuel = 100;                                                               
-                xspeed = 0;                                                                
-                yspeed = 0.2;                                                                  
-                xpos1 = 500;                                                                
-                ypos1 = 400;                                                                
-                mass1 = 100;                                                                  
-                m_end = new Rectangle(590, 350, 10, 100);
-                reset = false;
-                objective = "Reach an distance of 500 units";
-            }
-            
-            //CHECKING IF PLAYER HAS WON
-            
-            if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width) && won == false){
-                won = true;
-                pause = true;
-                reset = true;
-                mission = mission + 1;
+            if(mission == 2){
+                if(reset == true){                                                             
+                    won = false;
+                    xpos = 460;                                                                  
+                    ypos = 400;                                                              
+                    fuel = 60;                                                               
+                    xspeed = 0;                                                                
+                    yspeed = 1.58;                                                                  
+                    xpos1 = 500;                                                                
+                    ypos1 = 400;                                                                
+                    mass1 = 100;                                                                  
+                    reset = false;
+                    objective = "Reach an distance of 500 units";
+                }
+                if(dist1 > 500 && won == false){
+                        won = true;
+                        mission = mission + 1;
+                    }
             }
 
             //APPLYING GRAVITY
@@ -266,6 +267,9 @@ public class Game extends JComponent implements KeyListener{
            pause = true;
        }else if(key == KeyEvent.VK_SPACE && pause == true){
            pause = false;
+       }else if(key == KeyEvent.VK_O){
+           won = true;
+           mission = mission + 1;
        }
     }
     
