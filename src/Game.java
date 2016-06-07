@@ -48,10 +48,12 @@ public class Game extends JComponent implements KeyListener{
     
     int count = 0;                                                                      //counts frames for traces
     int mission = 1;                                                                    //each int is a mission
+    int maxtime = 1;                                                                    //max time for the mission
     
     boolean pause = false;                                                              //boolean for game paused
     boolean reset = true;                                                               //boolean to reset game
     boolean titlescreen = true;                                                         //boolean for title screen
+    boolean won = false;                                                                 //boolean for if the player has completed mission
     
     boolean ynegative_accel = false;
     boolean ypositive_accel = false;
@@ -79,6 +81,12 @@ public class Game extends JComponent implements KeyListener{
         g.drawString(("Fuel:" + fuel),760,80);   
         g.drawString(("M.E.T.:" + count + " seconds"),760,100);  
         g.fillRect(m_end.x, m_end.y, m_end.width, m_end.height);
+        if(won == true){
+                g.drawString(("You have completed the mission, press R to reset to the next mission, or P to continue this simulation"),200,700); 
+           }
+        if(pause == true){
+                g.drawString(("PAUSED"),450,400); 
+           }
         // GAME DRAWING ENDS HERE
     }
     
@@ -106,7 +114,10 @@ public class Game extends JComponent implements KeyListener{
             
             //MISSION SELECTION
             
+            if(pause == false){
+            
             if(mission == 1 && reset == true){                                                             
+                won = false;
                 xpos = 300;                                                                  
                 ypos = 400;                                                              
                 fuel = 20;                                                               
@@ -115,11 +126,13 @@ public class Game extends JComponent implements KeyListener{
                 xpos1 = 500;                                                                
                 ypos1 = 400;                                                                
                 mass1 = 50;                                                                  
+                maxtime = 2000;
                 m_end = new Rectangle(590, 350, 10, 100);
                 reset = false;
             }
             
             if(mission == 2 && reset == true){                                                             
+                won = false;
                 xpos = 300;                                                                  
                 ypos = 400;                                                              
                 fuel = 20;                                                               
@@ -134,10 +147,12 @@ public class Game extends JComponent implements KeyListener{
             
             //CHECKING IF PLAYER HAS WON
             
-            if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width)){
+            if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width) && won == false){
+                won = true;
+                pause = true;
                 mission = mission + 1;
             }
-                
+            
             //APPLYING GRAVITY
             
             dist1 = Math.sqrt(Math.pow((xpos - xpos1), 2) + Math.pow((ypos - ypos1),2));     //Finds distance to object 1
@@ -171,6 +186,8 @@ public class Game extends JComponent implements KeyListener{
             //COUNTING FRAMES
             
             count = count + 1;
+            
+            }
             
             // GAME LOGIC ENDS HERE 
             
@@ -239,6 +256,10 @@ public class Game extends JComponent implements KeyListener{
            xpositive_accel = true;
        }else if(key == KeyEvent.VK_R){
            reset = true;
+       }else if(key == KeyEvent.VK_P && pause == false){
+           pause = true;
+       }else if(key == KeyEvent.VK_P && pause == true){
+           pause = false;
        }
     }
     
