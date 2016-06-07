@@ -44,12 +44,15 @@ public class Game extends JComponent implements KeyListener{
     double angle1 = 0;                                                                  //player angle from object 1
     double gforce1 = 0;                                                                 //player gforce from object 1
     
-    int count = 0;                                                                      //counts frames for traces
-    int mission = 0;                                                                    //each int is a mission
+    Rectangle m_end = new Rectangle(0, 0, 0, 0);                                        //mission end rectangle
     
+    int count = 0;                                                                      //counts frames for traces
+    int mission = 1;                                                                    //each int is a mission
     
     boolean pause = false;                                                              //boolean for game paused
-    boolean reset = true;                                                              //boolean to reset game
+    boolean reset = true;                                                               //boolean to reset game
+    boolean titlescreen = true;                                                         //boolean for title screen
+    
     boolean ynegative_accel = false;
     boolean ypositive_accel = false;
     boolean xnegative_accel = false;
@@ -74,6 +77,8 @@ public class Game extends JComponent implements KeyListener{
         g.drawString(("Angle:" + angle1),760,40);
         g.drawString(("Gravitation:" + gforce1),760,60);
         g.drawString(("Fuel:" + fuel),760,80);   
+        g.drawString(("M.E.T.:" + count + " seconds"),760,100);  
+        g.fillRect(m_end.x, m_end.y, m_end.width, m_end.height);
         // GAME DRAWING ENDS HERE
     }
     
@@ -95,32 +100,55 @@ public class Game extends JComponent implements KeyListener{
             startTime = System.currentTimeMillis();
             
             // all your game rules and move is done in here
-            // GAME LOGIC STARTS HERE 
+            // GAME LOGIC STARTS HERE
             
             Font gameFont = new Font("Arial", Font.PLAIN, 40);                              //Sets font          
             
-            if(mission == 0 && reset == true){                                                             
-                xpos = 400;                                                                  
+            //MISSION SELECTION
+            
+            if(mission == 1 && reset == true){                                                             
+                xpos = 300;                                                                  
                 ypos = 400;                                                              
-                fuel = 100;                                                               
+                fuel = 20;                                                               
                 xspeed = 0;                                                                
-                yspeed = 0.708;                                                                  
+                yspeed = 0.2;                                                                  
                 xpos1 = 500;                                                                
                 ypos1 = 400;                                                                
                 mass1 = 50;                                                                  
+                m_end = new Rectangle(590, 350, 10, 100);
                 reset = false;
             }
             
-            dist1 = Math.sqrt(Math.pow((xpos - xpos1), 2) + Math.pow((ypos - ypos1),2));    //Finds distance to object 1
+            if(mission == 2 && reset == true){                                                             
+                xpos = 300;                                                                  
+                ypos = 400;                                                              
+                fuel = 20;                                                               
+                xspeed = 0;                                                                
+                yspeed = 0.2;                                                                  
+                xpos1 = 500;                                                                
+                ypos1 = 400;                                                                
+                mass1 = 50;                                                                  
+                m_end = new Rectangle(590, 350, 10, 100);
+                reset = false;
+            }
             
-            gforce1 = mass1 / Math.pow(dist1, 2);                                           //Finds gforce of object 1
+            //CHECKING IF PLAYER HAS WON
             
+            if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width)){
+                mission = mission + 1;
+            }
+                
+            //APPLYING GRAVITY
+            
+            dist1 = Math.sqrt(Math.pow((xpos - xpos1), 2) + Math.pow((ypos - ypos1),2));     //Finds distance to object 1
+            gforce1 = mass1 / Math.pow(dist1, 2);                                            //Finds gforce of object 1
             angle1 = Math.atan2((ypos - ypos1),(xpos - xpos1));                              //finds angle to object 1
-            
             xspeed = xspeed - gforce1 * Math.cos(angle1);                                    //Adds components of gforce onto player
             yspeed = yspeed - gforce1 * Math.sin(angle1);
             
-            if(ynegative_accel == true && fuel > 0){                                          //Engages acceleration based on player keystrokes
+            //APPLYING PLAYER ACCELERATION
+            
+            if(ynegative_accel == true && fuel > 0){                                         //Engages acceleration based on player keystrokes
                 yspeed = yspeed - 0.01;
                 fuel = fuel - 1;
             }
@@ -139,6 +167,10 @@ public class Game extends JComponent implements KeyListener{
             
             xpos = xpos + xspeed;
             ypos = ypos + yspeed;
+            
+            //COUNTING FRAMES
+            
+            count = count + 1;
             
             // GAME LOGIC ENDS HERE 
             
@@ -208,7 +240,6 @@ public class Game extends JComponent implements KeyListener{
        }else if(key == KeyEvent.VK_R){
            reset = true;
        }
-       
     }
     
     @Override
