@@ -106,17 +106,17 @@ public class Pong extends JComponent implements KeyListener {
             ball.x = ball.x + moveX * speed;
             ball.y = ball.y + moveY * speed;
 
-            // ball world collisions
-            // did bottom of ball hit bottom of screen?
+            // Ball screen collisions
+            // Did bottom of ball hit bottom of screen?
             if (ball.y + ball.height > HEIGHT) {
                 moveY = -1;
             }
-            // ball hit top of screen?
+            // Ball hit top of screen?
             if (ball.y < 0) {
                 moveY = 1;
             }
 
-            // did right of ball hit right of screen?
+            // Did right of ball hit right of screen?
             if (ball.x + ball.width > WIDTH) {
                 moveX = -1;
                 score1++;

@@ -34,9 +34,9 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     // Ball control and speed
     int[] moveX = {1, -1, 1, -1};
     int[] moveY = {1, 1, -1, -1};
-    int speed = 3;
+    int speed = 15;
     //screen setting :  3 - normal game
-    int screen = 3;
+    int screen = 0;
     // Create the minions
     Rectangle minion = new Rectangle(70, 150, 10, 10);
     Rectangle minion2 = new Rectangle(40, 400, 10, 10);
@@ -49,6 +49,11 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     boolean p1Down = false;
     boolean p1Right = false;
     boolean p1Left = false;
+    // Create boolean for mouse click
+    boolean button1 = false;
+    // Mouse X and Y integers
+    int mouseX = 0;
+    int mouseY = 0;
     // Starting the game 
     boolean alt = false;
     // Display the players health
@@ -58,27 +63,29 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     // Create background image for the player and game itself
     BufferedImage Triangles = ImageHelper.loadImage("Abstract 1.jpg");
     BufferedImage PlayerMinion = ImageHelper.loadImage("minion.png");
+    BufferedImage StartMenu = ImageHelper.loadImage("Intro.jpg");
+
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
-
     @Override
     public void paintComponent(Graphics g) {
         // always clear the screen first!
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
         // GAME DRAWING GOES HERE 
-        // Draw background image
-        g.drawImage(Triangles, 0, 0, 800, 600, null);
+
         // Menu options at the beginning of the game
-        if (alt) {
+        if (screen == 0) {
+            // Draw background abstract traingle art
+            g.drawImage(StartMenu, 0, 0, 800, 600, null);
             // Game modes option
             g.setColor(Color.DARK_GRAY);
             g.setColor(Color.DARK_GRAY);
             g.fillRect(340, 280, 140, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
-            g.drawString("Game Over! ", 376, 300);
+            g.drawString("Game Modes! ", 373, 300);
 
             // 'Game Modes' stamps
             g.fillOval(340, 280, 7, 7);
@@ -112,66 +119,122 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.fillOval(110, 302, 7, 7);
             g.fillOval(242, 302, 7, 7);
 
-        } else {
-            if (health > 0 && screen == 3) {
-                // Create player ball
-                g.setColor(Color.DARK_GRAY);
-                g.fillOval(P1.x, P1.y, P1.width, P1.height);
-                g.drawImage(PlayerMinion, P1.x, P1.y, P1.width, P1.height, null);
-
-                // Create first minion
-                g.setColor(Color.white);
-                for (int i = 0; i < minions.length; i++) {
-                    g.fill3DRect(minions[i].x, minions[i].y, minions[i].width, minions[i].height, true);
+            // If button one is clicked for each option in the start menu
+            if (button1) {
+                // Clicking on "Game Modes"
+                if (mouseX > 340 && mouseX < 280 && mouseY > 140 && mouseY < 30) {
+                    screen = 3;
                 }
+            }
 
-                // Draw health
-                // Health background rectangle
-                g.setColor(Color.red);
-                g.fillRect(6, 5, 80 * health / 100, 20);
-                g.setColor(Color.white);
-                g.setFont(gameFont);
-                g.drawString("Health: " + health, 10, 20);
-            } else if (health <= 0 && screen == 4) {
-                // What happens at the end of the game
-                // You died! Game Over!
+
+            // DO I NEED THIS?!?!?!?!?!?!?!?!?!?!?!?!?!!?!??!?!?!?!?!?!?!?!?!?!?!?!??!!?!?!??!?!?!!?!??!!?!!??!?!?!!?!?!?!?!?!?
+        } else if (screen >= 3) {
+            // Draw background image
+            g.drawImage(Triangles, 0, 0, 800, 600, null);
+            if (alt && screen == 3) {
+                // Game modes option
+                g.setColor(Color.DARK_GRAY);
                 g.setColor(Color.DARK_GRAY);
                 g.fillRect(340, 280, 140, 30);
                 g.setColor(Color.white);
                 g.setFont(gameFont);
-                g.drawString("Game Over! ", 376, 300);
-                // Play again?
-                g.setColor(Color.DARK_GRAY);
-                g.fillRect(110, 280, 140, 30);
-                g.setColor(Color.white);
-                g.setFont(gameFont);
-                g.drawString("Play Again", 150, 300);
-                // Game Modes
-                g.setColor(Color.DARK_GRAY);
-                g.fillRect(569, 280, 140, 30);
-                g.setColor(Color.white);
-                g.setFont(gameFont);
-                g.drawString("Game Modes", 600, 300);
+                g.drawString("Game Modes! ", 376, 300);
 
-                //Stamps for design on each option at the end of the game
-                // 'Play Again' stamps
-                g.setColor(Color.CYAN);
-                g.fillOval(110, 280, 7, 7);
-                g.fillOval(242, 280, 7, 7);
-                g.fillOval(110, 302, 7, 7);
-                g.fillOval(242, 302, 7, 7);
-                // 'Game Over' stamps
+                // 'Game Modes' stamps
                 g.fillOval(340, 280, 7, 7);
                 g.fillOval(472, 280, 7, 7);
                 g.fillOval(340, 302, 7, 7);
                 g.fillOval(472, 302, 7, 7);
-                // 'Game Modes' stamps
-                g.fillOval(568, 280, 7, 7);
+
+                // 'Options'
+                g.setColor(Color.DARK_GRAY);
+                g.fillRect(569, 280, 140, 30);
+                g.setColor(Color.white);
+                g.setFont(gameFont);
+                g.drawString("Options", 615, 300);
+
+                // 'Options' stamps
+                g.fillOval(569, 280, 7, 7);
                 g.fillOval(701, 280, 7, 7);
-                g.fillOval(568, 302, 7, 7);
+                g.fillOval(569, 302, 7, 7);
                 g.fillOval(701, 302, 7, 7);
 
+                // 'Game Controls'
+                g.setColor(Color.DARK_GRAY);
+                g.fillRect(110, 280, 140, 30);
+                g.setColor(Color.white);
+                g.setFont(gameFont);
+                g.drawString("Game Controls", 135, 300);
 
+                // 'Game Controls' stamps
+                g.fillOval(110, 280, 7, 7);
+                g.fillOval(242, 280, 7, 7);
+                g.fillOval(110, 302, 7, 7);
+                g.fillOval(242, 302, 7, 7);
+                // DO I NEED THIS?!?!?!?!?!?!?!?!?!?!?!?!?!!?!??!?!?!?!?!?!?!?!?!?!?!?!??!!?!?!??!?!?!!?!??!!?!!??!?!?!!?!?!?!?!?!?
+
+            } else {
+                if (health > 0 && screen == 3) {
+                    // Create player ball
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillOval(P1.x, P1.y, P1.width, P1.height);
+                    g.drawImage(PlayerMinion, P1.x, P1.y, P1.width, P1.height, null);
+
+                    // Create first minion
+                    g.setColor(Color.white);
+                    for (int i = 0; i < minions.length; i++) {
+                        g.fill3DRect(minions[i].x, minions[i].y, minions[i].width, minions[i].height, true);
+                    }
+
+                    // Draw health
+                    // Health background rectangle
+                    g.setColor(Color.red);
+                    g.fillRect(6, 5, 80 * health / 100, 20);
+                    g.setColor(Color.white);
+                    g.setFont(gameFont);
+                    g.drawString("Health: " + health, 10, 20);
+                } else if (health <= 0 && screen == 4) {
+                    // What happens at the end of the game
+                    // You died! Game Over!
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillRect(340, 280, 140, 30);
+                    g.setColor(Color.white);
+                    g.setFont(gameFont);
+                    g.drawString("Game Over! ", 376, 300);
+                    // Play again?
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillRect(110, 280, 140, 30);
+                    g.setColor(Color.white);
+                    g.setFont(gameFont);
+                    g.drawString("Play Again", 150, 300);
+                    // Game Modes
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillRect(569, 280, 140, 30);
+                    g.setColor(Color.white);
+                    g.setFont(gameFont);
+                    g.drawString("Game Modes", 600, 300);
+
+                    //Stamps for design on each option at the end of the game
+                    // 'Play Again' stamps
+                    g.setColor(Color.CYAN);
+                    g.fillOval(110, 280, 7, 7);
+                    g.fillOval(242, 280, 7, 7);
+                    g.fillOval(110, 302, 7, 7);
+                    g.fillOval(242, 302, 7, 7);
+                    // 'Game Over' stamps
+                    g.fillOval(340, 280, 7, 7);
+                    g.fillOval(472, 280, 7, 7);
+                    g.fillOval(340, 302, 7, 7);
+                    g.fillOval(472, 302, 7, 7);
+                    // 'Game Modes' stamps
+                    g.fillOval(568, 280, 7, 7);
+                    g.fillOval(701, 280, 7, 7);
+                    g.fillOval(568, 302, 7, 7);
+                    g.fillOval(701, 302, 7, 7);
+
+
+                }
             }
         }
         // GAME DRAWING ENDS HERE
@@ -195,6 +258,12 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             // GAME LOGIC STARTS HERE 
 
             // menu logic
+            if (screen == 0) {
+                if (p1Up) {
+                    screen = 3;
+                }
+            }
+
             if (screen == 3) {
 
 
@@ -224,8 +293,8 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         }
                     }
 
-                    // make player ball move
-                    // if W pressed, move p1 up
+                    // Make player minion move
+                    // If W pressed, move p1 up
                     if (p1Up && P1.y > 0) {
                         P1.y = P1.y - speed;
                         // If S is pressed, move p1 down
@@ -359,8 +428,8 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int mx = e.getX();
-        int my = e.getY();
+        int mouseX = e.getX();
+        int mouseY = e.getY();
         // Create new integer for the mouse clicks
         int button = e.getButton();
         // Recognize the mouse click (BUTTON1 = Left click)
