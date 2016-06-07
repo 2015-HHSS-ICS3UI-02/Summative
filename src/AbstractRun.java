@@ -254,6 +254,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                     for (int i = 0; i < minions.length; i++) {
                         if (minions[i].intersects(P1)) {
                             moveX[i] = -moveX[i];
+                            moveY[i] = -moveY[i];
                         }
                     }
                 }
