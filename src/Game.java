@@ -32,6 +32,8 @@ public class Game extends JComponent implements KeyListener{
     long desiredFPS = 120;
     long desiredTime = (1000)/desiredFPS;
     
+    String objective = "";                                                              //states the mission objective
+    
     double xpos = 0;                                                                    //player x position
     double ypos = 0;                                                                    //player y position
     double fuel = 100;                                                                  //player fuel for acceleration
@@ -60,7 +62,7 @@ public class Game extends JComponent implements KeyListener{
     boolean xnegative_accel = false;
     boolean xpositive_accel = false;
     Font gameFont = new Font("Arial", Font.PLAIN, 14);
-    
+    Font bigFont = new Font("Arial", Font.PLAIN, 26);
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
@@ -80,13 +82,16 @@ public class Game extends JComponent implements KeyListener{
         g.drawString(("Gravitation:" + gforce1),760,60);
         g.drawString(("Fuel:" + fuel),760,80);   
         g.drawString(("M.E.T.:" + count + " seconds"),760,100);  
+        g.drawString(("Mission " + mission),470,20); 
         g.fillRect(m_end.x, m_end.y, m_end.width, m_end.height);
         if(won == true){
-                g.drawString(("You have completed the mission, press R to reset to the next mission, or P to continue this simulation"),200,700); 
-           }
+                g.drawString(("You have completed the mission! Unpause to continue to the next mission"),260,700); 
+        }
         if(pause == true){
-                g.drawString(("PAUSED"),450,400); 
-           }
+               g.setFont(bigFont);
+               g.drawString(("PAUSED"),450,350); 
+               g.setFont(gameFont); 
+        }
         // GAME DRAWING ENDS HERE
     }
     
@@ -108,9 +113,7 @@ public class Game extends JComponent implements KeyListener{
             startTime = System.currentTimeMillis();
             
             // all your game rules and move is done in here
-            // GAME LOGIC STARTS HERE
-            
-            Font gameFont = new Font("Arial", Font.PLAIN, 40);                              //Sets font          
+            // GAME LOGIC STARTS HERE      
             
             //MISSION SELECTION
             
@@ -129,20 +132,22 @@ public class Game extends JComponent implements KeyListener{
                 maxtime = 2000;
                 m_end = new Rectangle(590, 350, 10, 100);
                 reset = false;
+                objective = "Get the spacecraft to the objective";  
             }
             
             if(mission == 2 && reset == true){                                                             
                 won = false;
-                xpos = 300;                                                                  
+                xpos = 200;                                                                  
                 ypos = 400;                                                              
-                fuel = 20;                                                               
+                fuel = 100;                                                               
                 xspeed = 0;                                                                
                 yspeed = 0.2;                                                                  
                 xpos1 = 500;                                                                
                 ypos1 = 400;                                                                
-                mass1 = 50;                                                                  
+                mass1 = 100;                                                                  
                 m_end = new Rectangle(590, 350, 10, 100);
                 reset = false;
+                objective = "Reach an distance of 500 units";
             }
             
             //CHECKING IF PLAYER HAS WON
@@ -150,9 +155,10 @@ public class Game extends JComponent implements KeyListener{
             if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width) && won == false){
                 won = true;
                 pause = true;
+                reset = true;
                 mission = mission + 1;
             }
-            
+
             //APPLYING GRAVITY
             
             dist1 = Math.sqrt(Math.pow((xpos - xpos1), 2) + Math.pow((ypos - ypos1),2));     //Finds distance to object 1
@@ -256,9 +262,9 @@ public class Game extends JComponent implements KeyListener{
            xpositive_accel = true;
        }else if(key == KeyEvent.VK_R){
            reset = true;
-       }else if(key == KeyEvent.VK_P && pause == false){
+       }else if(key == KeyEvent.VK_SPACE && pause == false){
            pause = true;
-       }else if(key == KeyEvent.VK_P && pause == true){
+       }else if(key == KeyEvent.VK_SPACE && pause == true){
            pause = false;
        }
     }
