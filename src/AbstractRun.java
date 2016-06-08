@@ -63,7 +63,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     // Create background image for the player and game itself
     BufferedImage Triangles = ImageHelper.loadImage("Abstract 1.jpg");
     BufferedImage PlayerMinion = ImageHelper.loadImage("minion.png");
-    BufferedImage StartMenu = ImageHelper.loadImage("Intro.jpg");
+    BufferedImage StartMenu = ImageHelper.loadImage("Abstract 5.png");
 
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
@@ -74,11 +74,10 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
         // GAME DRAWING GOES HERE 
-
         // Menu options at the beginning of the game
         if (screen == 0) {
             // Draw background abstract traingle art
-            g.drawImage(StartMenu, 0, 0, 800, 600, null);
+            g.drawImage(StartMenu, 0, 0, 820, 600, null);
             // Game modes option
             g.setColor(Color.DARK_GRAY);
             g.setColor(Color.DARK_GRAY);
@@ -118,15 +117,6 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.fillOval(242, 280, 7, 7);
             g.fillOval(110, 302, 7, 7);
             g.fillOval(242, 302, 7, 7);
-
-            // If button one is clicked for each option in the start menu
-            if (button1) {
-                // Clicking on "Game Modes"
-                if (mouseX > 340 && mouseX < 280 && mouseY > 140 && mouseY < 30) {
-                    screen = 3;
-                }
-            }
-
 
             // DO I NEED THIS?!?!?!?!?!?!?!?!?!?!?!?!?!!?!??!?!?!?!?!?!?!?!?!?!?!?!??!!?!?!??!?!?!!?!??!!?!!??!?!?!!?!?!?!?!?!?
         } else if (screen >= 3) {
@@ -233,7 +223,6 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                     g.fillOval(568, 302, 7, 7);
                     g.fillOval(701, 302, 7, 7);
 
-
                 }
             }
         }
@@ -256,93 +245,90 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             startTime = System.currentTimeMillis();
 
             // GAME LOGIC STARTS HERE 
-
-            // menu logic
+            // If 'Game Controls' was clicked
+            //if(screen == 0){
             if (screen == 0) {
-                if (p1Up) {
-                    screen = 3;
+                // If Game Modes is clicked on, the screen then becomes screen 3, showing the user the game modes
+                if (button1) {
+                    if (mouseX > 340 && mouseX < 480 && mouseY > 280 && mouseY < 310) {
+                        screen = 3;
+                    }
+                }
+            } else {
+
+                // Array that goes through all minions and collisions with screen
+                for (int i = 0; i < minions.length; i++) {
+                    minions[i].x = minions[i].x + moveX[i] * speed;
+                    minions[i].y = minions[i].y + moveY[i] * speed;
+                    // ball world collisions
+                    // did bottom of ball hit bottom of screen?
+                    if (minions[i].y + minions[i].height > HEIGHT) {
+                        moveY[i] = -1;
+                    }
+                    // ball hit top of screen?
+                    if (minions[i].y < 0) {
+                        moveY[i] = 1;
+                    }
+                    // did right of ball hit right of screen?
+                    if (minions[i].x + minions[i].width > WIDTH) {
+                        moveX[i] = -1;
+                    }
+                    // ball hit left of screen?
+                    if (minions[i].x < 0) {
+                        moveX[i] = 1;
+                    }
+                }
+
+                // Make player minion move
+                // If W pressed, move p1 up
+                if (p1Up && P1.y > 0) {
+                    P1.y = P1.y - speed;
+                    // If S is pressed, move p1 down
+                } else if (p1Down && P1.y + P1.height < HEIGHT) {
+                    P1.y = P1.y + speed;
+                }
+
+                // If D pressed, move p1 right
+                if (p1Left && P1.x > 0) {
+                    P1.x = P1.x - speed;
+                } else if (p1Right && P1.x + P1.width < WIDTH) {
+                    P1.x = P1.x + speed;
+                }
+
+                // For loop used to interact when minions hit the player 
+                for (int i = 0; i < minions.length; i++) {
+                    if (minions[i].intersects(P1)) {
+                        health = health - 25;
+                        // If player health is 0, game ends 
+                        if (health == -25) {
+                            screen = 4;
+                        }
+                    }
+                }
+                // For loop used to interact when minions hit the player to bounce off
+                for (int i = 0; i < minions.length; i++) {
+                    if (minions[i].intersects(P1)) {
+                        moveX[i] = -moveX[i];
+                        moveY[i] = -moveY[i];
+                    }
                 }
             }
 
-            if (screen == 3) {
+            // If 'Options' was clicked
+            // GAME LOGIC ENDS HERE 
+            // update the drawing (calls paintComponent)
+            repaint();
 
-
-                if (alt) {
-                } else {
-
-                    // Array that goes through all minions and collisions with screen
-                    for (int i = 0; i < minions.length; i++) {
-                        minions[i].x = minions[i].x + moveX[i] * speed;
-                        minions[i].y = minions[i].y + moveY[i] * speed;
-                        // ball world collisions
-                        // did bottom of ball hit bottom of screen?
-                        if (minions[i].y + minions[i].height > HEIGHT) {
-                            moveY[i] = -1;
-                        }
-                        // ball hit top of screen?
-                        if (minions[i].y < 0) {
-                            moveY[i] = 1;
-                        }
-                        // did right of ball hit right of screen?
-                        if (minions[i].x + minions[i].width > WIDTH) {
-                            moveX[i] = -1;
-                        }
-                        // ball hit left of screen?
-                        if (minions[i].x < 0) {
-                            moveX[i] = 1;
-                        }
-                    }
-
-                    // Make player minion move
-                    // If W pressed, move p1 up
-                    if (p1Up && P1.y > 0) {
-                        P1.y = P1.y - speed;
-                        // If S is pressed, move p1 down
-                    } else if (p1Down && P1.y + P1.height < HEIGHT) {
-                        P1.y = P1.y + speed;
-                    }
-
-                    // If D pressed, move p1 right
-                    if (p1Left && P1.x > 0) {
-                        P1.x = P1.x - speed;
-                    } else if (p1Right && P1.x + P1.width < WIDTH) {
-                        P1.x = P1.x + speed;
-                    }
-
-                    // For loop used to interact when minions hit the player 
-                    for (int i = 0; i < minions.length; i++) {
-                        if (minions[i].intersects(P1)) {
-                            health = health - 25;
-                            // If player health is 0, game ends 
-                            if (health == -25) {
-                                screen = 4;
-                            }
-                        }
-                    }
-                    // For loop used to interact when minions hit the player to bounce off
-                    for (int i = 0; i < minions.length; i++) {
-                        if (minions[i].intersects(P1)) {
-                            moveX[i] = -moveX[i];
-                            moveY[i] = -moveY[i];
-                        }
-                    }
-                }
-
-                // GAME LOGIC ENDS HERE 
-                // update the drawing (calls paintComponent)
-                repaint();
-
-                // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
-                // USING SOME SIMPLE MATH
-                deltaTime = System.currentTimeMillis() - startTime;
-                if (deltaTime > desiredTime) {
-                    //took too much time, don't wait
-                } else {
-                    try {
-                        Thread.sleep(desiredTime - deltaTime);
-                    } catch (Exception e) {
-                    };
-                }
+            // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
+            // USING SOME SIMPLE MATH
+            deltaTime = System.currentTimeMillis() - startTime;
+            if (deltaTime > desiredTime) {
+                //took too much time, don't wait
+            } else {
+                try {
+                    Thread.sleep(desiredTime - deltaTime);
+                } catch (Exception e) {
+                };
             }
         }
     }
@@ -428,13 +414,15 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int mouseX = e.getX();
-        int mouseY = e.getY();
+        mouseX = e.getX();
+        mouseY = e.getY();
         // Create new integer for the mouse clicks
         int button = e.getButton();
         // Recognize the mouse click (BUTTON1 = Left click)
         if (button == MouseEvent.BUTTON1) {
             System.out.println("Button 1");
+            button1 = true;
+
         }
         // Recognize the mouse click (BUTTON1 = Right click)
         if (button == MouseEvent.BUTTON3) {
