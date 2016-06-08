@@ -33,6 +33,7 @@ public class Game extends JComponent implements KeyListener{
     long desiredTime = (1000)/desiredFPS;
     
     String objective = "";                                                              //states the mission objective
+    String fail = "";                                                                   //explains to the player why they have lost
     
     double xpos = 0;                                                                    //player x position
     double ypos = 0;                                                                    //player y position
@@ -45,6 +46,7 @@ public class Game extends JComponent implements KeyListener{
     double dist1 = 0;                                                                   //player distance from object 1
     double angle1 = 0;                                                                  //player angle from object 1
     double gforce1 = 0;                                                                 //player gforce from object 1
+    int collision1 = 0;                                                                 //player 1 collision with object 1
     
     Rectangle m_end = new Rectangle(0, 0, 0, 0);                                        //mission end rectangle
     
@@ -56,6 +58,7 @@ public class Game extends JComponent implements KeyListener{
     boolean reset = true;                                                               //boolean to reset game
     boolean titlescreen = true;                                                         //boolean for title screen
     boolean won = false;                                                                 //boolean for if the player has completed mission
+    boolean lost = false;                                                               //boolean for the player losing
     
     boolean ynegative_accel = false;
     boolean ypositive_accel = false;
@@ -84,9 +87,14 @@ public class Game extends JComponent implements KeyListener{
         g.drawString(("M.E.T.:" + count + " seconds"),760,100);  
         g.drawString(("Mission " + mission),470,20);
         g.drawString(objective,385,40); 
-        g.fillRect(m_end.x, m_end.y, m_end.width, m_end.height);
+        if(won == false && (mission == 1 || mission == 3)){
+                g.fillRect(m_end.x, m_end.y, m_end.width, m_end.height);
+        }
         if(won == true){
                 g.drawString(("You have completed the mission! Reset to continue to the next mission."),260,700); 
+        }
+        if(lost == true){
+                g.drawString((fail + ". Mission failed, unpause to reset"),290,700); 
         }
         if(pause == true){
                g.setFont(bigFont);
@@ -118,10 +126,19 @@ public class Game extends JComponent implements KeyListener{
             
             //MISSION SELECTION
             
+             //APPLYING GRAVITY
+            
+            dist1 = Math.sqrt(Math.pow((xpos - xpos1), 2) + Math.pow((ypos - ypos1),2));     //Finds distance to object 1
+            gforce1 = mass1 / Math.pow(dist1, 2);                                            //Finds gforce of object 1
+            angle1 = Math.atan2((ypos - ypos1),(xpos - xpos1));                              //finds angle to object 1
+            xspeed = xspeed - gforce1 * Math.cos(angle1);                                    //Adds components of gforce onto player
+            yspeed = yspeed - gforce1 * Math.sin(angle1);
+            
             if(pause == false){
             if(mission == 1){
                 if(reset == true){                                                             
                     won = false;
+                    lost = false;
                     xpos = 300;                                                                  
                     ypos = 400;                                                              
                     fuel = 20;                                                               
@@ -133,19 +150,26 @@ public class Game extends JComponent implements KeyListener{
                     maxtime = 2000;
                     m_end = new Rectangle(590, 350, 10, 100);
                     reset = false;
-                    objective = "Fly the spacecraft through the zone";  
+                    objective = "Fly the spacecraft through the zone";                                                                    
                 }
                 if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width) && won == false){
                     won = true;
                     mission = mission + 1;
                 }
+                if(dist1 <= 7){
+                    lost = true;
+                    reset = true;
+                    pause = true;
+                    fail = "You have collided with the object";  
+                }
             }
             if(mission == 2){
                 if(reset == true){                                                             
                     won = false;
+                    lost = false;
                     xpos = 460;                                                                  
                     ypos = 400;                                                              
-                    fuel = 60;                                                               
+                    fuel = 65;                                                               
                     xspeed = 0;                                                                
                     yspeed = 1.58;                                                                  
                     xpos1 = 500;                                                                
@@ -158,16 +182,68 @@ public class Game extends JComponent implements KeyListener{
                         won = true;
                         mission = mission + 1;
                     }
+                if(dist1 <= 7){
+                    lost = true;
+                    reset = true;
+                    pause = true;
+                    fail = "You have collided with the object";  
+                }
+            }
+            if(mission == 3){
+                if(reset == true){                                                             
+                    won = false;
+                    lost = false;
+                    xpos = 470;                                                                  
+                    ypos = 400;                                                              
+                    fuel = 30;                                                               
+                    xspeed = 0;                                                                
+                    yspeed = -2.5;                                                                  
+                    xpos1 = 500;                                                                
+                    ypos1 = 400;                                                                
+                    mass1 = 100;                                                                  
+                    m_end = new Rectangle(450, 160, 100, 10);
+                    reset = false;
+                    objective = "Fly the spacecraft through the zone";
+                }
+                if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width) && won == false){
+                    won = true;
+                    mission = mission + 1;
+                }
+                if(dist1 <= 7){
+                    lost = true;
+                    reset = true;
+                    pause = true;
+                    fail = "You have collided with the object";  
+                }
+            }
+            if(mission == 4){
+                if(reset == true){                                                             
+                    won = false;
+                    lost = false;
+                    xpos = 0;                                                                  
+                    ypos = 0;                                                              
+                    fuel = 20;                                                               
+                    xspeed = 0.25;                                                                
+                    yspeed = 0.25;                                                                  
+                    xpos1 = 500;                                                                
+                    ypos1 = 400;                                                                
+                    mass1 = 100;                                                                  
+                    m_end = new Rectangle(450, 160, 100, 10);
+                    reset = false;
+                    objective = "Achieve an orbit consistently below 400";
+                }
+                if(dist1 <= 7){
+                    lost = true;
+                    reset = true;
+                    pause = true;
+                    fail = "You have collided with the object";  
+                }
+                if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width) && won == false){
+                    won = true;
+                    mission = mission + 1;
+                }
             }
 
-            //APPLYING GRAVITY
-            
-            dist1 = Math.sqrt(Math.pow((xpos - xpos1), 2) + Math.pow((ypos - ypos1),2));     //Finds distance to object 1
-            gforce1 = mass1 / Math.pow(dist1, 2);                                            //Finds gforce of object 1
-            angle1 = Math.atan2((ypos - ypos1),(xpos - xpos1));                              //finds angle to object 1
-            xspeed = xspeed - gforce1 * Math.cos(angle1);                                    //Adds components of gforce onto player
-            yspeed = yspeed - gforce1 * Math.sin(angle1);
-            
             //APPLYING PLAYER ACCELERATION
             
             if(ynegative_accel == true && fuel > 0){                                         //Engages acceleration based on player keystrokes
@@ -261,13 +337,13 @@ public class Game extends JComponent implements KeyListener{
            xnegative_accel = true;
        } else if(key == KeyEvent.VK_D){
            xpositive_accel = true;
-       }else if(key == KeyEvent.VK_R){
+       } else if(key == KeyEvent.VK_R){
            reset = true;
-       }else if(key == KeyEvent.VK_SPACE && pause == false){
+       } else if(key == KeyEvent.VK_SPACE && pause == false){
            pause = true;
-       }else if(key == KeyEvent.VK_SPACE && pause == true){
+       } else if(key == KeyEvent.VK_SPACE && pause == true){
            pause = false;
-       }else if(key == KeyEvent.VK_O){
+       } else if(key == KeyEvent.VK_O){
            won = true;
            mission = mission + 1;
        }
