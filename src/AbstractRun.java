@@ -64,6 +64,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     BufferedImage Triangles = ImageHelper.loadImage("Abstract 1.jpg");
     BufferedImage PlayerMinion = ImageHelper.loadImage("minion.png");
     BufferedImage StartMenu = ImageHelper.loadImage("Abstract 5.png");
+    BufferedImage Abstract4 = ImageHelper.loadImage("Abstract 4.jpg");
 
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
@@ -92,14 +93,14 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.fillOval(340, 302, 7, 7);
             g.fillOval(472, 302, 7, 7);
 
-            // 'Options'
+            // 'About Game'
             g.setColor(Color.DARK_GRAY);
             g.fillRect(569, 280, 140, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
-            g.drawString("Options", 615, 300);
+            g.drawString("About Game", 604, 300);
 
-            // 'Options' stamps
+            // 'About Game' stamps
             g.fillOval(569, 280, 7, 7);
             g.fillOval(701, 280, 7, 7);
             g.fillOval(569, 302, 7, 7);
@@ -117,7 +118,9 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.fillOval(242, 280, 7, 7);
             g.fillOval(110, 302, 7, 7);
             g.fillOval(242, 302, 7, 7);
-
+            if (screen == 3) {
+                g.drawImage(Abstract4, 0, 0, 820, 600, null); // START FROM HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            }
             // DO I NEED THIS?!?!?!?!?!?!?!?!?!?!?!?!?!!?!??!?!?!?!?!?!?!?!?!?!?!?!??!!?!?!??!?!?!!?!??!!?!!??!?!?!!?!?!?!?!?!?
         } else if (screen >= 3) {
             // Draw background image
@@ -137,14 +140,14 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                 g.fillOval(340, 302, 7, 7);
                 g.fillOval(472, 302, 7, 7);
 
-                // 'Options'
+                // 'About Game'
                 g.setColor(Color.DARK_GRAY);
                 g.fillRect(569, 280, 140, 30);
                 g.setColor(Color.white);
                 g.setFont(gameFont);
-                g.drawString("Options", 615, 300);
+                g.drawString("About Game", 604, 300);
 
-                // 'Options' stamps
+                // 'About Game' stamps
                 g.fillOval(569, 280, 7, 7);
                 g.fillOval(701, 280, 7, 7);
                 g.fillOval(569, 302, 7, 7);
@@ -165,10 +168,11 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                 // DO I NEED THIS?!?!?!?!?!?!?!?!?!?!?!?!?!!?!??!?!?!?!?!?!?!?!?!?!?!?!??!!?!?!??!?!?!!?!??!!?!!??!?!?!!?!?!?!?!?!?
 
             } else {
-                if (health > 0 && screen == 3) {
+                // 'Easy' mode in game
+                if (health > 0 && screen == 4) {
                     // Create player ball
                     g.setColor(Color.DARK_GRAY);
-                    g.fillOval(P1.x, P1.y, P1.width, P1.height);
+                    g.fillRect(P1.x, P1.y, P1.width, P1.height);
                     g.drawImage(PlayerMinion, P1.x, P1.y, P1.width, P1.height, null);
 
                     // Create first minion
@@ -184,7 +188,9 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                     g.setColor(Color.white);
                     g.setFont(gameFont);
                     g.drawString("Health: " + health, 10, 20);
-                } else if (health <= 0 && screen == 4) {
+
+                    // Print death screen
+                } else if (health <= 0 && screen == 7) {
                     // What happens at the end of the game
                     // You died! Game Over!
                     g.setColor(Color.DARK_GRAY);
@@ -246,9 +252,15 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
 
             // GAME LOGIC STARTS HERE 
             // If 'Game Controls' was clicked
-            //if(screen == 0){
             if (screen == 0) {
-                // If Game Modes is clicked on, the screen then becomes screen 3, showing the user the game modes
+                if (button1) {
+                    if (mouseX > 110 && mouseX < 480 && mouseY > 280 && mouseY < 30) {
+                        screen = 2;
+                    }
+                }
+            }
+            // If Game Modes is clicked on, the screen then becomes screen 3, showing the user the game modes
+            if (screen == 0) {
                 if (button1) {
                     if (mouseX > 340 && mouseX < 480 && mouseY > 280 && mouseY < 310) {
                         screen = 3;
@@ -314,7 +326,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                 }
             }
 
-            // If 'Options' was clicked
+
             // GAME LOGIC ENDS HERE 
             // update the drawing (calls paintComponent)
             repaint();
