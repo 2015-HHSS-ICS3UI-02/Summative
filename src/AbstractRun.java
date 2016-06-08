@@ -34,7 +34,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     // Ball control and speed
     int[] moveX = {1, -1, 1, -1};
     int[] moveY = {1, 1, -1, -1};
-    int speed = 15;
+    int speed = 5;
     //screen setting :  3 - normal game
     int screen = 0;
     // Create the minions
@@ -60,11 +60,14 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     int health = 100;
     // Game Font
     Font gameFont = new Font("Arial", Font.PLAIN, 14);
+    Font title = new Font("Times New Roman", Font.PLAIN, 60);
+    //Font title = new Font("")
     // Create background image for the player and game itself
     BufferedImage Triangles = ImageHelper.loadImage("Abstract 1.jpg");
     BufferedImage PlayerMinion = ImageHelper.loadImage("minion.png");
     BufferedImage StartMenu = ImageHelper.loadImage("Abstract 5.png");
     BufferedImage Abstract4 = ImageHelper.loadImage("Abstract 4.jpg");
+    BufferedImage Welcome = ImageHelper.loadImage("Welcome.png");
 
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
@@ -79,13 +82,15 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
         if (screen == 0) {
             // Draw background abstract traingle art
             g.drawImage(StartMenu, 0, 0, 820, 600, null);
+            // Welcoome to Abstract Run!
+            g.drawImage(Welcome, 150, 100, 200, 400, null);
             // Game modes option
             g.setColor(Color.DARK_GRAY);
             g.setColor(Color.DARK_GRAY);
             g.fillRect(340, 280, 140, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
-            g.drawString("Game Modes! ", 373, 300);
+            g.drawString("Game Modes! ", 370, 300);
 
             // 'Game Modes' stamps
             g.fillOval(340, 280, 7, 7);
@@ -122,119 +127,122 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                 g.drawImage(Abstract4, 0, 0, 820, 600, null); // START FROM HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
             // DO I NEED THIS?!?!?!?!?!?!?!?!?!?!?!?!?!!?!??!?!?!?!?!?!?!?!?!?!?!?!??!!?!?!??!?!?!!?!??!!?!!??!?!?!!?!?!?!?!?!?
-        } else if (screen >= 3) {
+        } else if (screen == 3) {
             // Draw background image
             g.drawImage(Triangles, 0, 0, 800, 600, null);
-            if (alt && screen == 3) {
-                // Game modes option
-                g.setColor(Color.DARK_GRAY);
-                g.setColor(Color.DARK_GRAY);
-                g.fillRect(340, 280, 140, 30);
-                g.setColor(Color.white);
-                g.setFont(gameFont);
-                g.drawString("Game Modes! ", 376, 300);
 
-                // 'Game Modes' stamps
-                g.fillOval(340, 280, 7, 7);
-                g.fillOval(472, 280, 7, 7);
-                g.fillOval(340, 302, 7, 7);
-                g.fillOval(472, 302, 7, 7);
+            // Medium option
+            g.setColor(Color.DARK_GRAY);
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(340, 280, 140, 30);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Medium", 387, 300);
 
-                // 'About Game'
-                g.setColor(Color.DARK_GRAY);
-                g.fillRect(569, 280, 140, 30);
-                g.setColor(Color.white);
-                g.setFont(gameFont);
-                g.drawString("About Game", 604, 300);
+            // 'Medium' stamps
+            g.fillOval(340, 280, 7, 7);
+            g.fillOval(472, 280, 7, 7);
+            g.fillOval(340, 302, 7, 7);
+            g.fillOval(472, 302, 7, 7);
 
-                // 'About Game' stamps
-                g.fillOval(569, 280, 7, 7);
-                g.fillOval(701, 280, 7, 7);
-                g.fillOval(569, 302, 7, 7);
-                g.fillOval(701, 302, 7, 7);
+            // Insane option
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(569, 280, 140, 30);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Insane", 603, 300);
 
-                // 'Game Controls'
-                g.setColor(Color.DARK_GRAY);
-                g.fillRect(110, 280, 140, 30);
-                g.setColor(Color.white);
-                g.setFont(gameFont);
-                g.drawString("Game Controls", 135, 300);
+            // 'Insane' stamps
+            g.fillOval(569, 280, 7, 7);
+            g.fillOval(701, 280, 7, 7);
+            g.fillOval(569, 302, 7, 7);
+            g.fillOval(701, 302, 7, 7);
 
-                // 'Game Controls' stamps
-                g.fillOval(110, 280, 7, 7);
-                g.fillOval(242, 280, 7, 7);
-                g.fillOval(110, 302, 7, 7);
-                g.fillOval(242, 302, 7, 7);
-                // DO I NEED THIS?!?!?!?!?!?!?!?!?!?!?!?!?!!?!??!?!?!?!?!?!?!?!?!?!?!?!??!!?!?!??!?!?!!?!??!!?!!??!?!?!!?!?!?!?!?!?
+            // Easy option
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(110, 280, 140, 30);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Easy", 156, 300);
 
-            } else {
-                // 'Easy' mode in game
-                if (health > 0 && screen == 4) {
-                    // Create player ball
-                    g.setColor(Color.DARK_GRAY);
-                    g.fillRect(P1.x, P1.y, P1.width, P1.height);
-                    g.drawImage(PlayerMinion, P1.x, P1.y, P1.width, P1.height, null);
+            // 'Easy' stamps
+            g.fillOval(110, 280, 7, 7);
+            g.fillOval(242, 280, 7, 7);
+            g.fillOval(110, 302, 7, 7);
+            g.fillOval(242, 302, 7, 7);
+            // DO I NEED THIS?!?!?!?!?!?!?!?!?!?!?!?!?!!?!??!?!?!?!?!?!?!?!?!?!?!?!??!!?!?!??!?!?!!?!??!!?!!??!?!?!!?!?!?!?!?!?
 
-                    // Create first minion
-                    g.setColor(Color.white);
-                    for (int i = 0; i < minions.length; i++) {
-                        g.fill3DRect(minions[i].x, minions[i].y, minions[i].width, minions[i].height, true);
-                    }
+            // 'Easy' mode in game
+        } else if (screen == 4) {
+            // Draw background image
+            g.drawImage(Triangles, 0, 0, 800, 600, null);
+            // Create player ball
+            g.setColor(Color.DARK_GRAY);
+            g.fillOval(P1.x, P1.y, P1.width, P1.height);
+            g.drawImage(PlayerMinion, P1.x, P1.y, P1.width, P1.height, null);
 
-                    // Draw health
-                    // Health background rectangle
-                    g.setColor(Color.red);
-                    g.fillRect(6, 5, 80 * health / 100, 20);
-                    g.setColor(Color.white);
-                    g.setFont(gameFont);
-                    g.drawString("Health: " + health, 10, 20);
-
-                    // Print death screen
-                } else if (health <= 0 && screen == 7) {
-                    // What happens at the end of the game
-                    // You died! Game Over!
-                    g.setColor(Color.DARK_GRAY);
-                    g.fillRect(340, 280, 140, 30);
-                    g.setColor(Color.white);
-                    g.setFont(gameFont);
-                    g.drawString("Game Over! ", 376, 300);
-                    // Play again?
-                    g.setColor(Color.DARK_GRAY);
-                    g.fillRect(110, 280, 140, 30);
-                    g.setColor(Color.white);
-                    g.setFont(gameFont);
-                    g.drawString("Play Again", 150, 300);
-                    // Game Modes
-                    g.setColor(Color.DARK_GRAY);
-                    g.fillRect(569, 280, 140, 30);
-                    g.setColor(Color.white);
-                    g.setFont(gameFont);
-                    g.drawString("Game Modes", 600, 300);
-
-                    //Stamps for design on each option at the end of the game
-                    // 'Play Again' stamps
-                    g.setColor(Color.CYAN);
-                    g.fillOval(110, 280, 7, 7);
-                    g.fillOval(242, 280, 7, 7);
-                    g.fillOval(110, 302, 7, 7);
-                    g.fillOval(242, 302, 7, 7);
-                    // 'Game Over' stamps
-                    g.fillOval(340, 280, 7, 7);
-                    g.fillOval(472, 280, 7, 7);
-                    g.fillOval(340, 302, 7, 7);
-                    g.fillOval(472, 302, 7, 7);
-                    // 'Game Modes' stamps
-                    g.fillOval(568, 280, 7, 7);
-                    g.fillOval(701, 280, 7, 7);
-                    g.fillOval(568, 302, 7, 7);
-                    g.fillOval(701, 302, 7, 7);
-
-                }
+            // Create first minion
+            g.setColor(Color.white);
+            for (int i = 0; i < minions.length; i++) {
+                g.fill3DRect(minions[i].x, minions[i].y, minions[i].width, minions[i].height, true);
             }
+            if (health == 0) {
+                screen = 7;
+            }
+            // Draw health
+            // Health background rectangle
+            g.setColor(Color.red);
+            g.fillRect(6, 5, 80 * health / 100, 20);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Health: " + health, 10, 20);
+
+            // Print death screen
+        } else if (screen == 7) {
+            // Draw background image
+            g.drawImage(Triangles, 0, 0, 800, 600, null);
+            // What happens at the end of the game
+            // You died! Game Over!
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(340, 280, 140, 30);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Game Over! ", 376, 300);
+            // Play again?
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(110, 280, 140, 30);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Play Again", 150, 300);
+            // Game Modes
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(569, 280, 140, 30);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Game Modes", 600, 300);
+
+            //Stamps for design on each option at the end of the game
+            // 'Play Again' stamps
+            g.setColor(Color.CYAN);
+            g.fillOval(110, 280, 7, 7);
+            g.fillOval(242, 280, 7, 7);
+            g.fillOval(110, 302, 7, 7);
+            g.fillOval(242, 302, 7, 7);
+            // 'Game Over' stamps
+            g.fillOval(340, 280, 7, 7);
+            g.fillOval(472, 280, 7, 7);
+            g.fillOval(340, 302, 7, 7);
+            g.fillOval(472, 302, 7, 7);
+            // 'Game Modes' stamps
+            g.fillOval(568, 280, 7, 7);
+            g.fillOval(701, 280, 7, 7);
+            g.fillOval(568, 302, 7, 7);
+            g.fillOval(701, 302, 7, 7);
+
         }
-        // GAME DRAWING ENDS HERE
     }
 
+    // GAME DRAWING ENDS HERE
     // The main game loop
     // In here is where all the logic for my game will go
     public void run() {
