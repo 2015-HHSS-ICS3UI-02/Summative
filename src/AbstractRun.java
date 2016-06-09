@@ -122,11 +122,21 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.fillOval(242, 280, 7, 7);
             g.fillOval(110, 302, 7, 7);
             g.fillOval(242, 302, 7, 7);
-            if (screen == 3) {
-                g.drawImage(Abstract4, 0, 0, 820, 600, null);
-            }
-            // DO I NEED THIS?!?!?!?!?!?!?!?!?!?!?!?!?!!?!??!?!?!?!?!?!?!?!?!?!?!?!??!!?!?!??!?!?!!?!??!!?!!??!?!?!!?!?!?!?!?!?
-        } else if (screen == 3) {
+        }
+
+        // Drawings for screen 1, 'About Game' option
+        if (screen == 1) {
+            g.drawImage(Triangles, 0, 0, 820, 600, null);
+            g.setColor(Color.white);
+            g.drawImage(PlayerMinion, 550, 125, 150, 150, null);
+            g.drawString("Welcome to Abstract Run! A fun and outgoing game created by Denis Tatar", 15, 75);
+        }
+        // Drawings for screen 3, 'Game Modes' option
+        if (screen == 3) {
+            g.drawImage(Abstract4, 0, 0, 820, 600, null);
+        }
+
+        if (screen == 3) {
             // Draw background image
             g.drawImage(Triangles, 0, 0, 800, 600, null);
 
@@ -172,20 +182,24 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             // DO I NEED THIS?!?!?!?!?!?!?!?!?!?!?!?!?!!?!??!?!?!?!?!?!?!?!?!?!?!?!??!!?!?!??!?!?!!?!??!!?!!??!?!?!!?!?!?!?!?!?
 
             // 'Easy' mode in game
-        } else if (screen == 4) {
+        }
+        if (screen == 4) {
             // Draw background image
             g.drawImage(Triangles, 0, 0, 800, 600, null);
+            speed = 3;
 
         } // 'Medium' mode in game
         if (screen == 5) {
             // Draw background image
             g.drawImage(Abstract4, 0, 0, 800, 600, null);
+            speed = 8;
 
         } // 'Insane' mode in game
         if (screen == 6) {
             // Draw background image
             g.drawImage(StartMenu, 0, 0, 800, 600, null);
-
+            speed = 20;
+            health = 200;
         }
 
         // All of the game content if screen is greater than and or equal to 4 and if screen is less than or equal to 6
