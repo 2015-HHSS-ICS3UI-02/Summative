@@ -67,6 +67,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     BufferedImage StartMenu = ImageHelper.loadImage("Abstract 5.png");
     BufferedImage Abstract4 = ImageHelper.loadImage("Abstract 4.jpg");
     BufferedImage Welcome = ImageHelper.loadImage("Good Welcome.png");
+    BufferedImage AboutGame = ImageHelper.loadImage("About Game Image.jpg");
 
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
@@ -126,10 +127,19 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
 
         // Drawings for screen 1, 'About Game' option
         if (screen == 1) {
-            g.drawImage(Triangles, 0, 0, 820, 600, null);
+            g.drawImage(AboutGame, 0, 0, 820, 600, null);
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(550, 525, 110, 30);
             g.setColor(Color.white);
-            g.drawImage(PlayerMinion, 550, 125, 150, 150, null);
-            g.drawString("Welcome to Abstract Run! A fun and outgoing game created by Denis Tatar", 15, 75);
+            g.setFont(gameFont);
+            g.drawString("Back", 590, 545);
+            g.setColor(Color.white);
+            // 'Back' Stamps
+            g.fillOval(550, 525, 7, 7);
+            g.fillOval(652, 547, 7, 7);
+            g.fillOval(652, 525, 7, 7);
+            g.fillOval(550, 547, 7, 7);
+
         }
         // Drawings for screen 3, 'Game Modes' option
         if (screen == 3) {
@@ -179,6 +189,18 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.fillOval(242, 280, 7, 7);
             g.fillOval(110, 302, 7, 7);
             g.fillOval(242, 302, 7, 7);
+            
+            // 'Back' option
+            g.fillRect(550, 525, 110, 30);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Back", 590, 545);
+            g.setColor(Color.white);
+            // 'Back' Stamps
+            g.fillOval(550, 525, 7, 7);
+            g.fillOval(652, 547, 7, 7);
+            g.fillOval(652, 525, 7, 7);
+            g.fillOval(550, 547, 7, 7);
             // DO I NEED THIS?!?!?!?!?!?!?!?!?!?!?!?!?!!?!??!?!?!?!?!?!?!?!?!?!?!?!??!!?!?!??!?!?!!?!??!!?!!??!?!?!!?!?!?!?!?!?
 
             // 'Easy' mode in game
@@ -309,6 +331,15 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                     if (button1) {
                         if (mouseX > 569 && mouseX < 709 && mouseY > 280 && mouseY < 310) { // (569, 280, 140, 30)
                             screen = 1;
+                        }
+                    }
+
+                    // If 'Back' in 'About Game' is clicked HELPPPP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    if (screen == 1) {
+                        if (button1) {
+                            if (mouseX > 550 && mouseX < 660 && mouseY > 525 && mouseY < 555) {  // (550, 525, 110, 30);
+                                screen = 0;
+                            }
                         }
                     }
                     // If 'Easy' mode was clicked
