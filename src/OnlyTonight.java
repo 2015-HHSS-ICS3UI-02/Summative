@@ -33,12 +33,15 @@ public class OnlyTonight extends JComponent implements KeyListener {
     BufferedImage theoStandUp = ImageHelper.loadImage("Theo.Stand.Up.png");
     BufferedImage theoStandDown = ImageHelper.loadImage("Theo.Stand.Down.png");
     BufferedImage dialogwai = ImageHelper.loadImage("Dialog.WhereAmI.png");
+    BufferedImage dialogexclm = ImageHelper.loadImage("Dialog.ExclamationMark.png");
+    BufferedImage dialogqm = ImageHelper.loadImage("Dialog.QuestionMark.png");
     BufferedImage dialogF = ImageHelper.loadImage("Dialog.Finally.png");
     BufferedImage typeWriterScreen = ImageHelper.loadImage("TypeWriter.jpg");
     BufferedImage letterScreen = ImageHelper.loadImage("Letter.jpg");
     BufferedImage safeScreen = ImageHelper.loadImage("SafeCodePad.jpg");
     BufferedImage titleScreen = ImageHelper.loadImage("OT.TitleScreen.jpg");
     BufferedImage helpScreen = ImageHelper.loadImage("OT.HelpScreen.jpg");
+    BufferedImage credits = ImageHelper.loadImage("Credits.jpg");
     BufferedImage story1 = ImageHelper.loadImage("Story1.jpg");
     BufferedImage story2 = ImageHelper.loadImage("Story2.jpg");
     BufferedImage story3 = ImageHelper.loadImage("Story3.jpg");
@@ -49,14 +52,21 @@ public class OnlyTonight extends JComponent implements KeyListener {
     BufferedImage story8 = ImageHelper.loadImage("Story8.jpg");
     BufferedImage story9 = ImageHelper.loadImage("Story9.jpg");
     BufferedImage story10 = ImageHelper.loadImage("Story10.jpg");
+    BufferedImage OD1 = ImageHelper.loadImage ("OpeningDialog1.jpg");
+    BufferedImage OD2 = ImageHelper.loadImage ("OpeningDialog2.jpg");
+    BufferedImage OD3 = ImageHelper.loadImage ("OpeningDialog3.jpg");
+    BufferedImage OD4 = ImageHelper.loadImage ("OpeningDialog4.jpg");
+    BufferedImage OD5 = ImageHelper.loadImage ("OpeningDialog5.jpg");
+    
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
     // Title Screen                   (x, y, top, side)
-    Rectangle selectPlay = new Rectangle(72, 384, 165, 54);
-    Rectangle selectHelp = new Rectangle(342, 384, 165, 54);
-    Rectangle selectStory = new Rectangle(72, 470, 165, 54);
+    Rectangle selectPlay = new Rectangle(72, 385, 165, 55);
+    Rectangle selectHelp = new Rectangle(342, 385, 165, 55);
+    Rectangle selectStory = new Rectangle(72, 471, 165, 55);
+    Rectangle selectCredits = new Rectangle(342, 471, 165, 55);
     // room                       
     Rectangle room = new Rectangle(31, 31, 547, 547);
     // wall 1
@@ -86,7 +96,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
     // movement
     int speed = 2;
     // theo
-    Rectangle theo = new Rectangle(150, 425, 38, 53);
+    Rectangle theo = new Rectangle(80, 425, 38, 53);
     // theo controls
     boolean theoUp = false;
     boolean theoDown = false;
@@ -126,6 +136,8 @@ public class OnlyTonight extends JComponent implements KeyListener {
                 g.drawRect(selectStory.x, selectStory.y, selectStory.width, selectStory.height);
             } else if (menuSelection == 0) {
                 g.drawRect(selectPlay.x, selectPlay.y, selectPlay.width, selectPlay.height);
+            } else if (menuSelection == 3) {
+                g.drawRect(selectCredits.x, selectCredits.y, selectCredits.width, selectCredits.height);
             }
         }
 
@@ -170,6 +182,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
             g.setColor(Color.WHITE);
             g.setFont(otType);
             g.drawString(countdown + " s", 500, 45);
+            
             // help screen
         } else if (menuSelection == 1 && enterKey == 1) {
             g.drawImage(helpScreen, 0, 0, WIDTH, HEIGHT, null);
@@ -186,6 +199,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
                 page = page - 1;
                 theoLeft = false;
             }
+            // show pic per int
             if (page == 0) {
                 g.drawImage(story1, 0, 0, WIDTH, HEIGHT, null);
             } else if (page == 1) {
@@ -205,8 +219,17 @@ public class OnlyTonight extends JComponent implements KeyListener {
             } else if (page == 8) {
                 g.drawImage(story9, 0, 0, WIDTH, HEIGHT, null);
             } else if (page == 9) {
+                g.drawImage(story10, 0, 0, WIDTH, HEIGHT, null);
+            } else if (page == 10) {
                 enterKey = 0;
+                page = 0;
             } else if (page < 0) {
+                enterKey = 0;
+                page = 0;
+            }
+        } else if (menuSelection == 3 && enterKey == 1) {
+            g.drawImage(credits, 0, 0, WIDTH, HEIGHT, null);
+            if (backspace) {
                 enterKey = 0;
             }
         }
@@ -432,20 +455,26 @@ public class OnlyTonight extends JComponent implements KeyListener {
                         theoDown = false;
                     }
                     if (menuSelection == 1) {
-                        menuSelection = 2;
+                        menuSelection = 3;
                         theoDown = false;
                     }
                 }
                 if (theoRight) {
                     if (menuSelection == 0) {
                         menuSelection = 1;
-                        theoDown = false;
+                        theoRight = false;
+                    } else if (menuSelection == 2) {
+                        menuSelection = 3;
+                        theoRight = false;
                     }
                 }
                 if (theoLeft) {
                     if (menuSelection == 1) {
                         menuSelection = 0;
-                        theoDown = false;
+                        theoLeft = false;
+                    } else if (menuSelection == 3) {
+                        menuSelection = 2;
+                        theoLeft = false;
                     }
                 }
             }
