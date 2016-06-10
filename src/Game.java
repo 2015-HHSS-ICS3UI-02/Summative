@@ -33,7 +33,7 @@ public class Game extends JComponent implements KeyListener{
     long desiredTime = (1000)/desiredFPS;
     
     String objective = "";                                                              //states the mission objective
-    String pausereason = "";                                                                   //explains to the player why they have lost
+    String reason = "";                                                                   //explains to the player why they have lost
     
     double xpos = 0;                                                                    //player x position
     double ypos = 0;                                                                    //player y position
@@ -53,6 +53,7 @@ public class Game extends JComponent implements KeyListener{
     int mission = 1;                                                                    //each int is a mission
     int maxtime = 1;                                                                    //max time for the mission
     
+    boolean won = true;                                                                 //boolean true
     boolean pause = false;                                                              //boolean for game paused
     boolean reset = true;                                                               //boolean to reset game
     boolean titlescreen = true;                                                         //boolean for title screen
@@ -82,13 +83,13 @@ public class Game extends JComponent implements KeyListener{
         g.drawString(("Gravitation:" + gforce1),760,60);
         g.drawString(("Fuel:" + fuel),760,80);   
         g.drawString(("M.E.T.:" + count + " seconds"),760,100);  
-        g.drawString(("Mission " + mission),470,20);
-        g.drawString(objective,385,40); 
+        g.drawString(("Mission " + mission),10,20);
+        g.drawString(objective,10,40); 
         if((mission == 1 || mission == 3)){
                 g.fillRect(m_end.x, m_end.y, m_end.width, m_end.height);
         }
-        if(pause == true){
-               g.drawString((pausereason),440,700);
+        if(won == true){
+            g.drawString((reason),420,780);
         }
         // GAME DRAWING ENDS HERE
     }
@@ -126,6 +127,7 @@ public class Game extends JComponent implements KeyListener{
             if(pause == false){
             if(mission == 1){
                 if(reset == true){                                                             
+                    won = false;
                     xpos = 300;                                                                  
                     ypos = 400;                                                              
                     fuel = 20;                                                               
@@ -140,20 +142,17 @@ public class Game extends JComponent implements KeyListener{
                     objective = "Fly the spacecraft through the zone";                                                                    
                 }
                 if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width)){
-                    reset = true;
-                    pause = true;
-                    pausereason = "Mission complete"; 
+                    won = true;
                     mission = mission + 1;
+                    reason = "Mission complete, reset to go to next mission"; 
                 }
                 if(dist1 <= 7){
                     reset = true;
-                    pause = true;
-                    pausereason = "You have collided with the object";  
                 }
-                
             }
             if(mission == 2){
                 if(reset == true){                                                             
+                    won = false;
                     xpos = 460;                                                                  
                     ypos = 400;                                                              
                     fuel = 65;                                                               
@@ -166,14 +165,17 @@ public class Game extends JComponent implements KeyListener{
                     objective = "Reach an distance of 500 units";
                 }
                 if(dist1 >= 500){
-                    reset = true;
-                    pause = true;
-                    pausereason = "Mission complete"; 
+                    won = true;
                     mission = mission + 1;
-                 }
+                    reason = "Mission complete, reset to go to next mission"; 
+                }
+                 if(dist1 <= 7){
+                    reset = true;
+                }
             }
             if(mission == 3){
                 if(reset == true){                                                             
+                    won = false;
                     xpos = 470;                                                                  
                     ypos = 400;                                                              
                     fuel = 30;                                                               
@@ -186,15 +188,10 @@ public class Game extends JComponent implements KeyListener{
                     reset = false;
                     objective = "Fly the spacecraft through the zone";
                 }
-                if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width)){
-                    reset = true;
-                    pause = true;
-                    pausereason = "Mission complete"; 
-                    mission = mission + 1;
-                }
             }
             if(mission == 4){
                 if(reset == true){                                                             
+                    won = false;
                     xpos = 0;                                                                  
                     ypos = 0;                                                              
                     fuel = 20;                                                               
@@ -241,8 +238,6 @@ public class Game extends JComponent implements KeyListener{
             
             // update the drawing (calls paintComponent)
             repaint();
-            
-            
             
             // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
             // USING SOME SIMPLE MATH
@@ -308,10 +303,6 @@ public class Game extends JComponent implements KeyListener{
            pause = true;
        } else if(key == KeyEvent.VK_SPACE && pause == true){
            pause = false;
-       } else if(key == KeyEvent.VK_O){
-           mission = mission + 1;
-           reset = true;
-           pause = true; 
        }
     }
     
