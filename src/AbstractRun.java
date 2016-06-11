@@ -68,7 +68,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     BufferedImage Abstract4 = ImageHelper.loadImage("Abstract 4.jpg");
     BufferedImage Welcome = ImageHelper.loadImage("Start Menu.jpg");
     BufferedImage AboutGame = ImageHelper.loadImage("About Game (GOOD)_1.jpg");
-    BufferedImage GameControls = ImageHelper.loadImage("Game Controls1_1.jpg");
+    BufferedImage GameControls = ImageHelper.loadImage("Game Controls.jpg");
     BufferedImage GameModes = ImageHelper.loadImage("Game Modes_1.jpg");
     BufferedImage DeathScreen = ImageHelper.loadImage("Death Screen.jpg");
 
