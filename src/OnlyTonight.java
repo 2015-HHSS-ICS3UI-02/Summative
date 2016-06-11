@@ -57,6 +57,10 @@ public class OnlyTonight extends JComponent implements KeyListener {
     BufferedImage OD3 = ImageHelper.loadImage("OpeningDialog3.jpg");
     BufferedImage OD4 = ImageHelper.loadImage("OpeningDialog4.jpg");
     BufferedImage OD5 = ImageHelper.loadImage("OpeningDialog5.jpg");
+    BufferedImage WS1 = ImageHelper.loadImage("Winning Screen 1.jpg");
+    BufferedImage WS2 = ImageHelper.loadImage("Winning Screen 2.jpg");
+    BufferedImage GameOver = ImageHelper.loadImage("Game Over.jpg");
+    
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
     long desiredFPS = 60;
@@ -262,6 +266,9 @@ public class OnlyTonight extends JComponent implements KeyListener {
             //paddle 2
             g.setColor(Color.BLUE);
             g.fillRect(p2.x, p2.y, p2.width, p2.height);
+            // background
+            g.setColor(Color.WHITE);
+            g.fillRect(WIDTH/2, 0, 10, HEIGHT);
             // scores
             g.setColor(Color.RED);
             g.setFont(pongType);
@@ -521,9 +528,6 @@ public class OnlyTonight extends JComponent implements KeyListener {
                 }
             } else {
                 // start game
-                if (enter == 0) {                                               // FIX
-                }
-                if (enter == 1) {
                     // make ball move
                     ball.x = ball.x + moveX * speed;
                     ball.y = ball.y + moveY * speed;
@@ -547,7 +551,6 @@ public class OnlyTonight extends JComponent implements KeyListener {
                         moveX = 1;
                         score2 = score2 + 1;
                     }
-
                     // make paddle 1 move
                     if (p1UP && p1.y > 0) {
                         p1.y = p1.y - speed;
@@ -560,14 +563,13 @@ public class OnlyTonight extends JComponent implements KeyListener {
                     } else if (p2DOWN && p2.y + p2.height < HEIGHT) {
                         p2.y = p2.y + speed;
                     }
-
                     // paddle hits ball
                     if (ball.intersects(p1)) {
                         moveX = 1;
                     } else if (ball.intersects(p2)) {
                         moveX = -1;
                     }
-
+                    // max score
                     if (score1 == 10 || score2 == 10) {
                         pong = false;
                     }
@@ -584,7 +586,6 @@ public class OnlyTonight extends JComponent implements KeyListener {
                     p2UP = false;
                     p2DOWN = false;
                 }
-            }
 
             // countdown
 
@@ -664,13 +665,13 @@ public class OnlyTonight extends JComponent implements KeyListener {
             }
         } else if (pong) {
             if (key == KeyEvent.VK_W) {
-                p1UP = true;
-            } else if (key == KeyEvent.VK_S) {
-                p1DOWN = true;
-            } else if (key == KeyEvent.VK_UP) {
                 p2UP = true;
-            } else if (key == KeyEvent.VK_DOWN) {
+            } else if (key == KeyEvent.VK_S) {
                 p2DOWN = true;
+            } else if (key == KeyEvent.VK_UP) {
+                p1UP = true;
+            } else if (key == KeyEvent.VK_DOWN) {
+                p1DOWN = true;
             }
         }
     }
@@ -696,13 +697,13 @@ public class OnlyTonight extends JComponent implements KeyListener {
             }
         } else if (pong) {
             if (key == KeyEvent.VK_W) {
-                p1UP = true;
+                p2UP = false;
             } else if (key == KeyEvent.VK_S) {
-                p1DOWN = true;
+                p2DOWN = false;
             } else if (key == KeyEvent.VK_UP) {
-                p2UP = true;
+                p1UP = false;
             } else if (key == KeyEvent.VK_DOWN) {
-                p2DOWN = true;
+                p1DOWN = false;
             }
         }
     }
