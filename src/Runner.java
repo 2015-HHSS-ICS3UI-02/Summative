@@ -36,16 +36,21 @@ public class Runner extends JComponent implements KeyListener{
     long desiredFPS = 60;
     long desiredTime = (1000)/desiredFPS;
     
-
+    //int[] reset = new int[10];
+    int score = 0;
+   
     int moveX = 1;
     int moveY = 1;
     int speed = 3;
-   
-     int score = 0;
+    
+     
      
     Rectangle player = new Rectangle(50,HEIGHT/2 - 93, 59,60);
-    Rectangle enemy = new Rectangle(100,HEIGHT/2 - 40, 198,89);
-        
+    Rectangle enemy1 = new Rectangle(WIDTH - 300,HEIGHT/2 - 40, 198,89);
+    Rectangle enemy2 = new Rectangle(WIDTH,HEIGHT - 200, 198,89);
+    Rectangle enemy3 = new Rectangle(WIDTH,HEIGHT - 400, 198,89);
+    Rectangle enemy4 = new Rectangle(WIDTH,HEIGHT - 800, 198,89);
+        boolean done = false; 
         boolean playerUp = false;
         boolean playerDown = false;
         boolean playerRight = false;
@@ -54,9 +59,15 @@ public class Runner extends JComponent implements KeyListener{
         long scoretime = System.currentTimeMillis();
         //however long interval is between score ++
         long scoredelay = 500;
+        //score delay to release 2nd bullet
+        long scoredelay2 = 3000;
+        //score delay to release 3nd bullet
+        long scoredelay3 = 6000;
+        //score delay to release 4nd bullet
+        long scoredelay4 = 9000;
         //image for background image
         BufferedImage Terrain = ImageHelper.loadImage("Terrain.jpg");
-        
+        BufferedImage Gameover = ImageHelper.loadImage("Game over.png");
         BufferedImage Sonic = ImageHelper.loadImage("Sonic Stationary.png");
         
         BufferedImage[] Bullet = new BufferedImage[8];
@@ -101,8 +112,11 @@ public class Runner extends JComponent implements KeyListener{
         g.drawImage(Sonic, player.x, player.y, this);
         
         } 
-       g.drawImage(Bullet1,enemy.x , enemy.y, this);
-        
+       //draw mario bullet enemies
+       g.drawImage(Bullet1,enemy1.x , enemy1.y, this);
+       g.drawImage(Bullet1,enemy2.x , enemy2.y, this);
+       g.drawImage(Bullet1,enemy3.x , enemy3.y, this);
+       g.drawImage(Bullet1,enemy4.x , enemy4.y, this);
         
         
        
@@ -118,7 +132,7 @@ public class Runner extends JComponent implements KeyListener{
          Sanimation[1] = ImageHelper.loadImage("Sonic Ball2.png");
          Sanimation[2] = ImageHelper.loadImage("Sonic Ball3.png");
          Sanimation[3] = ImageHelper.loadImage("Sonic Ball4.png");
-    //load images for zombie movement
+    //load images for bullet movement
      if(playerDown || playerUp || playerRight || playerLeft){
 
             for(int i = 0; i < 4; i ++){
@@ -129,7 +143,11 @@ public class Runner extends JComponent implements KeyListener{
             }
          
        }
+            
        }
+    if(done){
+        g.drawImage(Gameover, 0 , 0, this);
+    }
         // GAME DRAWING ENDS HERE
     }
     
@@ -146,7 +164,7 @@ public class Runner extends JComponent implements KeyListener{
         
         // the main game loop section
         // game will end if you set done = false;
-        boolean done = false; 
+        
         while(!done)
         {
             // determines when we started so we can keep a framerate
@@ -154,15 +172,45 @@ public class Runner extends JComponent implements KeyListener{
             
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
+            
             if(!done && System.currentTimeMillis() - scoretime > scoredelay){
                 score ++;
                 scoretime = System.currentTimeMillis();
             }
-            //if player model touches bullet model, on either side
-            //if it touches
-        if(player.x + 59  == enemy.x && player.y - 60 == enemy.y){
-            break;
-        }
+            
+            //make 1st bullet move
+           enemy1.x = enemy1.x - moveX*10;
+           //move bullets 2-4 move after specific delay
+           if (scoretime>scoredelay2){
+                   enemy2.x = enemy2.x - moveX*10;
+               }
+           if (scoretime>scoredelay3){
+                   enemy3.x = enemy3.x - moveX*10;
+               }
+           if (scoretime>scoredelay4){
+                   enemy4.x = enemy4.x - moveX*10;
+               }
+           //if bullets gets to left of screen, move them to far right,and make y random
+           if(enemy1.x + 196 <0){
+               enemy1.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy1.y = rand;
+           }
+           if(enemy2.x + 196 <0){
+               enemy2.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy2.y = rand;
+           }
+           if(enemy3.x + 196 <0){
+               enemy3.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy3.y = rand;
+           } 
+           if(enemy4.x + 196 <0){
+               enemy4.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy4.y = rand;
+           }
             if(player.y + player.height > HEIGHT){
                 
               player.y  = 825;
@@ -190,7 +238,10 @@ public class Runner extends JComponent implements KeyListener{
                 player.x = player.x - 13;
             } 
             
-            
+            if(player.intersects(enemy1)){
+            done = true;
+         
+        }
            // if(player.x)
 //            for (Rectangle block:blocks){
 //                if(Bullet1.intersects(block)){
