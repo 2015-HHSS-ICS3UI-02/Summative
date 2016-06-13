@@ -12,6 +12,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -27,6 +29,8 @@ public class Game extends JComponent implements KeyListener{
     static final int WIDTH = 1000;
     static final int HEIGHT = 800;
     
+    BufferedImage satellite = ImageHelper.loadImage("satellite.jpg");
+            
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
     long desiredFPS = 120;
@@ -48,7 +52,7 @@ public class Game extends JComponent implements KeyListener{
     double gforce1 = 0;                                                                 //player gforce from object 1
     
     Rectangle m_end = new Rectangle(0, 0, 0, 0);                                        //mission end rectangle
-    
+ 
     int count = 0;                                                                      //counts frames for traces
     int mission = 1;                                                                    //each int is a mission
     int maxtime = 1;                                                                    //max time for the mission
@@ -76,8 +80,8 @@ public class Game extends JComponent implements KeyListener{
         
         // GAME DRAWING GOES HERE 
         g.setFont(gameFont);
-        g.fillRect((int)xpos, (int)ypos, 2, 2);
-        g.fillOval(495, 395, 10, 10);
+        g.fillOval(496,396,8,8);
+        g.fillRect((int)xpos,(int)ypos,2,2);
         g.drawString(("Distance:" + dist1),760,20);
         g.drawString(("Angle:" + angle1),760,40);
         g.drawString(("Gravitation:" + gforce1),760,60);
@@ -187,6 +191,14 @@ public class Game extends JComponent implements KeyListener{
                     m_end = new Rectangle(450, 160, 100, 10);
                     reset = false;
                     objective = "Fly the spacecraft through the zone";
+                    if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width)){
+                    won = true;
+                    mission = mission + 1;
+                    reason = "Mission complete, reset to go to next mission"; 
+                }
+                if(dist1 <= 7){
+                    reset = true;
+                }
                 }
             }
             if(mission == 4){
@@ -305,7 +317,7 @@ public class Game extends JComponent implements KeyListener{
            pause = false;
        }
     }
-    
+
     @Override
     public void keyReleased(KeyEvent e) {
        int key = e.getKeyCode();
