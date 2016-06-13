@@ -22,8 +22,6 @@ public class Game extends JComponent implements KeyListener {
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
     Rectangle main = new Rectangle(0, 0, 50, 50);
-    int moveX = 1;
-    int moveY = 1;
     int speed = 3;
     boolean mainUp = false;
     boolean mainDown = false;
@@ -60,18 +58,18 @@ public class Game extends JComponent implements KeyListener {
         g.drawRect(WIDTH - 200, HEIGHT - 200, 100, 100);
         g.drawRect(250, 300, 50, 200);
         g.setColor(Color.red);
-        g.drawRect(WIDTH/2-100, HEIGHT/2-100, 200, 200);
-        g.drawRect(WIDTH-200, 50, 100, 100);
-        g.drawRect(WIDTH-350, HEIGHT-200, 50, 100);
+        g.drawRect(WIDTH / 2 - 100, HEIGHT / 2 - 100, 200, 200);
+        g.drawRect(WIDTH - 200, 50, 100, 100);
+        g.drawRect(WIDTH - 350, HEIGHT - 200, 50, 100);
         g.setColor(Color.yellow);
-        g.drawRect(50, HEIGHT-100, 100, 50);
-        g.drawRect(250, HEIGHT-150, 300, 100);
+        g.drawRect(50, HEIGHT - 200, 100, 150);
+        g.drawRect(250, HEIGHT - 150, 300, 100);
         g.drawRect(350, 50, 300, 100);
-        g.drawRect(WIDTH-325, 300, 50, 200);
+        g.drawRect(WIDTH - 325, 300, 50, 200);
         g.setColor(Color.green);
         g.drawRect(50, 300, 100, 200);
-        g.drawRect(WIDTH-200, 300, 100, 200);
-        
+        g.drawRect(WIDTH - 200, 300, 100, 200);
+
         // GAME DRAWING ENDS HERE
     }
 
@@ -92,17 +90,35 @@ public class Game extends JComponent implements KeyListener {
 
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
-            if (mainDown == true && main.y < HEIGHT-main.height) {
+            if (mainDown == true && main.y < HEIGHT - main.height) {
                 main.y = main.y + speed;
-                if(main.x > 50 && main.x < 250){
-                    main.y =  0;
+                if (main.x > 0 && main.x < 250 && main.y < 50) {
+                    main.y = 0;
+                }
+                if (main.x > 300 && main.x < 650 && main.y < 50) {
+                    main.y = 0;
+                }
+                if (main.x > WIDTH - 250 && main.x < WIDTH - 100 && main.y < 50) {
+                    main.y = 0;
                 }
             }
             if (mainUp == true && main.y > 0) {
                 main.y = main.y - speed;
+                if(main.x > 0 && main.x < 150 && main.y > 50){
+                    main.y = HEIGHT-main.height;
+                }
             }
-            if (mainRight == true && main.x < WIDTH-main.width) {
+            if (mainRight == true && main.x < WIDTH - main.width) {
                 main.x = main.x + speed;
+                if(main.y > 0 && main.y < 150 && main.x < 50){
+                    main.x = 0;
+                }
+                if(main.y > 250 && main.y < 500 && main.x < 50){
+                    main.x = 0;
+                }
+                if(main.y > HEIGHT-250 && main.y < HEIGHT - 50 && main.x < 50){
+                    main.x = 0;
+                }
             }
             if (mainLeft == true && main.x > 0) {
                 main.x = main.x - speed;
