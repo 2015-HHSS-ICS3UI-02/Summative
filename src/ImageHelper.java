@@ -23,6 +23,6 @@ public class ImageHelper {
             e.printStackTrace();
             System.exit(0);
         }
-        return 
+        return img;
     }
 }

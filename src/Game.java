@@ -24,7 +24,7 @@ public class Game extends JComponent implements KeyListener {
     Rectangle main = new Rectangle(0, 0, 50, 50);
     int moveX = 1;
     int moveY = 1;
-    int speed = 5;
+    int speed = 3;
     boolean mainUp = false;
     boolean mainDown = false;
     boolean mainLeft = false;
@@ -58,13 +58,16 @@ public class Game extends JComponent implements KeyListener {
         g.setColor(Color.blue);
         g.drawRect(50, 50, 200, 100);
         g.drawRect(WIDTH - 200, HEIGHT - 200, 100, 100);
+        g.drawRect(250, 300, 50, 200);
         g.setColor(Color.red);
         g.drawRect(WIDTH/2-100, HEIGHT/2-100, 200, 200);
         g.drawRect(WIDTH-200, 50, 100, 100);
+        g.drawRect(WIDTH-350, HEIGHT-200, 50, 100);
         g.setColor(Color.yellow);
         g.drawRect(50, HEIGHT-100, 100, 50);
         g.drawRect(250, HEIGHT-150, 300, 100);
         g.drawRect(350, 50, 300, 100);
+        g.drawRect(WIDTH-325, 300, 50, 200);
         g.setColor(Color.green);
         g.drawRect(50, 300, 100, 200);
         g.drawRect(WIDTH-200, 300, 100, 200);
@@ -90,16 +93,19 @@ public class Game extends JComponent implements KeyListener {
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
             if (mainDown == true && main.y < HEIGHT-main.height) {
-                main.y++;               
+                main.y = main.y + speed;
+                if(main.x > 50 && main.x < 250){
+                    main.y =  0;
+                }
             }
             if (mainUp == true && main.y > 0) {
-                main.y--;
+                main.y = main.y - speed;
             }
             if (mainRight == true && main.x < WIDTH-main.width) {
-                main.x++;
+                main.x = main.x + speed;
             }
             if (mainLeft == true && main.x > 0) {
-                main.x--;
+                main.x = main.x - speed;
             }
             // GAME LOGIC ENDS HERE 
 
