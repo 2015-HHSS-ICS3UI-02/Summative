@@ -71,6 +71,9 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     BufferedImage GameControls = ImageHelper.loadImage("Game Controls.jpg");
     BufferedImage GameModes = ImageHelper.loadImage("Game Modes_1.jpg");
     BufferedImage DeathScreen = ImageHelper.loadImage("Death Screen.jpg");
+    // Create X and Y integers for image in background
+    //int axisX = 
+    //int axisY = 
 
     // Drawing of the game happens in here
     // We use the Graphics object, g, to perform the drawing
@@ -309,6 +312,39 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.fillOval(568, 302, 7, 7);
             g.fillOval(701, 302, 7, 7);
         }
+
+        // Drawings for screen 8, 'Pause Screen'
+        if (screen == 8) {
+            // Draw background image including the designs created with photoshop
+            g.drawImage(DeathScreen, 0, 0, 800, 600, null);
+            // Resume!
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(460, 280, 140, 30);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Resume! ", 505, 300);
+
+            // 'Resume' stamps
+            g.setColor(Color.white);
+            g.fillOval(460, 280, 7, 7);
+            g.fillOval(592, 280, 7, 7);
+            g.fillOval(460, 302, 7, 7);
+            g.fillOval(592, 302, 7, 7);
+
+            // 'Game Controls'
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(230, 280, 140, 30);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Game Controls", 255, 300);
+
+            // 'Game Controls' stamps
+            g.setColor(Color.white);
+            g.fillOval(230, 280, 7, 7);
+            g.fillOval(362, 280, 7, 7);
+            g.fillOval(230, 302, 7, 7);
+            g.fillOval(362, 302, 7, 7);
+        }
     }
 
     // GAME DRAWING ENDS HERE
@@ -461,22 +497,42 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         moveY[i] = -moveY[i];
                     }
                 }
-            }
 
-            // GAME LOGIC ENDS HERE 
-            // update the drawing (calls paintComponent)
-            repaint();
+                // If alt is pressed, screen changes to screen 8
+                if (screen >= 4 && screen <= 6) {
+                    if (alt) {
+                        screen = 8;
+                        // If 'Game Controls' is clicked
+                        if (mouseX > 230 && mouseX < 370 && mouseY > 140 && mouseY < 310) {
+                            screen = 2;
+                        }
+                        // If 'Resume' is clicked!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        if (mouseX > 460 && mouseX < 600 && mouseY > 140 && mouseY < 310) {
+                            //    screen = 5;
+                        }
+                    }
 
-            // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
-            // USING SOME SIMPLE MATH
-            deltaTime = System.currentTimeMillis() - startTime;
-            if (deltaTime > desiredTime) {
-                //took too much time, don't wait
-            } else {
-                try {
-                    Thread.sleep(desiredTime - deltaTime);
-                } catch (Exception e) {
-                };
+                    // Make background move!
+                    if (screen == 6) {
+                    }
+
+                }
+
+                // GAME LOGIC ENDS HERE 
+                // update the drawing (calls paintComponent)
+                repaint();
+
+                // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
+                // USING SOME SIMPLE MATH
+                deltaTime = System.currentTimeMillis() - startTime;
+                if (deltaTime > desiredTime) {
+                    //took too much time, don't wait
+                } else {
+                    try {
+                        Thread.sleep(desiredTime - deltaTime);
+                    } catch (Exception e) {
+                    };
+                }
             }
         }
     }
@@ -556,6 +612,10 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             // If the A key being pressed
         } else if (key == KeyEvent.VK_A) {
             p1Left = false;
+        }
+        // If the alt key being pressed
+        if (key == KeyEvent.VK_ALT) {
+            alt = false;
         }
     }
 
