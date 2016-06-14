@@ -38,18 +38,34 @@ public class Runner extends JComponent implements KeyListener{
     
     //int[] reset = new int[10];
     int score = 0;
-   
-    int moveX = 1;
+   //make move speed variables for enemies
+    int moveX1 = 1;
+    int moveX2 = 1;
+    int moveX3 = 1;
+    int moveX4 = 1;
+    int moveX5 = 1;
+    int moveX6 = 1;
+    int moveX7 = 1;
+    int moveX8 = 1;
     int moveY = 1;
+    //main character move speed
     int speed = 3;
+    
+    // player animation frame
+    float frame = 0;
     
      
      
     Rectangle player = new Rectangle(50,HEIGHT/2 - 93, 59,60);
-    Rectangle enemy1 = new Rectangle(WIDTH - 300,HEIGHT/2 - 40, 198,89);
-    Rectangle enemy2 = new Rectangle(WIDTH,HEIGHT - 200, 198,89);
-    Rectangle enemy3 = new Rectangle(WIDTH,HEIGHT - 400, 198,89);
-    Rectangle enemy4 = new Rectangle(WIDTH,HEIGHT - 800, 198,89);
+    Rectangle enemy1 = new Rectangle(0-198,HEIGHT/2 - 40, 198,89);
+    Rectangle enemy2 = new Rectangle(0-198,HEIGHT - 200, 198,89);
+    Rectangle enemy3 = new Rectangle(0-198,HEIGHT - 400, 198,89);
+    Rectangle enemy4 = new Rectangle(0-198,HEIGHT - 800, 198,89);
+    
+    Rectangle enemy5 = new Rectangle(0-198,HEIGHT/2 - 40, 198,89);
+    Rectangle enemy6 = new Rectangle(0-198,HEIGHT - 200, 198,89);
+    Rectangle enemy7 = new Rectangle(0-198,HEIGHT - 400, 198,89);
+    Rectangle enemy8 = new Rectangle(0-198,HEIGHT - 800, 198,89);
         boolean done = false; 
         boolean playerUp = false;
         boolean playerDown = false;
@@ -118,7 +134,10 @@ public class Runner extends JComponent implements KeyListener{
        g.drawImage(Bullet1,enemy3.x , enemy3.y, this);
        g.drawImage(Bullet1,enemy4.x , enemy4.y, this);
         
-        
+       g.drawImage(Bullet1,enemy5.x , enemy5.y, this);
+       g.drawImage(Bullet1,enemy6.x , enemy6.y, this);
+       g.drawImage(Bullet1,enemy7.x , enemy7.y, this);
+       g.drawImage(Bullet1,enemy8.x , enemy8.y, this); 
        
         //game font
      
@@ -126,7 +145,11 @@ public class Runner extends JComponent implements KeyListener{
         //draw scores
        g.setFont(gameFont);
        g.drawString("Score:" + score, WIDTH/2 - 100, 100);
-
+       
+       //draw level up sign
+       if(scoredelay2 > System.currentTimeMillis()&& scoredelay2 < System.currentTimeMillis()+ 3000){
+       g.drawString("Level Up!" + score, WIDTH/2 - 100, 100);
+       }
        //load images for sonic movement
          Sanimation[0] = ImageHelper.loadImage("Sonic Ball1.png");   
          Sanimation[1] = ImageHelper.loadImage("Sonic Ball2.png");
@@ -135,18 +158,22 @@ public class Runner extends JComponent implements KeyListener{
     //load images for bullet movement
      if(playerDown || playerUp || playerRight || playerLeft){
 
-            for(int i = 0; i < 4; i ++){
-           g.drawImage(Sanimation[i], player.x , player.y, this);
-              if( System.currentTimeMillis() - scoretime > scoredelay){
-               
-                scoretime = System.currentTimeMillis();
-            }
+          //draw animation of sonic ball
+           g.drawImage(Sanimation[(int)frame], player.x , player.y, this);
+              
          
-       }
+      
             
        }
+     
     if(done){
+        //print game over screen with sad sonic
         g.drawImage(Gameover, 0 , 0, this);
+        //print final score
+        Font EndgameFont = new Font("Arial", Font.PLAIN, 120);
+        g.setFont(EndgameFont);
+        g.drawString("Final Score:" + score, WIDTH/2 - 200, HEIGHT/2 +100);
+        
     }
         // GAME DRAWING ENDS HERE
     }
@@ -179,38 +206,159 @@ public class Runner extends JComponent implements KeyListener{
             }
             
             //make 1st bullet move
-           enemy1.x = enemy1.x - moveX*10;
+           enemy1.x = enemy1.x - moveX1*10;
            //move bullets 2-4 move after specific delay
            if (scoretime>scoredelay2){
-                   enemy2.x = enemy2.x - moveX*10;
+                   enemy2.x = enemy2.x - moveX2*10;
                }
            if (scoretime>scoredelay3){
-                   enemy3.x = enemy3.x - moveX*10;
+                   enemy3.x = enemy3.x - moveX3*10;
                }
            if (scoretime>scoredelay4){
-                   enemy4.x = enemy4.x - moveX*10;
+                   enemy4.x = enemy4.x - moveX4*10;
                }
-           //if bullets gets to left of screen, move them to far right,and make y random
+           if(scoretime>scoredelay4){
+               
+           }
+           
+           //if bullets gets to left of screen, move them to far right,and make y random, and set bullet to random speed
+           //generate random speed
+           int randspeed = (int)(Math.random()*3);
            if(enemy1.x + 196 <0){
+               //set bullet to far right
                enemy1.x = 1248;
+               //random number for y coord
                int rand = (int)(Math.random()*1051);
+               //input random y coord
                enemy1.y = rand;
+               //generate random speed number up to 3
+               
+               //if it does not generate a 0(no speed), change the speed of enemy
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
            }
            if(enemy2.x + 196 <0){
                enemy2.x = 1248;
                int rand = (int)(Math.random()*1051);
                enemy2.y = rand;
+              
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
            }
            if(enemy3.x + 196 <0){
                enemy3.x = 1248;
                int rand = (int)(Math.random()*1051);
                enemy3.y = rand;
+               
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
            } 
            if(enemy4.x + 196 <0){
                enemy4.x = 1248;
                int rand = (int)(Math.random()*1051);
                enemy4.y = rand;
+               
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
            }
+           //if enemy is under the screen(y = HEIGHT), random the y coordinate
+           if(enemy1.y> HEIGHT -89){
+               enemy1.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy1.y = rand;
+               //if it does not generate a 0(no speed), change the speed of enemy
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
+           }
+           if(enemy2.y> HEIGHT -89){
+               enemy2.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy2.y = rand;
+               //if it does not generate a 0(no speed), change the speed of enemy
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
+           }
+           if(enemy3.y> HEIGHT -89){
+               enemy3.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy3.y = rand;
+               //if it does not generate a 0(no speed), change the speed of enemy
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
+           }
+           if(enemy4.y> HEIGHT -89){
+               enemy4.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy4.y = rand;
+               //if it does not generate a 0(no speed), change the speed of enemy
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
+           }
+           //if any of bullets intersect, random them again to make them not intersect\
+           
+           if(enemy1.y >enemy2.y - 89 && enemy1.y <enemy2.y + 89){
+               enemy1.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy1.y = rand;
+               //if it does not generate a 0(no speed), change the speed of enemy
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
+           }
+           if(enemy1.y >enemy3.y - 89 && enemy1.y <enemy3.y + 89){
+               enemy1.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy1.y = rand;
+               //if it does not generate a 0(no speed), change the speed of enemy
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
+           }
+           if(enemy1.y >enemy4.y - 89 && enemy1.y <enemy4.y + 89){
+               enemy1.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy1.y = rand;
+               //if it does not generate a 0(no speed), change the speed of enemy
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
+           }
+           if(enemy2.y >enemy3.y - 89 && enemy2.y <enemy3.y + 89){
+               enemy2.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy2.y = rand;
+               //if it does not generate a 0(no speed), change the speed of enemy
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
+           }
+           if(enemy2.y >enemy4.y - 89 && enemy2.y <enemy4.y + 89){
+               enemy2.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy2.y = rand;
+               //if it does not generate a 0(no speed), change the speed of enemy
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
+           }
+           if(enemy3.y >enemy4.y - 89 && enemy3.y <enemy4.y + 89){
+               enemy3.x = 1248;
+               int rand = (int)(Math.random()*1051);
+               enemy3.y = rand;
+               //if it does not generate a 0(no speed), change the speed of enemy
+               if(randspeed != 0){
+               moveX1 = randspeed;
+               }
+           }
+           //player boundaries to move inside of 
             if(player.y + player.height > HEIGHT){
                 
               player.y  = 825;
@@ -238,7 +386,13 @@ public class Runner extends JComponent implements KeyListener{
                 player.x = player.x - 13;
             } 
             
-            if(player.intersects(enemy1)){
+            if(playerUp || playerDown || playerRight || playerLeft){
+                frame = (frame + 1)%Sanimation.length;
+            }else{
+                frame = 0;
+            }
+            
+            if(player.intersects(enemy1)||player.intersects(enemy2)||player.intersects(enemy3)||player.intersects(enemy4)){
             done = true;
          
         }
