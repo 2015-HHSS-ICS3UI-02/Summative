@@ -136,7 +136,7 @@ public class Game extends JComponent implements KeyListener{
                     won = false;
                     xpos = 300;                                                                  
                     ypos = 400;                                                              
-                    fuel = 2000000;                                                               
+                    fuel = 20;                                                               
                     xspeed = 0;                                                                
                     yspeed = 0.2;                                                                  
                     xpos1 = 500;                                                                
@@ -146,6 +146,7 @@ public class Game extends JComponent implements KeyListener{
                     m_end = new Rectangle(590, 350, 10, 100);
                     reset = false;
                     objective = "Fly the spacecraft through the zone";                                                                    
+                    count = 0;
                 }
                 if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width)){
                     won = true;
@@ -169,15 +170,16 @@ public class Game extends JComponent implements KeyListener{
                     mass1 = 100;                                                                  
                     reset = false;
                     objective = "Reach an distance of 500 units";
-                }
-                if(dist1 >= 500){
-                    won = true;
-                    mission = mission + 1;
-                    reason = "Mission complete, reset to go to next mission"; 
-                }
-                 if(dist1 <= 7){
-                    reset = true;
-                }
+                    count = 0;
+                    }
+                    if(dist1 >= 500){
+                        won = true;
+                        mission = mission + 1;
+                        reason = "Mission complete, reset to go to next mission"; 
+                    }
+                    if(dist1 <= 7){
+                        reset = true;
+                 }
             }
             if(mission == 3){
                 if(reset == true){                                                             
@@ -193,14 +195,15 @@ public class Game extends JComponent implements KeyListener{
                     m_end = new Rectangle(450, 160, 100, 10);
                     reset = false;
                     objective = "Fly the spacecraft through the zone";
-                    if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width)){
-                    won = true;
-                    mission = mission + 1;
-                    reason = "Mission complete, reset to go to next mission"; 
-                }
+                    count = 0;
+                if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width)){
+                        won = true;
+                        mission = mission + 1;
+                        reason = "Mission complete, reset to go to next mission"; 
+                    }
                 if(dist1 <= 7){
-                    reset = true;
-                }
+                        reset = true;
+                    }
                 }
             }
             if(mission == 4){
@@ -217,9 +220,37 @@ public class Game extends JComponent implements KeyListener{
                     m_end = new Rectangle(450, 160, 100, 10);
                     reset = false;
                     objective = "Achieve an orbit consistently below 400";
+                    count = 0;
+                    if(count >= 10000){
+                        won = true;
+                        mission = mission + 1;
+                        reason = "Mission complete, reset to go to next mission"; 
+                    }
+                    if(dist1 >= 400){
+                        reset = true;
+                    }
                 }
             }
-
+            if(mission == 5){
+                if(reset == true){                                                             
+                    won = false;
+                    xpos = 0;                                                                  
+                    ypos = 0;                                                              
+                    fuel = 20;                                                               
+                    xspeed = 0.25;                                                                
+                    yspeed = 0.25;                                                                  
+                    xpos1 = 500;                                                                
+                    ypos1 = 400;                                                                
+                    mass1 = 1000;                                                                  
+                    m_end = new Rectangle(450, 160, 100, 10);
+                    reset = false;
+                    objective = "Achieve an orbit consistently below 400";
+                    count = 0;
+                    if(dist1 <= 7){
+                        reset = true;
+                    }
+                }
+            }
             //APPLYING PLAYER ACCELERATION
             
             if(ynegative_accel == true && fuel > 0){                                         //Engages acceleration based on player keystrokes
@@ -317,7 +348,11 @@ public class Game extends JComponent implements KeyListener{
            pause = true;
        } else if(key == KeyEvent.VK_SPACE && pause == true){
            pause = false;
-       }
+       } else if(key == KeyEvent.VK_P){
+                won = true;
+                mission = mission + 1;
+                reason = "Mission complete, reset to go to next mission"; 
+    }
     }
 
     @Override
