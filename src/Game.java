@@ -104,9 +104,6 @@ public class Game extends JComponent implements KeyListener {
                 if (main.x > 0 && main.x < 150 && main.y < 300 && main.y > 250) {
                     main.y = 250;
                 }               
-                if(main.x > 200 && main.x < 300 && main.y < 300 && main.y > 250){
-                    main.y = 250;
-                }
                 if(main.x > WIDTH / 2 - 150 && main.x < WIDTH / 2 + 100 && main.y < 300 && main.y > 250){
                     main.y = 250;
                 }
@@ -119,6 +116,15 @@ public class Game extends JComponent implements KeyListener {
                 if (main.x > 0 && main.x < 150 && main.y < HEIGHT-200 && main.y > HEIGHT-250) {
                     main.y = HEIGHT-250;
                 }
+                if(main.x > 200 && main.x < 550 && main.y < HEIGHT-150 && main.y > HEIGHT-200){
+                    main.y = HEIGHT-200;
+                }
+                if(main.x > WIDTH-400 && main.x < WIDTH-300 && main.y < HEIGHT-200 && main.y > HEIGHT-250){
+                    main.y = HEIGHT-250;
+                }
+                if(main.x > WIDTH-250 && main.x < WIDTH-100 && main.y < HEIGHT-200 && main.y > HEIGHT-250){
+                    main.y = HEIGHT-250;
+                }              
             }
             if (mainUp == true && main.y > 0) {
                 main.y = main.y - speed;
@@ -133,6 +139,24 @@ public class Game extends JComponent implements KeyListener {
                 }
                 if(main.y > HEIGHT-250 && main.y < HEIGHT - 50 && main.x < 50){
                     main.x = 0;
+                }
+                if(main.y > 250 && main.y < 500 && main.x > 200 && main.x < 250){
+                    main.x = 200;
+                }
+                if(main.y > HEIGHT-200 && main.y < HEIGHT-50 && main.x > 200 && main.x < 250){
+                    main.x = 200;
+                }
+                if(main.y > 0 && main.y < 150 && main.x > 300 && main.x < 350){
+                    main.x = 300;
+                }
+                if(main.y > HEIGHT/2-150 && main.y < HEIGHT/2+100 && main.x > WIDTH/2-150 && main.x < WIDTH/2-100){
+                    main.x = WIDTH/2-150;
+                }
+                if(main.y > HEIGHT-250 && main.y < HEIGHT-100 && main.x > WIDTH-400 && main.x < WIDTH-350){
+                    main.x = WIDTH-400;
+                }
+                if(main.y > 250 && main.y < 500 && main.x > 200 && main.x < 250){
+                    main.x = 200;
                 }
             }
             if (mainLeft == true && main.x > 0) {
