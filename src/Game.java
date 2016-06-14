@@ -101,12 +101,27 @@ public class Game extends JComponent implements KeyListener {
                 if (main.x > WIDTH - 250 && main.x < WIDTH - 100 && main.y < 50) {
                     main.y = 0;
                 }
+                if (main.x > 0 && main.x < 150 && main.y < 300 && main.y > 250) {
+                    main.y = 250;
+                }               
+                if(main.x > 200 && main.x < 300 && main.y < 300 && main.y > 250){
+                    main.y = 250;
+                }
+                if(main.x > WIDTH / 2 - 150 && main.x < WIDTH / 2 + 100 && main.y < 300 && main.y > 250){
+                    main.y = 250;
+                }
+                if(main.x > WIDTH-375 && main.x < WIDTH-275 && main.y < 300 && main.y > 250){
+                    main.y = 250;
+                }               
+                if(main.x > WIDTH-250 && main.x < WIDTH-100 && main.y < 300 && main.y > 250){
+                    main.y = 250;
+                }  
+                if (main.x > 0 && main.x < 150 && main.y < HEIGHT-200 && main.y > HEIGHT-250) {
+                    main.y = HEIGHT-250;
+                }
             }
             if (mainUp == true && main.y > 0) {
                 main.y = main.y - speed;
-                if(main.x > 0 && main.x < 150 && main.y > 50){
-                    main.y = HEIGHT-main.height;
-                }
             }
             if (mainRight == true && main.x < WIDTH - main.width) {
                 main.x = main.x + speed;
