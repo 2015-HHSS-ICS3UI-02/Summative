@@ -4,8 +4,8 @@
  */
 
 
-import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -29,7 +29,7 @@ public class Game extends JComponent implements KeyListener{
     static final int WIDTH = 1000;
     static final int HEIGHT = 800;
     
-    BufferedImage satellite = ImageHelper.loadImage("satellite.jpg");
+    BufferedImage satellite = ImageHelper.loadImage("satellite.png");
             
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
@@ -52,7 +52,7 @@ public class Game extends JComponent implements KeyListener{
     double gforce1 = 0;                                                                 //player gforce from object 1
     
     Rectangle m_end = new Rectangle(0, 0, 0, 0);                                        //mission end rectangle
- 
+                                   
     int count = 0;                                                                      //counts frames for traces
     int mission = 1;                                                                    //each int is a mission
     int maxtime = 1;                                                                    //max time for the mission
@@ -76,12 +76,14 @@ public class Game extends JComponent implements KeyListener{
     {
         Graphics2D g2d = (Graphics2D)g;
         // always clear the screen first!
-        g.clearRect(0, 0, WIDTH, HEIGHT);
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, WIDTH, HEIGHT);
         
-        // GAME DRAWING GOES HERE 
+        // GAME DRAWING GOES HERE
+        g.setColor(Color.WHITE);
         g.setFont(gameFont);
         g.fillOval(496,396,8,8);
-        g.fillRect((int)xpos,(int)ypos,2,2);
+        g.drawImage(satellite, (int)xpos - 4,(int)ypos - 4,30,30, null);
         g.drawString(("Distance:" + dist1),760,20);
         g.drawString(("Angle:" + angle1),760,40);
         g.drawString(("Gravitation:" + gforce1),760,60);
@@ -134,7 +136,7 @@ public class Game extends JComponent implements KeyListener{
                     won = false;
                     xpos = 300;                                                                  
                     ypos = 400;                                                              
-                    fuel = 20;                                                               
+                    fuel = 2000000;                                                               
                     xspeed = 0;                                                                
                     yspeed = 0.2;                                                                  
                     xpos1 = 500;                                                                
