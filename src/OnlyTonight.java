@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import static java.awt.image.ImageObserver.ERROR;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -59,8 +60,8 @@ public class OnlyTonight extends JComponent implements KeyListener {
     BufferedImage OD5 = ImageHelper.loadImage("OpeningDialog5.jpg");
     BufferedImage WS1 = ImageHelper.loadImage("Winning Screen 1.jpg");
     BufferedImage WS2 = ImageHelper.loadImage("Winning Screen 2.jpg");
+    BufferedImage clue = ImageHelper.loadImage("Clue.jpg");
     BufferedImage GameOver = ImageHelper.loadImage("Game Over.jpg");
-    
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
     long desiredFPS = 60;
@@ -96,6 +97,8 @@ public class OnlyTonight extends JComponent implements KeyListener {
     // safe
     Rectangle safe = new Rectangle(466, 68, 74, 69);
     Rectangle safeTrigger = new Rectangle(466, 137, 74, 10);
+    // dialog triggers
+    Rectangle waiTrigger = new Rectangle(150, 425, 38, 53);
     // movement
     int speed = 2;
     // theo
@@ -112,12 +115,15 @@ public class OnlyTonight extends JComponent implements KeyListener {
     int page = 0;
     char dir = 'r';
     int menuSelection = 0;
+    String tr = "human";
+    String safeCode = "32216";
     // pong
     Rectangle ball = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
     // ball control
     int moveX = 1;
     int moveY = 1;
-    int pongSpeed = 3;
+    int cpuSpeed = 6;
+    int pongSpeed = 4;
     // paddles
     Rectangle p1 = new Rectangle(50, HEIGHT / 2 - 40, 25, 80);
     Rectangle p2 = new Rectangle(WIDTH - 75, HEIGHT / 2 - 40, 25, 80);
@@ -184,19 +190,25 @@ public class OnlyTonight extends JComponent implements KeyListener {
             } else if (dir == 'l') {
                 g.drawImage(theoStandLeft, theo.x, theo.y, theo.width, theo.height, null);
             }
-            //dialog
-            if (theo.x == 150 && theo.y == 425) {
+            // dialog
+            if (theo.intersects(waiTrigger)) {
                 g.drawImage(dialogwai, theo.x, theo.y, 50, 25, null);
             }
-            // minigame screens
-            if (spaceBar == true && theo.intersects(safeTrigger)) {
-                g.drawImage(safeScreen, 0, 0, null);
+            if (theo.intersects(pongTrigger)) {
+                g.drawImage(dialogqm, theo.x, theo.y, 21, 38, null);
             }
+            if (theo.intersects(table1Trigger)) {
+                g.drawImage(dialogqm, theo.x, theo.y, 21, 38, null);
+            }
+            if (theo.intersects(safeTrigger)) {
+                g.drawImage(dialogqm, theo.x, theo.y, 21, 38, null);
+            }
+            if (theo.intersects(deskTrigger)) {
+                g.drawImage(dialogqm, theo.x, theo.y, 21, 38, null);
+            }
+            // minigame screens
             if (spaceBar == true && theo.intersects(deskTrigger)) {
                 g.drawImage(letterScreen, 0, 0, null);
-            }
-            if (spaceBar == true && theo.intersects(table1Trigger)) {
-                g.drawImage(typeWriterScreen, 0, 0, null);
             }
 
             // countdown
@@ -268,13 +280,19 @@ public class OnlyTonight extends JComponent implements KeyListener {
             g.fillRect(p2.x, p2.y, p2.width, p2.height);
             // background
             g.setColor(Color.WHITE);
-            g.fillRect(WIDTH/2, 0, 10, HEIGHT);
+            g.fillRect(WIDTH / 2, 0, 10, HEIGHT);
             // scores
             g.setColor(Color.RED);
             g.setFont(pongType);
             g.drawString("" + score1, WIDTH / 2 - 100, 100);
             g.setColor(Color.BLUE);
             g.drawString("" + score2, WIDTH / 2 + 100, 100);
+
+            if (score1 == 10) {
+                if (!theoUp) {
+                    g.drawImage(clue, 0, 0, WIDTH, HEIGHT, null);                // EDIT
+                }
+            }
         }
         // GAME DRAWING ENDS HERE
     }
@@ -296,8 +314,25 @@ public class OnlyTonight extends JComponent implements KeyListener {
 
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
-
-            // theo movement
+            
+            // dialog boxes
+            // table 1 (typewriter)
+            if (spaceBar == true && theo.intersects(table1Trigger)) {
+                tr = (String)JOptionPane.showInputDialog(
+                    this,
+                    "Which creature walks on four legs in the morning, two legs in the afternoon, and three in the evening?", "Type Writer",
+                    JOptionPane.PLAIN_MESSAGE, null, null, "_ _ _ _ _ _");
+                spaceBar = false;
+            }
+            // safe
+            if (spaceBar == true && theo.intersects(safeTrigger)) {
+                tr = (String)JOptionPane.showInputDialog(
+                    this,
+                    "Enter the code.", "Safe",
+                    JOptionPane.PLAIN_MESSAGE, null, null, "_ _ _ _ _");
+                spaceBar = false;
+            }
+            
             if (spaceBar == true && theo.intersects(pongTrigger)) {
                 pong = true;
             }
@@ -317,264 +352,262 @@ public class OnlyTonight extends JComponent implements KeyListener {
                         theo.x = theo.x + speed;
                         dir = 'r';
                     }
+                }
 
-                    // collisions 
-                    // pongTable
-                    if (theo.intersects(pongTable)) {
-                        Rectangle intersection = theo.intersection(pongTable);
-                        if (intersection.width < intersection.height) {
-                            if (theo.x < pongTable.x) {
-                                theo.x = theo.x - intersection.width;
-                            } else {
-                                theo.x = theo.x + intersection.width;
-                            }
+                // collisions 
+                // pongTable
+                if (theo.intersects(pongTable)) {
+                    Rectangle intersection = theo.intersection(pongTable);
+                    if (intersection.width < intersection.height) {
+                        if (theo.x < pongTable.x) {
+                            theo.x = theo.x - intersection.width;
                         } else {
-                            if (theo.y < pongTable.y) {
-                                theo.y = theo.y - intersection.height;
-                            } else {
-                                theo.y = theo.y + intersection.height;
-                            }
+                            theo.x = theo.x + intersection.width;
                         }
-                    }
-                    // wall 1
-                    if (theo.intersects(wall1)) {
-                        Rectangle intersection = theo.intersection(wall1);
-                        if (intersection.width < intersection.height) {
-                            if (theo.x < wall1.x) {
-                                theo.x = theo.x - intersection.width;
-                            } else {
-                                theo.x = theo.x + intersection.width;
-                            }
+                    } else {
+                        if (theo.y < pongTable.y) {
+                            theo.y = theo.y - intersection.height;
                         } else {
-                            if (theo.y < wall1.y) {
-                                theo.y = theo.y - intersection.height;
-                            } else {
-                                theo.y = theo.y + intersection.height;
-                            }
+                            theo.y = theo.y + intersection.height;
                         }
                     }
-                    // wall 2
-                    if (theo.intersects(wall2)) {
-                        Rectangle intersection = theo.intersection(wall2);
-                        if (intersection.width < intersection.height) {
-                            if (theo.x < wall2.x) {
-                                theo.x = theo.x - intersection.width;
-                            } else {
-                                theo.x = theo.x + intersection.width;
-                            }
+                }
+                // wall 1
+                if (theo.intersects(wall1)) {
+                    Rectangle intersection = theo.intersection(wall1);
+                    if (intersection.width < intersection.height) {
+                        if (theo.x < wall1.x) {
+                            theo.x = theo.x - intersection.width;
                         } else {
-                            if (theo.y < wall2.y) {
-                                theo.y = theo.y - intersection.height;
-                            } else {
-                                theo.y = theo.y + intersection.height;
-                            }
+                            theo.x = theo.x + intersection.width;
                         }
-                    }
-                    // wall 3
-                    if (theo.intersects(wall3)) {
-                        Rectangle intersection = theo.intersection(wall3);
-                        if (intersection.width < intersection.height) {
-                            if (theo.x < wall3.x) {
-                                theo.x = theo.x - intersection.width;
-                            } else {
-                                theo.x = theo.x + intersection.width;
-                            }
+                    } else {
+                        if (theo.y < wall1.y) {
+                            theo.y = theo.y - intersection.height;
                         } else {
-                            if (theo.y < wall3.y) {
-                                theo.y = theo.y - intersection.height;
-                            } else {
-                                theo.y = theo.y + intersection.height;
-                            }
+                            theo.y = theo.y + intersection.height;
                         }
                     }
-                    // table 1
-                    if (theo.intersects(table1)) {
-                        Rectangle intersection = theo.intersection(table1);
-                        if (intersection.width < intersection.height) {
-                            if (theo.x < table1.x) {
-                                theo.x = theo.x - intersection.width;
-                            } else {
-                                theo.x = theo.x + intersection.width;
-                            }
+                }
+                // wall 2
+                if (theo.intersects(wall2)) {
+                    Rectangle intersection = theo.intersection(wall2);
+                    if (intersection.width < intersection.height) {
+                        if (theo.x < wall2.x) {
+                            theo.x = theo.x - intersection.width;
                         } else {
-                            if (theo.y < table1.y) {
-                                theo.y = theo.y - intersection.height;
-                            } else {
-                                theo.y = theo.y + intersection.height;
-                            }
+                            theo.x = theo.x + intersection.width;
                         }
-                    }
-                    // table 2
-                    if (theo.intersects(table2)) {
-                        Rectangle intersection = theo.intersection(table2);
-                        if (intersection.width < intersection.height) {
-                            if (theo.x < table2.x) {
-                                theo.x = theo.x - intersection.width;
-                            } else {
-                                theo.x = theo.x + intersection.width;
-                            }
+                    } else {
+                        if (theo.y < wall2.y) {
+                            theo.y = theo.y - intersection.height;
                         } else {
-                            if (theo.y < table2.y) {
-                                theo.y = theo.y - intersection.height;
-                            } else {
-                                theo.y = theo.y + intersection.height;
-                            }
+                            theo.y = theo.y + intersection.height;
                         }
                     }
-                    // table 3
-                    if (theo.intersects(table3)) {
-                        Rectangle intersection = theo.intersection(table3);
-                        if (intersection.width < intersection.height) {
-                            if (theo.x < table3.x) {
-                                theo.x = theo.x - intersection.width;
-                            } else {
-                                theo.x = theo.x + intersection.width;
-                            }
+                }
+                // wall 3
+                if (theo.intersects(wall3)) {
+                    Rectangle intersection = theo.intersection(wall3);
+                    if (intersection.width < intersection.height) {
+                        if (theo.x < wall3.x) {
+                            theo.x = theo.x - intersection.width;
                         } else {
-                            if (theo.y < table3.y) {
-                                theo.y = theo.y - intersection.height;
-                            } else {
-                                theo.y = theo.y + intersection.height;
-                            }
+                            theo.x = theo.x + intersection.width;
                         }
-                    }
-                    // desk
-                    if (theo.intersects(desk)) {
-                        Rectangle intersection = theo.intersection(desk);
-                        if (intersection.width < intersection.height) {
-                            if (theo.x < desk.x) {
-                                theo.x = theo.x - intersection.width;
-                            } else {
-                                theo.x = theo.x + intersection.width;
-                            }
+                    } else {
+                        if (theo.y < wall3.y) {
+                            theo.y = theo.y - intersection.height;
                         } else {
-                            if (theo.y < desk.y) {
-                                theo.y = theo.y - intersection.height;
-                            } else {
-                                theo.y = theo.y + intersection.height;
-                            }
+                            theo.y = theo.y + intersection.height;
                         }
                     }
-                    // table 2
-                    if (theo.intersects(safe)) {
-                        Rectangle intersection = theo.intersection(safe);
-                        if (intersection.width < intersection.height) {
-                            if (theo.x < safe.x) {
-                                theo.x = theo.x - intersection.width;
-                            } else {
-                                theo.x = theo.x + intersection.width;
-                            }
+                }
+                // table 1
+                if (theo.intersects(table1)) {
+                    Rectangle intersection = theo.intersection(table1);
+                    if (intersection.width < intersection.height) {
+                        if (theo.x < table1.x) {
+                            theo.x = theo.x - intersection.width;
                         } else {
-                            if (theo.y < safe.y) {
-                                theo.y = theo.y - intersection.height;
-                            } else {
-                                theo.y = theo.y + intersection.height;
-                            }
+                            theo.x = theo.x + intersection.width;
                         }
-                    }
-                    // table 2
-                    if (theo.intersects(bed)) {
-                        Rectangle intersection = theo.intersection(bed);
-                        if (intersection.width < intersection.height) {
-                            if (theo.x < bed.x) {
-                                theo.x = theo.x - intersection.width;
-                            } else {
-                                theo.x = theo.x + intersection.width;
-                            }
+                    } else {
+                        if (theo.y < table1.y) {
+                            theo.y = theo.y - intersection.height;
                         } else {
-                            if (theo.y < bed.y) {
-                                theo.y = theo.y - intersection.height;
-                            } else {
-                                theo.y = theo.y + intersection.height;
-                            }
+                            theo.y = theo.y + intersection.height;
                         }
                     }
-                    // menu screen
-                } else if (enterKey == 0) {
-                    if (theoUp) {
-                        if (menuSelection == 2) {
-                            menuSelection = 0;
-                            theoUp = false;
+                }
+                // table 2
+                if (theo.intersects(table2)) {
+                    Rectangle intersection = theo.intersection(table2);
+                    if (intersection.width < intersection.height) {
+                        if (theo.x < table2.x) {
+                            theo.x = theo.x - intersection.width;
+                        } else {
+                            theo.x = theo.x + intersection.width;
+                        }
+                    } else {
+                        if (theo.y < table2.y) {
+                            theo.y = theo.y - intersection.height;
+                        } else {
+                            theo.y = theo.y + intersection.height;
                         }
                     }
-                    if (theoDown) {
-                        if (menuSelection == 0) {
-                            menuSelection = 2;
-                            theoDown = false;
+                }
+                // table 3
+                if (theo.intersects(table3)) {
+                    Rectangle intersection = theo.intersection(table3);
+                    if (intersection.width < intersection.height) {
+                        if (theo.x < table3.x) {
+                            theo.x = theo.x - intersection.width;
+                        } else {
+                            theo.x = theo.x + intersection.width;
                         }
-                        if (menuSelection == 1) {
-                            menuSelection = 3;
-                            theoDown = false;
-                        }
-                    }
-                    if (theoRight) {
-                        if (menuSelection == 0) {
-                            menuSelection = 1;
-                            theoRight = false;
-                        } else if (menuSelection == 2) {
-                            menuSelection = 3;
-                            theoRight = false;
+                    } else {
+                        if (theo.y < table3.y) {
+                            theo.y = theo.y - intersection.height;
+                        } else {
+                            theo.y = theo.y + intersection.height;
                         }
                     }
-                    if (theoLeft) {
-                        if (menuSelection == 1) {
-                            menuSelection = 0;
-                            theoLeft = false;
-                        } else if (menuSelection == 3) {
-                            menuSelection = 2;
-                            theoLeft = false;
+                }
+                // desk
+                if (theo.intersects(desk)) {
+                    Rectangle intersection = theo.intersection(desk);
+                    if (intersection.width < intersection.height) {
+                        if (theo.x < desk.x) {
+                            theo.x = theo.x - intersection.width;
+                        } else {
+                            theo.x = theo.x + intersection.width;
                         }
+                    } else {
+                        if (theo.y < desk.y) {
+                            theo.y = theo.y - intersection.height;
+                        } else {
+                            theo.y = theo.y + intersection.height;
+                        }
+                    }
+                }
+                // table 2
+                if (theo.intersects(safe)) {
+                    Rectangle intersection = theo.intersection(safe);
+                    if (intersection.width < intersection.height) {
+                        if (theo.x < safe.x) {
+                            theo.x = theo.x - intersection.width;
+                        } else {
+                            theo.x = theo.x + intersection.width;
+                        }
+                    } else {
+                        if (theo.y < safe.y) {
+                            theo.y = theo.y - intersection.height;
+                        } else {
+                            theo.y = theo.y + intersection.height;
+                        }
+                    }
+                }
+                // table 2
+                if (theo.intersects(bed)) {
+                    Rectangle intersection = theo.intersection(bed);
+                    if (intersection.width < intersection.height) {
+                        if (theo.x < bed.x) {
+                            theo.x = theo.x - intersection.width;
+                        } else {
+                            theo.x = theo.x + intersection.width;
+                        }
+                    } else {
+                        if (theo.y < bed.y) {
+                            theo.y = theo.y - intersection.height;
+                        } else {
+                            theo.y = theo.y + intersection.height;
+                        }
+                    }
+                }
+                // menu screen
+            } else if (enterKey == 0) {
+                if (theoUp) {
+                    if (menuSelection == 2) {
+                        menuSelection = 0;
+                        theoUp = false;
+                    }
+                }
+                if (theoDown) {
+                    if (menuSelection == 0) {
+                        menuSelection = 2;
+                        theoDown = false;
+                    }
+                    if (menuSelection == 1) {
+                        menuSelection = 3;
+                        theoDown = false;
+                    }
+                }
+                if (theoRight) {
+                    if (menuSelection == 0) {
+                        menuSelection = 1;
+                        theoRight = false;
+                    } else if (menuSelection == 2) {
+                        menuSelection = 3;
+                        theoRight = false;
+                    }
+                }
+                if (theoLeft) {
+                    if (menuSelection == 1) {
+                        menuSelection = 0;
+                        theoLeft = false;
+                    } else if (menuSelection == 3) {
+                        menuSelection = 2;
+                        theoLeft = false;
                     }
                 }
             } else {
                 // start game
-                    // make ball move
-                    ball.x = ball.x + moveX * speed;
-                    ball.y = ball.y + moveY * speed;
+                // make ball move
+                ball.x = ball.x + moveX * pongSpeed;
+                ball.y = ball.y + moveY * pongSpeed;
 
-                    // world collisions
-                    // ball hit bottom of screen
-                    if (ball.y + ball.height > HEIGHT) {
-                        moveY = -1;
-                    }
-                    // ball hit top
-                    if (ball.y < 0) {
-                        moveY = 1;
-                    }
-                    // ball hit right side
-                    if (ball.x + ball.width > WIDTH) {
-                        moveX = -1;
-                        score1 = score1 + 1;
-                    }
-                    // ball hit left side
-                    if (ball.x < 0) {
-                        moveX = 1;
-                        score2 = score2 + 1;
-                    }
-                    // make paddle 1 move
-                    if (p1UP && p1.y > 0) {
-                        p1.y = p1.y - speed;
-                    } else if (p1DOWN && p1.y + p1.height < HEIGHT) {
-                        p1.y = p1.y + speed;
-                    }
-                    // make paddle 2 move
-                    if (p2UP && p2.y > 0) {
-                        p2.y = p2.y - speed;
-                    } else if (p2DOWN && p2.y + p2.height < HEIGHT) {
-                        p2.y = p2.y + speed;
-                    }
-                    // paddle hits ball
-                    if (ball.intersects(p1)) {
-                        moveX = 1;
-                    } else if (ball.intersects(p2)) {
-                        moveX = -1;
-                    }
-                    // max score
-                    if (score1 == 10 || score2 == 10) {
-                        pong = false;
-                    }
+                // world collisions
+                // ball hit bottom of screen
+                if (ball.y + ball.height > HEIGHT) {
+                    moveY = -1;
                 }
-
+                // ball hit top
+                if (ball.y < 0) {
+                    moveY = 1;
+                }
+                // ball hit right side
+                if (ball.x + ball.width > WIDTH) {
+                    moveX = -1;
+                    score1 = score1 + 1;
+                }
+                // ball hit left side
+                if (ball.x < 0) {
+                    moveX = 1;
+                    score2 = score2 + 1;
+                }
+                // make paddle 1 move
+                if (p1UP && p1.y > 0) {
+                    p1.y = p1.y - pongSpeed;
+                } else if (p1DOWN && p1.y + p1.height < HEIGHT) {
+                    p1.y = p1.y + pongSpeed;
+                }
+                // make paddle 2 move
+                if (p2UP && p2.y > 0) {
+                    p2.y = p2.y - cpuSpeed;
+                } else if (p2DOWN && p2.y + p2.height < HEIGHT) {
+                    p2.y = p2.y + cpuSpeed;
+                }
+                // paddle hits ball
+                if (ball.intersects(p1)) {
+                    moveX = 1;
+                } else if (ball.intersects(p2)) {
+                    moveX = -1;
+                }
+                // max score
+                if (score1 == 10 || score2 == 10) {
+                    pong = false;
+                }
                 // CU
                 if (p2.y + p2.height < ball.y) {
                     p2UP = false;
@@ -586,6 +619,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
                     p2UP = false;
                     p2DOWN = false;
                 }
+            }
 
             // countdown
 
@@ -615,7 +649,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
      */
     public static void main(String[] args) {
         // creates a windows to show my game
-        JFrame frame = new JFrame("My Game");
+        JFrame frame = new JFrame("Only Tonight");
 
         // creates an instance of my game
         OnlyTonight game = new OnlyTonight();
@@ -705,6 +739,9 @@ public class OnlyTonight extends JComponent implements KeyListener {
             } else if (key == KeyEvent.VK_DOWN) {
                 p1DOWN = false;
             }
+        }
+        if (key == KeyEvent.VK_SPACE) {
+            spaceBar = false;
         }
     }
 }
