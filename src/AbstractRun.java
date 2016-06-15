@@ -71,9 +71,6 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     BufferedImage GameControls = ImageHelper.loadImage("Game Controls.jpg");
     BufferedImage GameModes = ImageHelper.loadImage("Game Modes_1.jpg");
     BufferedImage DeathScreen = ImageHelper.loadImage("Death Screen.jpg");
-    // Create X and Y integers for image in background
-    //int axisX = 
-    //int axisY = 
 
     // Drawing of the game happens in here
     // We use the Graphics object, g, to perform the drawing
@@ -490,6 +487,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         }
                     }
                 }
+
                 // For loop used to interact when minions hit the player to bounce off
                 for (int i = 0; i < enemies.length; i++) {
                     if (enemies[i].intersects(P1)) {
@@ -503,36 +501,33 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                     if (alt) {
                         screen = 8;
                         // If 'Game Controls' is clicked
-                        if (mouseX > 230 && mouseX < 370 && mouseY > 140 && mouseY < 310) {
+                        if (mouseX > 230 && mouseX < 370 && mouseY > 140 && mouseY < 310) { //(230, 280, 140, 30)
                             screen = 2;
                         }
                         // If 'Resume' is clicked!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         if (mouseX > 460 && mouseX < 600 && mouseY > 140 && mouseY < 310) {
-                            //    screen = 5;
+                            screen = 5;
                         }
+                    }else if (!alt){
+                        
                     }
-
-                    // Make background move!
-                    if (screen == 6) {
-                    }
-
                 }
+            }
 
-                // GAME LOGIC ENDS HERE 
-                // update the drawing (calls paintComponent)
-                repaint();
+            // GAME LOGIC ENDS HERE 
+            // update the drawing (calls paintComponent)
+            repaint();
 
-                // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
-                // USING SOME SIMPLE MATH
-                deltaTime = System.currentTimeMillis() - startTime;
-                if (deltaTime > desiredTime) {
-                    //took too much time, don't wait
-                } else {
-                    try {
-                        Thread.sleep(desiredTime - deltaTime);
-                    } catch (Exception e) {
-                    };
-                }
+            // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
+            // USING SOME SIMPLE MATH
+            deltaTime = System.currentTimeMillis() - startTime;
+            if (deltaTime > desiredTime) {
+                //took too much time, don't wait
+            } else {
+                try {
+                    Thread.sleep(desiredTime - deltaTime);
+                } catch (Exception e) {
+                };
             }
         }
     }
@@ -541,21 +536,21 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // creates a windows to show my game
+        // Creates a windows to show my game
         JFrame frame = new JFrame("My Game");
 
-        // creates an instance of my game
+        // Creates an instance of my game
         AbstractRun game = new AbstractRun();
-        // sets the size of my game
+        // Sets the size of my game
         game.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        // adds the game to the window
+        // Adds the game to the window
         frame.add(game);
 
-        // sets some options and size of the window automatically
+        // Sets some options and size of the window automatically
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        // shows the window to the user
+        // Shows the window to the user
         frame.setVisible(true);
         // Add key listener
         frame.addKeyListener(game);
@@ -613,10 +608,6 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
         } else if (key == KeyEvent.VK_A) {
             p1Left = false;
         }
-        // If the alt key being pressed
-        if (key == KeyEvent.VK_ALT) {
-            alt = false;
-        }
     }
 
     @Override
@@ -629,9 +620,6 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
         if (button == MouseEvent.BUTTON1) {
             System.out.println("Button1");
             button1 = true;
-        }
-        // Recognize the mouse click (BUTTON1 = Right click)
-        if (button == MouseEvent.BUTTON3) {
         }
     }
 
