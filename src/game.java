@@ -77,11 +77,11 @@ public class game extends JComponent implements KeyListener {
             //input introduction and controls
             g.setFont(gamefont);
             g.drawString("Omok is game that is played", 100, 100);
-            g.drawString("by 2 player which devided", 100, 150);
+            g.drawString("by 2 players which divided", 100, 150);
             g.drawString("into Black and White.", 100, 200);
-            g.drawString("Black or White has to have", 100, 250);
+            g.drawString("Black or White have to have", 100, 250);
             g.drawString("5 stones straight or diagonally", 100, 300);
-            g.drawString("to Win.", 100, 350);
+            g.drawString("in order to Win.", 100, 350);
             g.drawString("control:", WIDTH - 400, 400);
             g.drawString("Black", 100, 450);
             g.drawString("White", WIDTH / 2, 450);
