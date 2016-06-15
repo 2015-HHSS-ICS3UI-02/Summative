@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -16,7 +18,7 @@ import javax.swing.JFrame;
  *
  * @author dhalt0019
  */
-public class Game extends JComponent{
+public class Game extends JComponent implements KeyListener {
 
     // Height and Width of our game
     static final int WIDTH = 800;
@@ -27,7 +29,7 @@ public class Game extends JComponent{
     long desiredTime = (1000) / desiredFPS;
     // player position
     int x = 100;
-    int y = 500;
+    int y = 400;
     // mouse variables
     int mouseX = 0;
     int mouseY = 0;
@@ -89,9 +91,13 @@ public class Game extends JComponent{
     // In here is where all the logic for my game will go
     public void run() {
 
-        blocks.add(new Rectangle(400, 450, 100, 50));
+        blocks.add(new Rectangle(500, 450, 100, 50));
+        blocks.add(new Rectangle(500, 500, 100, 50));
+        blocks.add(new Rectangle(500, 550, 100, 50));
+        blocks.add(new Rectangle(600, 400, 50, 50));
+        blocks.add(new Rectangle(450, 400, 50, 50));
         blocks.add(new Rectangle(500, 400, 50, 50));
-        blocks.add(new Rectangle(300, 400, 50, 50));
+        blocks.add(new Rectangle(550, 400, 50, 50));
 
         // Used to keep track of time used to draw and update the game
         // This is used to limit the framerate later on
@@ -133,9 +139,9 @@ public class Game extends JComponent{
             }
 
             //jumping
-            
-            if(jump && !backjump && !air){
-                
+
+            if (jump && !backjump && !air) {
+
                 moveY = -20;
                 air = true;
             }
@@ -146,46 +152,46 @@ public class Game extends JComponent{
             android.y = android.y + moveY;
 
             // if player becomes lower than the ground (bottom of screen)
-            
-            if(android.y + android.height > HEIGHT){
-            
-            android.y = HEIGHT - android.height;
-            moveY= 0;
-            air = false;
-        }
-            for(Rectangle block: blocks){
-            
-                if(android.intersects (block)){
-                
-                Rectangle intersection = android.intersection (block);
-                
-                // fix the X movement 
-                if (intersection.width < intersection.height){
-                    
-                    if(android.x < block.x){
-                        
-                        android.x = android.x - intersection.width;
-                        
-                    }else{
-                        android.x = android.x + intersection.width;
-                    }
-                }else{  
-                    // fix the Y movement
-                    
-                    if (android.y < block.y){
-                        
-                        android.y = android.y + intersection.height;
-                        moveY = 0;
-                        
-                    }else{
-                        
-                        android.y = android.y - intersection.height;
-                        moveY = 0;
-                        air = false;
+
+            if (android.y + android.height > HEIGHT) {
+
+                android.y = HEIGHT - android.height;
+                moveY = 0;
+                air = false;
+            }
+            for (Rectangle block : blocks) {
+
+                if (android.intersects(block)) {
+
+                    Rectangle intersection = android.intersection(block);
+
+                    // fix the X movement 
+                    if (intersection.width < intersection.height) {
+
+                        if (android.x < block.x) {
+
+                            android.x = android.x - intersection.width;
+
+                        } else {
+                            android.x = android.x + intersection.width;
+                        }
+                    } else {
+                        // fix the Y movement
+
+                        if (android.y < block.y) {
+
+                            android.y = android.y + intersection.height;
+                            moveY = 0;
+
+                        } else {
+
+                            android.y = android.y - intersection.height;
+                            moveY = 0;
+                            air = false;
+                        }
                     }
                 }
             }
-        }
             // GAME LOGIC ENDS HERE 
 
             // update the drawing (calls paintComponent)
@@ -230,5 +236,43 @@ public class Game extends JComponent{
 
         // starts my game loop
         game.run();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+        int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_RIGHT) {
+            right = true;
+
+        } else if (key == KeyEvent.VK_LEFT) {
+            left = true;
+
+        } else if (key == KeyEvent.VK_SPACE) {
+            jump = true;
+
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+        int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_RIGHT) {
+            right = false;
+
+        } else if (key == KeyEvent.VK_LEFT) {
+            left = false;
+
+        } else if (key == KeyEvent.VK_SPACE) {
+            jump = false;
+
+        }
     }
 }
