@@ -338,7 +338,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
         // Game will end if you set done = false;
         boolean done = false;
         while (!done) {
-            // determines when we started so we can keep a framerate
+            // Determines when we started so we can keep a framerate
             startTime = System.currentTimeMillis();
 
             // GAME LOGIC STARTS HERE 
