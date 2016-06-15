@@ -5,6 +5,9 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -22,11 +25,15 @@ public class Game extends JComponent implements KeyListener {
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
     Rectangle main = new Rectangle(0, 0, 50, 50);
-    int speed = 3;
+    //Food particles
+    ArrayList<Rectangle> food = new ArrayList<Rectangle>();
+    int speed = 5;
+    int score = 0;
     boolean mainUp = false;
     boolean mainDown = false;
     boolean mainLeft = false;
     boolean mainRight = false;
+    BufferedImage foods = ImageHelper.loadImage("PacmanFOOD.jpg");
 
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
@@ -37,22 +44,29 @@ public class Game extends JComponent implements KeyListener {
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
         // GAME DRAWING GOES HERE 
+
         g.setColor(Color.black);
         g.fillRect(0, 0, WIDTH, HEIGHT);
         g.setColor(Color.white);
         g.fillRect(main.x, main.y, main.width, main.height);
-        g.fillOval(125, 15, 25, 25);
-        g.fillOval(175, 15, 25, 25);
-        g.fillOval(225, 15, 25, 25);
-        g.fillOval(275, 15, 25, 25);
-        g.fillOval(325, 15, 25, 25);
-        g.fillOval(375, 15, 25, 25);
-        g.fillOval(425, 15, 25, 25);
-        g.fillOval(475, 15, 25, 25);
-        g.fillOval(525, 15, 25, 25);
-        g.fillOval(575, 15, 25, 25);
-        g.fillOval(625, 15, 25, 25);
-        g.fillOval(675, 15, 25, 25);
+        g.setColor(Color.CYAN);
+
+//        g.fillOval(325, 15, 25, 25);
+//        g.fillOval(425, 15, 25, 25);
+//        g.fillOval(525, 15, 25, 25);
+//        g.fillOval(625, 15, 25, 25);
+//        g.fillOval(725, 15, 25, 25);
+//        g.fillOval(825, 15, 25, 25);
+//        g.fillOval(925, 15, 25, 25);
+//        g.fillOval(125, 165, 25, 25);
+//        g.fillOval(225, 165, 25, 25);
+//        g.fillOval(325, 165, 25, 25);
+//        g.fillOval(425, 165, 25, 25);
+//        g.fillOval(525, 165, 25, 25);
+//        g.fillOval(625, 165, 25, 25);
+//        g.fillOval(725, 165, 25, 25);
+//        g.fillOval(825, 165, 25, 25);
+//        g.fillOval(925, 165, 25, 25);
         g.setColor(Color.blue);
         g.drawRect(50, 50, 200, 100);
         g.drawRect(WIDTH - 200, HEIGHT - 200, 100, 100);
@@ -69,6 +83,14 @@ public class Game extends JComponent implements KeyListener {
         g.setColor(Color.green);
         g.drawRect(50, 300, 100, 200);
         g.drawRect(WIDTH - 200, 300, 100, 200);
+
+        for (Rectangle block : food) {
+            g.drawImage(foods, block.x, block.y, this);
+        }
+        food.add(new Rectangle(325, 15, 25, 25));
+        food.add(new Rectangle(425, 15, 25, 25));
+        food.add(new Rectangle(525, 15, 25, 25));
+
 
         // GAME DRAWING ENDS HERE
     }
@@ -90,6 +112,8 @@ public class Game extends JComponent implements KeyListener {
 
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
+
+       
             if (mainDown == true && main.y < HEIGHT - main.height) {
                 main.y = main.y + speed;
                 if (main.x > 0 && main.x < 250 && main.y < 50) {
@@ -107,145 +131,160 @@ public class Game extends JComponent implements KeyListener {
                 if (main.x > 200 && main.x < 300 && main.y < 300 && main.y > 250) {
                     main.y = 250;
                 }
-                if(main.x > WIDTH / 2 - 150 && main.x < WIDTH / 2 + 100 && main.y < 300 && main.y > 250){
+                if (main.x > WIDTH / 2 - 150 && main.x < WIDTH / 2 + 100 && main.y < 300 && main.y > 250) {
                     main.y = 250;
                 }
-                if(main.x > WIDTH-375 && main.x < WIDTH-275 && main.y < 300 && main.y > 250){
+                if (main.x > WIDTH - 375 && main.x < WIDTH - 275 && main.y < 300 && main.y > 250) {
                     main.y = 250;
-                }               
-                if(main.x > WIDTH-250 && main.x < WIDTH-100 && main.y < 300 && main.y > 250){
+                }
+                if (main.x > WIDTH - 250 && main.x < WIDTH - 100 && main.y < 300 && main.y > 250) {
                     main.y = 250;
-                }  
-                if (main.x > 0 && main.x < 150 && main.y < HEIGHT-200 && main.y > HEIGHT-250) {
-                    main.y = HEIGHT-250;
                 }
-                if(main.x > 200 && main.x < 550 && main.y < HEIGHT-150 && main.y > HEIGHT-200){
-                    main.y = HEIGHT-200;
+                if (main.x > 0 && main.x < 150 && main.y < HEIGHT - 200 && main.y > HEIGHT - 250) {
+                    main.y = HEIGHT - 250;
                 }
-                if(main.x > WIDTH-400 && main.x < WIDTH-300 && main.y < HEIGHT-200 && main.y > HEIGHT-250){
-                    main.y = HEIGHT-250;
+                if (main.x > 200 && main.x < 550 && main.y < HEIGHT - 150 && main.y > HEIGHT - 200) {
+                    main.y = HEIGHT - 200;
                 }
-                if(main.x > WIDTH-250 && main.x < WIDTH-100 && main.y < HEIGHT-200 && main.y > HEIGHT-250){
-                    main.y = HEIGHT-250;
-                }   
+                if (main.x > WIDTH - 400 && main.x < WIDTH - 300 && main.y < HEIGHT - 200 && main.y > HEIGHT - 250) {
+                    main.y = HEIGHT - 250;
+                }
+                if (main.x > WIDTH - 250 && main.x < WIDTH - 100 && main.y < HEIGHT - 200 && main.y > HEIGHT - 250) {
+                    main.y = HEIGHT - 250;
+                }
             }
             if (mainUp == true && main.y > 0) {
                 main.y = main.y - speed;
-                if(main.intersects(50, 50, 200, 100)){
+                if (main.intersects(50, 50, 200, 100)) {
                     main.y = 150;
                 }
-                if(main.intersects(350, 50, 300, 100)){
+                if (main.intersects(350, 50, 300, 100)) {
                     main.y = 150;
                 }
-                if(main.intersects(WIDTH - 200, 50, 100, 100)){
+                if (main.intersects(WIDTH - 200, 50, 100, 100)) {
                     main.y = 150;
                 }
-                if(main.intersects(50, 300, 100, 200)){
+                if (main.intersects(50, 300, 100, 200)) {
                     main.y = 500;
                 }
-                if(main.intersects(250, 300, 50, 200)){
+                if (main.intersects(250, 300, 50, 200)) {
                     main.y = 500;
                 }
-                if(main.intersects(WIDTH / 2 - 100, HEIGHT / 2 - 100, 200, 200)){
+                if (main.intersects(WIDTH / 2 - 100, HEIGHT / 2 - 100, 200, 200)) {
                     main.y = 500;
                 }
-                if(main.intersects(WIDTH - 325, 300, 50, 200)){
+                if (main.intersects(WIDTH - 325, 300, 50, 200)) {
                     main.y = 500;
                 }
-                if(main.intersects(WIDTH - 200, 300, 100, 200)){
+                if (main.intersects(WIDTH - 200, 300, 100, 200)) {
                     main.y = 500;
                 }
-                if(main.intersects(50, HEIGHT - 200, 100, 150)){
-                    main.y = HEIGHT-50;
+                if (main.intersects(50, HEIGHT - 200, 100, 150)) {
+                    main.y = HEIGHT - 50;
                 }
-                if(main.intersects(250, HEIGHT - 150, 300, 100)){
-                    main.y = HEIGHT-50;
+                if (main.intersects(250, HEIGHT - 150, 300, 100)) {
+                    main.y = HEIGHT - 50;
                 }
-                if(main.intersects(WIDTH - 350, HEIGHT - 200, 50, 100)){
-                    main.y = HEIGHT-100;
+                if (main.intersects(WIDTH - 350, HEIGHT - 200, 50, 100)) {
+                    main.y = HEIGHT - 100;
                 }
-                if(main.intersects(WIDTH - 200, HEIGHT - 200, 100, 100)){
-                    main.y = HEIGHT-100;
+                if (main.intersects(WIDTH - 200, HEIGHT - 200, 100, 100)) {
+                    main.y = HEIGHT - 100;
                 }
             }
             if (mainRight == true && main.x < WIDTH - main.width) {
                 main.x = main.x + speed;
-                if(main.y > 0 && main.y < 150 && main.x < 50){
+                if (main.y > 0 && main.y < 150 && main.x < 50) {
                     main.x = 0;
                 }
-                if(main.y > 250 && main.y < 500 && main.x < 50){
+                if (main.y > 250 && main.y < 500 && main.x < 50) {
                     main.x = 0;
                 }
-                if(main.y > HEIGHT-250 && main.y < HEIGHT - 50 && main.x < 50){
+                if (main.y > HEIGHT - 250 && main.y < HEIGHT - 50 && main.x < 50) {
                     main.x = 0;
                 }
-                if(main.y > 250 && main.y < 500 && main.x > 200 && main.x < 250){
+                if (main.y > 250 && main.y < 500 && main.x > 200 && main.x < 250) {
                     main.x = 200;
                 }
-                if(main.y > HEIGHT-200 && main.y < HEIGHT-50 && main.x > 200 && main.x < 250){
+                if (main.y > HEIGHT - 200 && main.y < HEIGHT - 50 && main.x > 200 && main.x < 250) {
                     main.x = 200;
                 }
-                if(main.y > 0 && main.y < 150 && main.x > 300 && main.x < 350){
+                if (main.y > 0 && main.y < 150 && main.x > 300 && main.x < 350) {
                     main.x = 300;
                 }
-                if(main.y > HEIGHT/2-150 && main.y < HEIGHT/2+100 && main.x > WIDTH/2-150 && main.x < WIDTH/2-100){
-                    main.x = WIDTH/2-150;
+                if (main.y > HEIGHT / 2 - 150 && main.y < HEIGHT / 2 + 100 && main.x > WIDTH / 2 - 150 && main.x < WIDTH / 2 - 100) {
+                    main.x = WIDTH / 2 - 150;
                 }
-                if(main.y > HEIGHT-250 && main.y < HEIGHT-100 && main.x > WIDTH-400 && main.x < WIDTH-350){
-                    main.x = WIDTH-400;
+                if (main.y > HEIGHT - 250 && main.y < HEIGHT - 100 && main.x > WIDTH - 400 && main.x < WIDTH - 350) {
+                    main.x = WIDTH - 400;
                 }
-                if(main.y > 250 && main.y < 500 && main.x > WIDTH-375 && main.x < WIDTH-325){
-                    main.x = WIDTH-375;
+                if (main.y > 250 && main.y < 500 && main.x > WIDTH - 375 && main.x < WIDTH - 325) {
+                    main.x = WIDTH - 375;
                 }
-                if(main.y > 0 && main.y < 150 && main.x > WIDTH-250 && main.x < WIDTH-200){
-                    main.x = WIDTH-250;
+                if (main.y > 0 && main.y < 150 && main.x > WIDTH - 250 && main.x < WIDTH - 200) {
+                    main.x = WIDTH - 250;
                 }
-                if(main.y > 250 && main.y < 500 && main.x > WIDTH-250 && main.x < WIDTH-200){
-                    main.x = WIDTH-250;
+                if (main.y > 250 && main.y < 500 && main.x > WIDTH - 250 && main.x < WIDTH - 200) {
+                    main.x = WIDTH - 250;
                 }
-                if(main.y > HEIGHT-250 && main.y < HEIGHT-100 && main.x > WIDTH-250 && main.x < WIDTH-200){
-                    main.x = WIDTH-250;
+                if (main.y > HEIGHT - 250 && main.y < HEIGHT - 100 && main.x > WIDTH - 250 && main.x < WIDTH - 200) {
+                    main.x = WIDTH - 250;
                 }
             }
             if (mainLeft == true && main.x > 0) {
                 main.x = main.x - speed;
-                if(main.intersects(50, 50, 200, 100)){
+                if (main.intersects(50, 50, 200, 100)) {
                     main.x = 250;
                 }
-                if(main.intersects(350, 50, 300, 100)){
+                if (main.intersects(350, 50, 300, 100)) {
                     main.x = 650;
                 }
-                if(main.intersects(WIDTH - 200, 50, 100, 100)){
-                    main.x = WIDTH-100;
+                if (main.intersects(WIDTH - 200, 50, 100, 100)) {
+                    main.x = WIDTH - 100;
                 }
-                if(main.intersects(50, 300, 100, 200)){
+                if (main.intersects(50, 300, 100, 200)) {
                     main.x = 150;
                 }
-                if(main.intersects(250, 300, 50, 200)){
+                if (main.intersects(250, 300, 50, 200)) {
                     main.x = 300;
                 }
-                if(main.intersects(WIDTH / 2 - 100, HEIGHT / 2 - 100, 200, 200)){
-                    main.x = WIDTH/2+100;
+                if (main.intersects(WIDTH / 2 - 100, HEIGHT / 2 - 100, 200, 200)) {
+                    main.x = WIDTH / 2 + 100;
                 }
-                if(main.intersects(WIDTH - 325, 300, 50, 200)){
-                    main.x = WIDTH-275;
+                if (main.intersects(WIDTH - 325, 300, 50, 200)) {
+                    main.x = WIDTH - 275;
                 }
-                if(main.intersects(WIDTH - 200, 300, 100, 200)){
-                    main.x = WIDTH-100;
+                if (main.intersects(WIDTH - 200, 300, 100, 200)) {
+                    main.x = WIDTH - 100;
                 }
-                if(main.intersects(50, HEIGHT - 200, 100, 150)){
+                if (main.intersects(50, HEIGHT - 200, 100, 150)) {
                     main.x = 150;
                 }
-                if(main.intersects(250, HEIGHT - 150, 300, 100)){
+                if (main.intersects(250, HEIGHT - 150, 300, 100)) {
                     main.x = 550;
                 }
-                if(main.intersects(WIDTH - 350, HEIGHT - 200, 50, 100)){
-                    main.x = WIDTH-300;
+                if (main.intersects(WIDTH - 350, HEIGHT - 200, 50, 100)) {
+                    main.x = WIDTH - 300;
                 }
-                if(main.intersects(WIDTH - 200, HEIGHT - 200, 100, 100)){
-                    main.x = WIDTH-100;
+                if (main.intersects(WIDTH - 200, HEIGHT - 200, 100, 100)) {
+                    main.x = WIDTH - 100;
                 }
             }
+                 Iterator<Rectangle> collect = food.iterator();
+            while (collect.hasNext()) {
+                // recognizing the dust
+                Rectangle food = collect.next();
+                // If player touches dust, collects it and stores it
+                if (main.intersects(food)) {
+                    collect.remove();
+                    //adds to score
+                    score++;
+                }
+            }
+
+
+
+
             // GAME LOGIC ENDS HERE 
 
             // update the drawing (calls paintComponent)
