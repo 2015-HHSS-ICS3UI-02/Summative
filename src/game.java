@@ -172,7 +172,7 @@ public class game extends JComponent implements KeyListener {
             if (turn == 1) {
                 g.setColor(Color.white);
             }
-            
+
             //shadow to tell user where the rock currently is
             g.fillOval(rock.x, rock.y, rock.width, rock.height);
 
@@ -696,13 +696,13 @@ public class game extends JComponent implements KeyListener {
                         //if its safe
                         if (safe) {
                             //make it white's turn
-                                turn = 1;
-                                //clone stone 
-                                black[numBlack] = (Rectangle) rock.clone();
-                                //add 1 to number of black stone
-                                numBlack++;
+                            turn = 1;
+                            //clone stone 
+                            black[numBlack] = (Rectangle) rock.clone();
+                            //add 1 to number of black stone
+                            numBlack++;
 
-                            
+
                         }
                     }
                     // if its white's turn
@@ -742,19 +742,18 @@ public class game extends JComponent implements KeyListener {
                             }
                         }
                         if (safe) {
-                             //change to black's turn
-                                turn = 0;
-                                //clont white rock to place
-                                white[numWhite] = (Rectangle) rock.clone();
-                                //add 1 to number of white stone
-                                numWhite++;
-                            
+                            //change to black's turn
+                            turn = 0;
+                            //clont white rock to place
+                            white[numWhite] = (Rectangle) rock.clone();
+                            //add 1 to number of white stone
+                            numWhite++;
+
                         }
                     }
                 }
 
-            } 
-            //if someone win
+            } //if someone win
             else if (win) {
                 //press enter to reset all the value and add 1 to winner's score
                 if (key == KeyEvent.VK_ENTER) {
