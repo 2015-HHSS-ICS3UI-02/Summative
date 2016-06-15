@@ -30,7 +30,7 @@ public class Game extends JComponent implements KeyListener{
     static final int HEIGHT = 800;
     
     BufferedImage satellite = ImageHelper.loadImage("satellite.png");
-            
+    BufferedImage sunflare = ImageHelper.loadImage("sunflare.png");       
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
     long desiredFPS = 120;
@@ -78,12 +78,12 @@ public class Game extends JComponent implements KeyListener{
         // always clear the screen first!
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, WIDTH, HEIGHT);
-        
         // GAME DRAWING GOES HERE
         g.setColor(Color.WHITE);
         g.setFont(gameFont);
         g.fillOval(496,396,8,8);
         g.drawImage(satellite, (int)xpos - 4,(int)ypos - 4,30,30, null);
+        g.drawImage(sunflare,420 ,320,160,160, null);
         g.drawString(("Distance:" + dist1),760,20);
         g.drawString(("Angle:" + angle1),760,40);
         g.drawString(("Gravitation:" + gforce1),760,60);
@@ -192,64 +192,95 @@ public class Game extends JComponent implements KeyListener{
                     xpos1 = 500;                                                                
                     ypos1 = 400;                                                                
                     mass1 = 100;                                                                  
-                    m_end = new Rectangle(450, 160, 100, 10);
+                    m_end = new Rectangle(450, 200, 100, 10);
                     reset = false;
                     objective = "Fly the spacecraft through the zone";
                     count = 0;
-                if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width)){
+                    }
+                    if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width)){
                         won = true;
                         mission = mission + 1;
                         reason = "Mission complete, reset to go to next mission"; 
-                    }
-                if(dist1 <= 7){
+                    }   
+                    if(dist1 <= 7){
                         reset = true;
                     }
+            }
+            if(mission == 4){
+                if(reset == true){                                                             
+                    won = false;
+                    xpos = 200;                                                                  
+                    ypos = 280;                                                              
+                    fuel = 30;                                                               
+                    xspeed = 0.65;                                                                
+                    yspeed = 0.35;                                                                  
+                    xpos1 = 500;                                                                
+                    ypos1 = 400;                                                                
+                    mass1 = 100;                                                                  
+                    m_end = new Rectangle(450, 200, 100, 10);
+                    reset = false;
+                    objective = "Keep the orbit consistenly below 400";
+                    count = 0;
+                    }
+                    if(count >= 4000){
+                        won = true;
+                        mission = mission + 1;
+                        reason = "Mission complete, reset to go to next mission"; 
+                    }   
+                    if(dist1 <= 7){
+                        reset = true;
+                    }
+                    if(dist1 >= 400){
+                        reset = true;
                 }
             }
             if(mission == 4){
                 if(reset == true){                                                             
                     won = false;
-                    xpos = 0;                                                                  
-                    ypos = 0;                                                              
-                    fuel = 20;                                                               
-                    xspeed = 0.25;                                                                
-                    yspeed = 0.25;                                                                  
+                    xpos = 200;                                                                  
+                    ypos = 280;                                                              
+                    fuel = 30;                                                               
+                    xspeed = 0.65;                                                                
+                    yspeed = 0.35;                                                                  
                     xpos1 = 500;                                                                
                     ypos1 = 400;                                                                
                     mass1 = 100;                                                                  
-                    m_end = new Rectangle(450, 160, 100, 10);
+                    m_end = new Rectangle(450, 200, 100, 10);
                     reset = false;
-                    objective = "Achieve an orbit consistently below 400";
+                    objective = "Keep the orbit consistenly below 400";
                     count = 0;
-                    if(count >= 10000){
+                    }
+                    if(count >= 4000){
                         won = true;
                         mission = mission + 1;
                         reason = "Mission complete, reset to go to next mission"; 
+                    }   
+                    if(dist1 <= 7){
+                        reset = true;
                     }
                     if(dist1 >= 400){
                         reset = true;
-                    }
                 }
             }
             if(mission == 5){
                 if(reset == true){                                                             
                     won = false;
-                    xpos = 0;                                                                  
-                    ypos = 0;                                                              
-                    fuel = 20;                                                               
-                    xspeed = 0.25;                                                                
-                    yspeed = 0.25;                                                                  
+                    xpos = 20;                                                                  
+                    ypos = 400;                                                              
+                    fuel = 30;                                                               
+                    xspeed = 0.5;                                                                
+                    yspeed = 1;                                                                  
                     xpos1 = 500;                                                                
                     ypos1 = 400;                                                                
                     mass1 = 1000;                                                                  
-                    m_end = new Rectangle(450, 160, 100, 10);
+                    m_end = new Rectangle(450, 200, 100, 10);
                     reset = false;
-                    objective = "Achieve an orbit consistently below 400";
+                    objective = "Keep the orbit consistenly below 400";
                     count = 0;
+                    }
                     if(dist1 <= 7){
                         reset = true;
                     }
-                }
             }
             //APPLYING PLAYER ACCELERATION
             
