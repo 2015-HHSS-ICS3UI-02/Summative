@@ -4,6 +4,7 @@
  */
 
 import sun.audio.*;    //import the sun.audio package
+import java.util.Timer; // Impot the java.util.Timer package
 import java.io.*;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -73,7 +74,10 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     BufferedImage gameModes = ImageHelper.loadImage("Game Modes_1.jpg");
     BufferedImage deathScreen = ImageHelper.loadImage("Death Screen.jpg");
     BufferedImage pauseScreen = ImageHelper.loadImage("pausedscreen.png");
+    // Add haze background for pause screen
     Color haze = new Color(255, 255, 255, 100);
+    // Add a timer
+    Timer timer = new Timer();
     // Drawing of the game happens in here
     // We use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
@@ -411,7 +415,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                     button1 = false;
                 }
 
-                // If 'Game Modes' is clicked GLICHES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // If 'Game Modes' is clicked 
             } else if (screen == 7) {
                 if (button1) {
                     if (mouseX > 569 && mouseX < 709 && mouseY > 140 && mouseY < 310) {
@@ -419,7 +423,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                     }
                     button1 = false;
                 }
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // Game logic for game modes 'Easy', 'Medium', and 'Insane'
             } else {
                 // The game itself (player and enemy movement
                 // Array that goes through all minions and collisions with screen
@@ -473,16 +477,27 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         }
                     }
 
-                    // For loop used to interact when minions hit the player to bounce off
+                    // For loop used to interact when minions hit the player to bounce off  WHAT ID THE DIFFERENCE? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
                     for (int i = 0; i < enemies.length; i++) {
                         if (enemies[i].intersects(P1)) {
                             moveX[i] = -moveX[i];
                             moveY[i] = -moveY[i];
                         }
+//                        while (enemies[i].intersects(P1)) {                               DO I NEED THIS? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+//                            enemies[i].x = enemies[i].x + moveX[i];
+//                            enemies[i].x = enemies[i].x + moveY[i];
+//
+//                        }
+                    }
+
+                    // Properly makes the enemies intersect with the minion player          WHAT ID THE DIFFERENCE? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+                    for (int i = 0; i < enemies.length; i++) {
+                        if (enemies[i].intersects(P1)) {
+                            enemies[i].x = enemies[i].x + moveX[i];
+                            enemies[i].x = enemies[i].x + moveY[i];
+                        }
                     }
                 }
-
-
             }
 
             // GAME LOGIC ENDS HERE 
