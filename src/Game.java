@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -31,15 +32,17 @@ public class Game extends JComponent implements KeyListener {
     int x = 100;
     int y = 400;
     // mouse variables
-    int mouseX = 0;
-    int mouseY = 0;
+    int mousex = 0;
+    int mousey = 0;
     boolean keypressed = false;
     // blocks
     ArrayList<Rectangle> blocks = new ArrayList<>();
+    // back background
+    Rectangle screen = new Rectangle(800, 600, 50, 50);
     // player
     Rectangle android = new Rectangle(200, 200, 50, 50);
-    int moveX = 0;
-    int moveY = 0;
+    int movex = 0;
+    int movey = 0;
     boolean air = false;
     int gravity = 1;
     int count = 0;
@@ -52,6 +55,15 @@ public class Game extends JComponent implements KeyListener {
     boolean backjump = false;
     //score
     int score1 = 0;
+    
+    // android pic
+    Rectangle player = new Rectangle(200, 200, 50, 50);
+    BufferedImage guy = ImageHelper.loadImage("Android_robot.png");
+    
+    //marshmellow pic
+    Rectangle bigblock = new Rectangle(450, 360, 200, 350);
+    BufferedImage marsh = ImageHelper.loadImage("unnamed.png");
+    
     //font
     Font gameFont = new Font("Times New Roman", Font.PLAIN, 40);
 
@@ -64,7 +76,11 @@ public class Game extends JComponent implements KeyListener {
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
         // GAME DRAWING GOES HERE 
-        g.setColor(Color.BLACK);
+        g.setColor(Color.black);
+        g.fillRect(x, y, 1000, 1000);
+        g.fillRect(screen.x, screen.y, screen.width, screen.height);
+        
+        g.setColor(Color.black);
         for (Rectangle block : blocks) {
 
             g.fillRect(block.x, block.y, block.width, block.height);
@@ -83,6 +99,10 @@ public class Game extends JComponent implements KeyListener {
         g.setColor(Color.BLACK);
         g.setFont(gameFont);
         g.drawString("Score: " + score1, WIDTH / 2 - 100, 50);
+        
+        //marshmellow and android pictures
+        g.drawImage(marsh, bigblock.x, bigblock.y, bigblock.width,bigblock.height, null);
+        g.drawImage(guy, player.x, player.y, player.width, player.height, null);
 
         // GAME DRAWING ENDS HERE
     }
@@ -91,13 +111,7 @@ public class Game extends JComponent implements KeyListener {
     // In here is where all the logic for my game will go
     public void run() {
 
-        blocks.add(new Rectangle(500, 450, 100, 50));
-        blocks.add(new Rectangle(500, 500, 100, 50));
-        blocks.add(new Rectangle(500, 550, 100, 50));
-        blocks.add(new Rectangle(600, 400, 50, 50));
-        blocks.add(new Rectangle(450, 400, 50, 50));
-        blocks.add(new Rectangle(500, 400, 50, 50));
-        blocks.add(new Rectangle(550, 400, 50, 50));
+        blocks.add(new Rectangle(450, 400, 200, 350));  
 
         // Used to keep track of time used to draw and update the game
         // This is used to limit the framerate later on
@@ -114,49 +128,48 @@ public class Game extends JComponent implements KeyListener {
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
 
-            x = mouseX;
-            y = mouseY;
+            x = mousex;
+            y = mousey;
 
             if (left) {
 
-                moveX = - 2;
+                movex = - 2;
 
             } else if (right) {
 
-                moveX = 2;
+                movex = 2;
 
             } else {
 
-                moveX = 0;
+                movex = 0;
 
                 count++;
             }
 
             if (count >= 1) {
 
-                moveY = moveY + gravity;
+                movey = movey + gravity;
                 count = 0;
             }
 
-            //jumping
-
+            //jump
             if (jump && !backjump && !air) {
 
-                moveY = -20;
+                movey = -20;
                 air = true;
             }
             // tracks the jumps
             backjump = jump;
             // player movement
-            android.x = android.x + moveX;
-            android.y = android.y + moveY;
+            android.x = android.x + movex;
+            android.y = android.y + movey;
 
             // if player becomes lower than the ground (bottom of screen)
 
             if (android.y + android.height > HEIGHT) {
 
                 android.y = HEIGHT - android.height;
-                moveY = 0;
+                movey = 0;
                 air = false;
             }
             for (Rectangle block : blocks) {
@@ -177,16 +190,15 @@ public class Game extends JComponent implements KeyListener {
                         }
                     } else {
                         // fix the Y movement
-
                         if (android.y < block.y) {
 
                             android.y = android.y + intersection.height;
-                            moveY = 0;
+                            movey = 0;
 
                         } else {
 
                             android.y = android.y - intersection.height;
-                            moveY = 0;
+                            movey = 0;
                             air = false;
                         }
                     }
@@ -196,8 +208,6 @@ public class Game extends JComponent implements KeyListener {
 
             // update the drawing (calls paintComponent)
             repaint();
-
-
 
             // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
             // USING SOME SIMPLE MATH
@@ -212,7 +222,6 @@ public class Game extends JComponent implements KeyListener {
             }
         }
     }
-
     /**
      * @param args the command line arguments
      */
@@ -255,7 +264,6 @@ public class Game extends JComponent implements KeyListener {
 
         } else if (key == KeyEvent.VK_SPACE) {
             jump = true;
-
         }
     }
 
@@ -272,7 +280,6 @@ public class Game extends JComponent implements KeyListener {
 
         } else if (key == KeyEvent.VK_SPACE) {
             jump = false;
-
-        }
+        } 
     }
 }
