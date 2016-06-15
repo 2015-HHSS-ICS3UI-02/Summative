@@ -71,7 +71,7 @@ public class Runner extends JComponent implements KeyListener{
         boolean playerDown = false;
         boolean playerRight = false;
         boolean playerLeft = false;
-        
+        boolean levelUp = false;
         long scoretime = System.currentTimeMillis();
         //however long interval is between score ++
         long scoredelay = 500;
@@ -111,12 +111,7 @@ public class Runner extends JComponent implements KeyListener{
         
         g.setColor(Color.WHITE);
         
-        
-        
 
-        
-           
-        
         //draw background
        g.drawImage(Terrain, 0, 0, this);
        //draw main character
@@ -147,9 +142,13 @@ public class Runner extends JComponent implements KeyListener{
        g.drawString("Score:" + score, WIDTH/2 - 100, 100);
        
        //draw level up sign
-       if(scoredelay2 > System.currentTimeMillis()&& scoredelay2 < System.currentTimeMillis()+ 3000){
-       g.drawString("Level Up!" + score, WIDTH/2 - 100, 100);
-       }
+       if(score>19 && score<22){
+       Font levelFont = new Font("Arial", Font.PLAIN, 60);
+       g.setFont(levelFont);
+       g.setColor(Color.yellow);
+       g.drawString("Level Up!" , WIDTH/2 - 150 , 300);
+       levelUp = true;
+      }
        //load images for sonic movement
          Sanimation[0] = ImageHelper.loadImage("Sonic Ball1.png");   
          Sanimation[1] = ImageHelper.loadImage("Sonic Ball2.png");
@@ -222,7 +221,8 @@ public class Runner extends JComponent implements KeyListener{
            }
            
            //if bullets gets to left of screen, move them to far right,and make y random, and set bullet to random speed
-           //generate random speed
+           
+           //generate random speed number up to 3
            int randspeed = (int)(Math.random()*3);
            if(enemy1.x + 196 <0){
                //set bullet to far right
@@ -231,29 +231,34 @@ public class Runner extends JComponent implements KeyListener{
                int rand = (int)(Math.random()*1051);
                //input random y coord
                enemy1.y = rand;
-               //generate random speed number up to 3
-               
-               //if it does not generate a 0(no speed), change the speed of enemy
+               //if level up booleen is true(time has past a certain point)
+               if (levelUp == true){
+               //if it does not generate a 0(no speed), change the speed of enemy to make it go faster
                if(randspeed != 0){
                moveX1 = randspeed;
+               }
                }
            }
            if(enemy2.x + 196 <0){
                enemy2.x = 1248;
                int rand = (int)(Math.random()*1051);
                enemy2.y = rand;
-              
+               
+              if (levelUp == true){
                if(randspeed != 0){
-               moveX1 = randspeed;
+               moveX2 = randspeed;
                }
+              }
            }
            if(enemy3.x + 196 <0){
                enemy3.x = 1248;
                int rand = (int)(Math.random()*1051);
                enemy3.y = rand;
                
+               if (levelUp == true){
                if(randspeed != 0){
-               moveX1 = randspeed;
+               moveX3 = randspeed;
+               }
                }
            } 
            if(enemy4.x + 196 <0){
@@ -261,8 +266,10 @@ public class Runner extends JComponent implements KeyListener{
                int rand = (int)(Math.random()*1051);
                enemy4.y = rand;
                
+               if (levelUp == true){
                if(randspeed != 0){
-               moveX1 = randspeed;
+               moveX4 = randspeed;
+               }
                }
            }
            //if enemy is under the screen(y = HEIGHT), random the y coordinate
@@ -271,8 +278,10 @@ public class Runner extends JComponent implements KeyListener{
                int rand = (int)(Math.random()*1051);
                enemy1.y = rand;
                //if it does not generate a 0(no speed), change the speed of enemy
+               if (levelUp == true){
                if(randspeed != 0){
                moveX1 = randspeed;
+               }
                }
            }
            if(enemy2.y> HEIGHT -89){
@@ -280,8 +289,10 @@ public class Runner extends JComponent implements KeyListener{
                int rand = (int)(Math.random()*1051);
                enemy2.y = rand;
                //if it does not generate a 0(no speed), change the speed of enemy
+               if (levelUp == true){
                if(randspeed != 0){
                moveX1 = randspeed;
+               }
                }
            }
            if(enemy3.y> HEIGHT -89){
@@ -289,8 +300,10 @@ public class Runner extends JComponent implements KeyListener{
                int rand = (int)(Math.random()*1051);
                enemy3.y = rand;
                //if it does not generate a 0(no speed), change the speed of enemy
+               if (levelUp == true){
                if(randspeed != 0){
                moveX1 = randspeed;
+               }
                }
            }
            if(enemy4.y> HEIGHT -89){
@@ -298,8 +311,10 @@ public class Runner extends JComponent implements KeyListener{
                int rand = (int)(Math.random()*1051);
                enemy4.y = rand;
                //if it does not generate a 0(no speed), change the speed of enemy
+               if (levelUp == true){
                if(randspeed != 0){
                moveX1 = randspeed;
+               }
                }
            }
            //if any of bullets intersect, random them again to make them not intersect\
@@ -309,8 +324,10 @@ public class Runner extends JComponent implements KeyListener{
                int rand = (int)(Math.random()*1051);
                enemy1.y = rand;
                //if it does not generate a 0(no speed), change the speed of enemy
+               if (levelUp == true){
                if(randspeed != 0){
                moveX1 = randspeed;
+               }
                }
            }
            if(enemy1.y >enemy3.y - 89 && enemy1.y <enemy3.y + 89){
@@ -318,8 +335,10 @@ public class Runner extends JComponent implements KeyListener{
                int rand = (int)(Math.random()*1051);
                enemy1.y = rand;
                //if it does not generate a 0(no speed), change the speed of enemy
+               if (levelUp == true){
                if(randspeed != 0){
                moveX1 = randspeed;
+               }
                }
            }
            if(enemy1.y >enemy4.y - 89 && enemy1.y <enemy4.y + 89){
@@ -327,8 +346,10 @@ public class Runner extends JComponent implements KeyListener{
                int rand = (int)(Math.random()*1051);
                enemy1.y = rand;
                //if it does not generate a 0(no speed), change the speed of enemy
+               if (levelUp == true){
                if(randspeed != 0){
                moveX1 = randspeed;
+               }
                }
            }
            if(enemy2.y >enemy3.y - 89 && enemy2.y <enemy3.y + 89){
@@ -336,8 +357,10 @@ public class Runner extends JComponent implements KeyListener{
                int rand = (int)(Math.random()*1051);
                enemy2.y = rand;
                //if it does not generate a 0(no speed), change the speed of enemy
+               if (levelUp == true){
                if(randspeed != 0){
                moveX1 = randspeed;
+               }
                }
            }
            if(enemy2.y >enemy4.y - 89 && enemy2.y <enemy4.y + 89){
@@ -345,8 +368,10 @@ public class Runner extends JComponent implements KeyListener{
                int rand = (int)(Math.random()*1051);
                enemy2.y = rand;
                //if it does not generate a 0(no speed), change the speed of enemy
+               if (levelUp == true){
                if(randspeed != 0){
                moveX1 = randspeed;
+               }
                }
            }
            if(enemy3.y >enemy4.y - 89 && enemy3.y <enemy4.y + 89){
@@ -354,8 +379,10 @@ public class Runner extends JComponent implements KeyListener{
                int rand = (int)(Math.random()*1051);
                enemy3.y = rand;
                //if it does not generate a 0(no speed), change the speed of enemy
+               if (levelUp == true){
                if(randspeed != 0){
                moveX1 = randspeed;
+               }
                }
            }
            //player boundaries to move inside of 
