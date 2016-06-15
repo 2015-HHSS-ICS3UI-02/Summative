@@ -111,6 +111,8 @@ public class OnlyTonight extends JComponent implements KeyListener {
     boolean spaceBar = false;
     boolean backspace = false;
     boolean pong = false;
+    private boolean pongClue;
+    
     int enterKey = 0;
     int page = 0;
     char dir = 'r';
@@ -144,7 +146,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
     // countdown meter
     int countdown = 720;
     // game font
-    Font otType = new Font("Arial", Font.BOLD, 40);
+    Font otType = new Font("Agency FB", Font.BOLD, 40);
     Font pongType = new Font("Arial", Font.BOLD, 40);
 
     // drawing of the game happens in here
@@ -206,11 +208,21 @@ public class OnlyTonight extends JComponent implements KeyListener {
             if (theo.intersects(deskTrigger)) {
                 g.drawImage(dialogqm, theo.x, theo.y, 21, 38, null);
             }
+            
+            if (pongClue && spaceBar) {                                          // EDIT
+                pongClue = false;
+            }
+            
             // minigame screens
             if (spaceBar == true && theo.intersects(deskTrigger)) {
                 g.drawImage(letterScreen, 0, 0, null);
             }
 
+            if (pongClue) {
+                g.drawImage(clue, 0, 0, WIDTH, HEIGHT, null);
+            }
+
+            
             // countdown
             g.setColor(Color.WHITE);
             g.setFont(otType);
@@ -260,6 +272,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
                 enterKey = 0;
                 page = 0;
             }
+            
         } else if (menuSelection == 3 && enterKey == 1) {
             g.drawImage(credits, 0, 0, WIDTH, HEIGHT, null);
             if (backspace) {
@@ -288,11 +301,8 @@ public class OnlyTonight extends JComponent implements KeyListener {
             g.setColor(Color.BLUE);
             g.drawString("" + score2, WIDTH / 2 + 100, 100);
 
-            if (score1 == 10) {
-                if (!theoUp) {
-                    g.drawImage(clue, 0, 0, WIDTH, HEIGHT, null);                // EDIT
-                }
-            }
+
+            
         }
         // GAME DRAWING ENDS HERE
     }
@@ -314,25 +324,25 @@ public class OnlyTonight extends JComponent implements KeyListener {
 
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
-            
+
             // dialog boxes
             // table 1 (typewriter)
             if (spaceBar == true && theo.intersects(table1Trigger)) {
-                tr = (String)JOptionPane.showInputDialog(
-                    this,
-                    "Which creature walks on four legs in the morning, two legs in the afternoon, and three in the evening?", "Type Writer",
-                    JOptionPane.PLAIN_MESSAGE, null, null, "_ _ _ _ _ _");
+                tr = (String) JOptionPane.showInputDialog(
+                        this,
+                        "Which creature walks on four legs in the morning, two legs in the afternoon, and three in the evening?", "Type Writer",
+                        JOptionPane.PLAIN_MESSAGE, null, null, "_ _ _ _ _ _");
                 spaceBar = false;
             }
             // safe
             if (spaceBar == true && theo.intersects(safeTrigger)) {
-                tr = (String)JOptionPane.showInputDialog(
-                    this,
-                    "Enter the code.", "Safe",
-                    JOptionPane.PLAIN_MESSAGE, null, null, "_ _ _ _ _");
+                tr = (String) JOptionPane.showInputDialog(
+                        this,
+                        "Enter the code.", "Safe",
+                        JOptionPane.PLAIN_MESSAGE, null, null, "_ _ _ _ _");
                 spaceBar = false;
             }
-            
+
             if (spaceBar == true && theo.intersects(pongTrigger)) {
                 pong = true;
             }
@@ -525,6 +535,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
                         }
                     }
                 }
+
                 // menu screen
             } else if (enterKey == 0) {
                 if (theoUp) {
@@ -561,8 +572,10 @@ public class OnlyTonight extends JComponent implements KeyListener {
                         theoLeft = false;
                     }
                 }
+
+
             } else {
-                // start game
+                // PONG
                 // make ball move
                 ball.x = ball.x + moveX * pongSpeed;
                 ball.y = ball.y + moveY * pongSpeed;
@@ -607,6 +620,8 @@ public class OnlyTonight extends JComponent implements KeyListener {
                 // max score
                 if (score1 == 10 || score2 == 10) {
                     pong = false;
+                    pongClue = true;
+                    spaceBar = false;
                 }
                 // CU
                 if (p2.y + p2.height < ball.y) {
@@ -698,6 +713,10 @@ public class OnlyTonight extends JComponent implements KeyListener {
                 backspace = true;
             }
         } else if (pong) {
+            if(key==KeyEvent.VK_0){
+                score1 = 9;
+            }
+            
             if (key == KeyEvent.VK_W) {
                 p2UP = true;
             } else if (key == KeyEvent.VK_S) {
