@@ -42,6 +42,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
     BufferedImage safeScreen = ImageHelper.loadImage("SafeCodePad.jpg");
     BufferedImage titleScreen = ImageHelper.loadImage("OT.TitleScreen.jpg");
     BufferedImage helpScreen = ImageHelper.loadImage("OT.HelpScreen.jpg");
+    BufferedImage helpScreen2 = ImageHelper.loadImage("OT.HelpScreen2.jpg");
     BufferedImage credits = ImageHelper.loadImage("Credits.jpg");
     BufferedImage story1 = ImageHelper.loadImage("Story1.jpg");
     BufferedImage story2 = ImageHelper.loadImage("Story2.jpg");
@@ -62,6 +63,9 @@ public class OnlyTonight extends JComponent implements KeyListener {
     BufferedImage WS2 = ImageHelper.loadImage("Winning Screen 2.jpg");
     BufferedImage clue = ImageHelper.loadImage("Clue.jpg");
     BufferedImage GameOver = ImageHelper.loadImage("Game Over.jpg");
+    BufferedImage WinningScreen1 = ImageHelper.loadImage("WinningScreen1.jpg");
+    BufferedImage WinningScreen2 = ImageHelper.loadImage("WinningScreen2.jpg");
+    
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
     long desiredFPS = 60;
@@ -111,14 +115,17 @@ public class OnlyTonight extends JComponent implements KeyListener {
     boolean spaceBar = false;
     boolean backspace = false;
     boolean pong = false;
+    boolean gameOver = false;
+    boolean winGame = false;
     private boolean pongClue;
-    
+    String typewriterClue = "human";
+    String safeClue = "32215";
     int enterKey = 0;
     int page = 0;
+    int helpPage = 0;
     char dir = 'r';
     int menuSelection = 0;
     String tr = "human";
-    String safeCode = "32216";
     // pong
     Rectangle ball = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
     // ball control
@@ -144,10 +151,12 @@ public class OnlyTonight extends JComponent implements KeyListener {
     Color redOrange = new Color(255, 100, 0);
     Color goodGreen = new Color(0, 100, 0);
     // countdown meter
-    int countdown = 720;
+    int countdown = 700;
     // game font
     Font otType = new Font("Agency FB", Font.BOLD, 40);
     Font pongType = new Font("Arial", Font.BOLD, 40);
+    
+    long nextTick = 0; 
 
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
@@ -175,6 +184,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
 
         // game code
         if (menuSelection == 0 && enterKey == 1 && !pong) {
+            
             // background colour
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -182,6 +192,17 @@ public class OnlyTonight extends JComponent implements KeyListener {
             g.setColor(brown);
             g.drawImage(background, room.x, room.y, room.width, room.height, null);
 
+            // Winning screen
+            if (winGame) {
+                if (enterKey == 0) {
+                    g.drawImage(WinningScreen1, 0, 0, WIDTH, HEIGHT, null);
+                } else if (enterKey == 1) {
+                    g.drawImage(WinningScreen2, 0, 0, WIDTH, HEIGHT, null);
+                } else if (enterKey == 2) {
+                    gameOver = true;
+                }
+            }
+            
             // Theo
             if (dir == 'r') {
                 g.drawImage(theoStandRight, theo.x, theo.y, theo.width, theo.height, null);
@@ -208,22 +229,18 @@ public class OnlyTonight extends JComponent implements KeyListener {
             if (theo.intersects(deskTrigger)) {
                 g.drawImage(dialogqm, theo.x, theo.y, 21, 38, null);
             }
-            
-            if (pongClue && spaceBar) {                                          // EDIT
-                pongClue = false;
-            }
-            
+
             // minigame screens
             if (spaceBar == true && theo.intersects(deskTrigger)) {
                 g.drawImage(letterScreen, 0, 0, null);
             }
-
-            if (pongClue) {
-                g.drawImage(clue, 0, 0, WIDTH, HEIGHT, null);
-            }
-
             
-            // countdown
+            // game over
+            if (gameOver) {
+                g.drawImage(GameOver, 0, 0, WIDTH, HEIGHT, null);                                // EDIt
+            }
+            
+            // timer
             g.setColor(Color.WHITE);
             g.setFont(otType);
             g.drawString(countdown + " s", 500, 45);
@@ -234,6 +251,23 @@ public class OnlyTonight extends JComponent implements KeyListener {
             if (backspace) {
                 enterKey = 0;
             }
+            if (theoRight) {
+                helpPage = helpPage + 1;
+                theoRight = false;
+            } else if (theoLeft) {
+                helpPage = helpPage - 1;
+                theoLeft = false;
+            }
+            
+            if (helpPage == 0){
+                g.drawImage(helpScreen, 0, 0, WIDTH, HEIGHT, null);
+            } else if (helpPage == 1) {
+                g.drawImage(helpScreen2, 0, 0, WIDTH, HEIGHT, null);
+            } else if (helpPage < 0 || helpPage > 1) {
+                helpPage = 0;
+                enterKey = 0;
+            }
+            
         } else if (menuSelection == 2 && enterKey == 1) {
             g.drawImage(story1, 0, 0, WIDTH, HEIGHT, null);
             // continue to next pic
@@ -243,6 +277,9 @@ public class OnlyTonight extends JComponent implements KeyListener {
             } else if (theoLeft) {
                 page = page - 1;
                 theoLeft = false;
+            } else if (backspace) {
+                page = 0;
+                enterKey = 0;
             }
             // show pic per int
             if (page == 0) {
@@ -272,7 +309,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
                 enterKey = 0;
                 page = 0;
             }
-            
+
         } else if (menuSelection == 3 && enterKey == 1) {
             g.drawImage(credits, 0, 0, WIDTH, HEIGHT, null);
             if (backspace) {
@@ -300,9 +337,6 @@ public class OnlyTonight extends JComponent implements KeyListener {
             g.drawString("" + score1, WIDTH / 2 - 100, 100);
             g.setColor(Color.BLUE);
             g.drawString("" + score2, WIDTH / 2 + 100, 100);
-
-
-            
         }
         // GAME DRAWING ENDS HERE
     }
@@ -328,27 +362,106 @@ public class OnlyTonight extends JComponent implements KeyListener {
             // dialog boxes
             // table 1 (typewriter)
             if (spaceBar == true && theo.intersects(table1Trigger)) {
-                tr = (String) JOptionPane.showInputDialog(
+                String typewriterInput = (String) JOptionPane.showInputDialog(
                         this,
                         "Which creature walks on four legs in the morning, two legs in the afternoon, and three in the evening?", "Type Writer",
                         JOptionPane.PLAIN_MESSAGE, null, null, "_ _ _ _ _ _");
                 spaceBar = false;
+                if (typewriterInput.equalsIgnoreCase(typewriterClue)) {
+                    String s = (String) JOptionPane.showInputDialog(
+                            this,
+                            "Remember your anwer, it's value to you will count towards your escape.", "Clue #2",
+                            JOptionPane.PLAIN_MESSAGE, null, null, "Press OK.");
+                } else if (typewriterInput.equalsIgnoreCase("humans")) {
+                    String s = (String) JOptionPane.showInputDialog(
+                            this,
+                            "You're on the right path, but your answer is too long.", "Clue #2",                // EDIT
+                            JOptionPane.PLAIN_MESSAGE, null, null, "Press OK.");
+                } else if (!typewriterInput.equals(typewriterClue)) {
+                    String s = (String) JOptionPane.showInputDialog(
+                            this,
+                            "Try Google.", "Try again.",
+                            JOptionPane.PLAIN_MESSAGE, null, null, "Press OK.");
+                }
             }
             // safe
             if (spaceBar == true && theo.intersects(safeTrigger)) {
-                tr = (String) JOptionPane.showInputDialog(
+                String safeInput = (String) JOptionPane.showInputDialog(
                         this,
                         "Enter the code.", "Safe",
                         JOptionPane.PLAIN_MESSAGE, null, null, "_ _ _ _ _");
                 spaceBar = false;
+                if (safeInput.equals(safeClue)) {
+                    gameOver = true;
+                    done = true;
+                } else if (!safeInput.equals(safeClue)) {
+                    String s = (String) JOptionPane.showInputDialog(
+                        this,
+                        "The code was incorrect.", "Safe",
+                        JOptionPane.PLAIN_MESSAGE, null, null, "Press OK.");
+                }
             }
 
+            // make pong true
             if (spaceBar == true && theo.intersects(pongTrigger)) {
                 pong = true;
             }
 
+            // regular game controls
             if (!pong) {
-                if (enterKey == 1) {
+                if (enterKey == 0) {
+                    if (theoUp) {
+                        if (menuSelection == 2) {
+                            menuSelection = 0;
+                            theoUp = false;
+                        }
+                        if (menuSelection == 3) {
+                            menuSelection = 1;
+                            theoUp = false;
+                        }
+                    }
+                    if (theoDown) {
+                        if (menuSelection == 0) {
+                            menuSelection = 2;
+                            theoDown = false;
+                        }
+                        if (menuSelection == 1) {
+                            menuSelection = 3;
+                            theoDown = false;
+                        }
+                    }
+                    if (theoRight) {
+                        if (menuSelection == 0) {
+                            menuSelection = 1;
+                            theoRight = false;
+                        } else if (menuSelection == 2) {
+                            menuSelection = 3;
+                            theoRight = false;
+                        }
+                    }
+                    if (theoLeft) {
+                        if (menuSelection == 1) {
+                            menuSelection = 0;
+                            theoLeft = false;
+                        } else if (menuSelection == 3) {
+                            menuSelection = 2;
+                            theoLeft = false;
+                        }
+                    }
+                    
+                } else if (enterKey == 1) {
+                    // countdown
+                    if(nextTick == 0){
+                        nextTick = System.currentTimeMillis() + 1000;
+                    }
+                    if(System.currentTimeMillis() > nextTick){
+                        countdown--;
+                        nextTick = System.currentTimeMillis() + 1000;
+                    }
+                    if (countdown == 0) {
+                        gameOver = true;
+                    }
+                    
                     if (theoUp && theo.y > 72) {
                         theo.y = theo.y - speed;
                         dir = 'u';
@@ -364,8 +477,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
                     }
                 }
 
-                // collisions 
-                // pongTable
+                // pongTable collisions
                 if (theo.intersects(pongTable)) {
                     Rectangle intersection = theo.intersection(pongTable);
                     if (intersection.width < intersection.height) {
@@ -382,6 +494,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
                         }
                     }
                 }
+                // regular game collisions
                 // wall 1
                 if (theo.intersects(wall1)) {
                     Rectangle intersection = theo.intersection(wall1);
@@ -501,7 +614,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
                         }
                     }
                 }
-                // table 2
+                // safe
                 if (theo.intersects(safe)) {
                     Rectangle intersection = theo.intersection(safe);
                     if (intersection.width < intersection.height) {
@@ -533,43 +646,6 @@ public class OnlyTonight extends JComponent implements KeyListener {
                         } else {
                             theo.y = theo.y + intersection.height;
                         }
-                    }
-                }
-
-                // menu screen
-            } else if (enterKey == 0) {
-                if (theoUp) {
-                    if (menuSelection == 2) {
-                        menuSelection = 0;
-                        theoUp = false;
-                    }
-                }
-                if (theoDown) {
-                    if (menuSelection == 0) {
-                        menuSelection = 2;
-                        theoDown = false;
-                    }
-                    if (menuSelection == 1) {
-                        menuSelection = 3;
-                        theoDown = false;
-                    }
-                }
-                if (theoRight) {
-                    if (menuSelection == 0) {
-                        menuSelection = 1;
-                        theoRight = false;
-                    } else if (menuSelection == 2) {
-                        menuSelection = 3;
-                        theoRight = false;
-                    }
-                }
-                if (theoLeft) {
-                    if (menuSelection == 1) {
-                        menuSelection = 0;
-                        theoLeft = false;
-                    } else if (menuSelection == 3) {
-                        menuSelection = 2;
-                        theoLeft = false;
                     }
                 }
 
@@ -636,7 +712,19 @@ public class OnlyTonight extends JComponent implements KeyListener {
                 }
             }
 
-            // countdown
+            if (pongClue) {
+                String p = (String) JOptionPane.showInputDialog(
+                        this,
+                        "The complex may be simpler than you think, and the simple may count for more than you first thought.", "Clue #1.",
+                        JOptionPane.PLAIN_MESSAGE, null, null, "Press OK.");
+                pongClue = false;
+            }
+            
+            // win game
+            if (winGame == true) {
+                gameOver = true;
+                done = true;
+            }
 
             // GAME LOGIC ENDS HERE 
 
@@ -712,15 +800,10 @@ public class OnlyTonight extends JComponent implements KeyListener {
             } else if (key == KeyEvent.VK_BACK_SPACE) {
                 backspace = true;
             }
+            // pong cheat
         } else if (pong) {
-            if(key==KeyEvent.VK_0){
+            if (key == KeyEvent.VK_0) {
                 score1 = 9;
-            }
-            
-            if (key == KeyEvent.VK_W) {
-                p2UP = true;
-            } else if (key == KeyEvent.VK_S) {
-                p2DOWN = true;
             } else if (key == KeyEvent.VK_UP) {
                 p1UP = true;
             } else if (key == KeyEvent.VK_DOWN) {
@@ -749,16 +832,13 @@ public class OnlyTonight extends JComponent implements KeyListener {
                 backspace = false;
             }
         } else if (pong) {
-            if (key == KeyEvent.VK_W) {
-                p2UP = false;
-            } else if (key == KeyEvent.VK_S) {
-                p2DOWN = false;
-            } else if (key == KeyEvent.VK_UP) {
+            if (key == KeyEvent.VK_UP) {
                 p1UP = false;
             } else if (key == KeyEvent.VK_DOWN) {
                 p1DOWN = false;
             }
         }
+
         if (key == KeyEvent.VK_SPACE) {
             spaceBar = false;
         }
