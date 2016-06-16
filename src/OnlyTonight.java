@@ -36,7 +36,6 @@ public class OnlyTonight extends JComponent implements KeyListener {
     BufferedImage dialogwai = ImageHelper.loadImage("Dialog.WhereAmI.png");
     BufferedImage dialogexclm = ImageHelper.loadImage("Dialog.ExclamationMark.png");
     BufferedImage dialogqm = ImageHelper.loadImage("Dialog.QuestionMark.png");
-    BufferedImage dialogF = ImageHelper.loadImage("Dialog.Finally.png");
     BufferedImage typeWriterScreen = ImageHelper.loadImage("TypeWriter.jpg");
     BufferedImage letterScreen = ImageHelper.loadImage("Letter.jpg");
     BufferedImage safeScreen = ImageHelper.loadImage("SafeCodePad.jpg");
@@ -59,8 +58,6 @@ public class OnlyTonight extends JComponent implements KeyListener {
     BufferedImage OD3 = ImageHelper.loadImage("OpeningDialog3.jpg");
     BufferedImage OD4 = ImageHelper.loadImage("OpeningDialog4.jpg");
     BufferedImage OD5 = ImageHelper.loadImage("OpeningDialog5.jpg");
-    BufferedImage WS1 = ImageHelper.loadImage("Winning Screen 1.jpg");
-    BufferedImage WS2 = ImageHelper.loadImage("Winning Screen 2.jpg");
     BufferedImage clue = ImageHelper.loadImage("Clue.jpg");
     BufferedImage GameOver = ImageHelper.loadImage("Game Over.jpg");
     BufferedImage WinningScreen1 = ImageHelper.loadImage("WinningScreen1.jpg");
