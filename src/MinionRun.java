@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 
-import java.util.Timer; // Import the java.util.Timer package
 import java.io.*;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,29 +21,29 @@ import javax.swing.JFrame;
  *
  * @author tatad6701
  */
-public class AbstractRun extends JComponent implements KeyListener, MouseListener {
+public class MinionRun extends JComponent implements KeyListener, MouseListener {
 
-    // Height and Width of our game
+    // Height and Width of Minion Run
     static final int WIDTH = 800;
     static final int HEIGHT = 600;
-    // Sets the framerate and delay for our game
-    // You just need to select an approproate framerate
+    // Set the framerate and delay for Minion Run
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
-    // Create player(s) 
+    // Create player 
     Rectangle P1 = new Rectangle(290, 370, 35, 35);
-    // Ball control and speed
+    // Ball control
     int[] moveX = {1, -1, 1, -1};
     int[] moveY = {1, 1, -1, -1};
+    // Speed integer
     int speed = 5;
-    // Screen setting :  7 Screens in total
+    // Screen setting:  7 Screens in total
     int screen = 0;
-    // Create the minions
+    // Create the enemies
     Rectangle enemy = new Rectangle(70, 150, 10, 10);
     Rectangle enemy2 = new Rectangle(40, 400, 10, 10);
     Rectangle enemy3 = new Rectangle(50, HEIGHT / 2 - 5, 10, 10);
     Rectangle enemy4 = new Rectangle(5, HEIGHT / 2 - 20, 10, 10);
-    // Create array for minions to be easily drawn
+    // Create array for enemies to be easily drawn and to easily work with in game logic
     Rectangle[] enemies = {enemy, enemy2, enemy3, enemy4};
     // Player controls
     boolean p1Up = false;
@@ -56,9 +55,9 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     // Mouse X and Y integers
     int mouseX = 0;
     int mouseY = 0;
-    // Starting the game 
+    // Create boolean for alt key 
     boolean alt = false;
-    // Display the players health
+    // Integer for player health
     int health = 100;
     // Game Font
     Font gameFont = new Font("Arial", Font.PLAIN, 14);
@@ -73,61 +72,60 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     BufferedImage gameModes = ImageHelper.loadImage("Game Modes_1.jpg");
     BufferedImage deathScreen = ImageHelper.loadImage("Death Screen.jpg");
     BufferedImage pauseScreen = ImageHelper.loadImage("pausedscreen.png");
-    // Add haze background for pause screen
+    // Add haze background for the eighth screen, the pause screen
     Color haze = new Color(255, 255, 255, 100);
-    // Add a timer
-    Timer timer = new Timer();
-    Sound music = new Sound("Compass.wav");
-    // Drawing of the game happens in here
+    // Add music!
+    Sound music = new Sound("Tron Legacy - Son Of Flynn (Remix) - Extended!.wav");
     // We use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
     //** add this into your application code as appropriate
 
     @Override
     public void paintComponent(Graphics g) {
-        // Always clear the screen first!
+        // Clear the screen first!
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
         // GAME DRAWING GOES HERE 
-        // Menu options at the beginning of the game
+        // Drawings for screen 0, 'Start Menu' screen
         if (screen == 0) {
-            // Welcoome to Minion Run!
-            g.drawImage(welcome, 0, 0, 800, 600, null);
-            // Game modes option
+            // Welcome to Minion Run! (Width is set to 816 since image has little white stuff at top right corner :))
+            g.drawImage(welcome, 0, 0, 816, 600, null);
+
+            // 'Game modes' option
             g.setColor(Color.DARK_GRAY);
             g.setColor(Color.DARK_GRAY);
             g.fillRect(340, 280, 140, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
-            g.drawString("Game Modes! ", 370, 300);
+            g.drawString("Game Modes ", 370, 300);
 
-            // 'Game Modes' stamps
+            // 'Game Modes' option stamps (For design purposes)
             g.fillOval(340, 280, 7, 7);
             g.fillOval(472, 280, 7, 7);
             g.fillOval(340, 302, 7, 7);
             g.fillOval(472, 302, 7, 7);
 
-            // 'About Game'
+            // 'About Game' option
             g.setColor(Color.DARK_GRAY);
             g.fillRect(569, 280, 140, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
             g.drawString("About Game", 604, 300);
 
-            // 'About Game' stamps
+            // 'About Game' option stamps (For design purposes)
             g.fillOval(569, 280, 7, 7);
             g.fillOval(701, 280, 7, 7);
             g.fillOval(569, 302, 7, 7);
             g.fillOval(701, 302, 7, 7);
 
-            // 'Game Controls'
+            // 'Game Controls' option
             g.setColor(Color.DARK_GRAY);
             g.fillRect(110, 280, 140, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
             g.drawString("Game Controls", 135, 300);
 
-            // 'Game Controls' stamps
+            // 'Game Controls' option stamps (For design purposes)
             g.fillOval(110, 280, 7, 7);
             g.fillOval(242, 280, 7, 7);
             g.fillOval(110, 302, 7, 7);
@@ -137,13 +135,15 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
         // Drawings for screen 1, 'About Game' screen
         if (screen == 1) {
             g.drawImage(aboutGame, 0, 0, 820, 600, null);
+            // 'Back' option
             g.setColor(Color.DARK_GRAY);
             g.fillRect(550, 525, 110, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
             g.drawString("Back", 590, 545);
             g.setColor(Color.white);
-            // 'Back' Stamps
+
+            // 'Back' option stamps (For design purposes)
             g.fillOval(550, 525, 7, 7);
             g.fillOval(652, 547, 7, 7);
             g.fillOval(652, 525, 7, 7);
@@ -154,13 +154,15 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
         if (screen == 2) {
             // Draw background image of the minions/designs
             g.drawImage(gameControls, 0, 0, 800, 600, null);
+            // 'Back' option
             g.setColor(Color.DARK_GRAY);
             g.fillRect(550, 525, 110, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
             g.drawString("Back", 590, 545);
             g.setColor(Color.white);
-            // 'Back' Stamps
+
+            // 'Back' option stamps (For design purposes)
             g.fillOval(550, 525, 7, 7);
             g.fillOval(652, 547, 7, 7);
             g.fillOval(652, 525, 7, 7);
@@ -171,6 +173,18 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
         if (screen == 3) {
             // Draw background image of the minions/designs
             g.drawImage(gameModes, 0, 0, 800, 600, null);
+            // 'Easy' option
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(110, 280, 140, 30);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Easy", 161, 300);
+
+            // 'Easy' option stamps (For design purposes)
+            g.fillOval(110, 280, 7, 7);
+            g.fillOval(242, 280, 7, 7);
+            g.fillOval(110, 302, 7, 7);
+            g.fillOval(242, 302, 7, 7);
 
             // 'Medium' option
             g.setColor(Color.DARK_GRAY);
@@ -180,7 +194,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.setFont(gameFont);
             g.drawString("Medium", 387, 300);
 
-            // 'Medium' stamps
+            // 'Medium' option stamps (For design purposes)
             g.fillOval(340, 280, 7, 7);
             g.fillOval(472, 280, 7, 7);
             g.fillOval(340, 302, 7, 7);
@@ -193,24 +207,11 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.setFont(gameFont);
             g.drawString("Insane", 620, 300);
 
-            // 'Insane' stamps
+            // 'Insane' option stamps (For design purposes)
             g.fillOval(569, 280, 7, 7);
             g.fillOval(701, 280, 7, 7);
             g.fillOval(569, 302, 7, 7);
             g.fillOval(701, 302, 7, 7);
-
-            // 'Easy' option
-            g.setColor(Color.DARK_GRAY);
-            g.fillRect(110, 280, 140, 30);
-            g.setColor(Color.white);
-            g.setFont(gameFont);
-            g.drawString("Easy", 161, 300);
-
-            // 'Easy' stamps
-            g.fillOval(110, 280, 7, 7);
-            g.fillOval(242, 280, 7, 7);
-            g.fillOval(110, 302, 7, 7);
-            g.fillOval(242, 302, 7, 7);
 
             // 'Back' option
             g.setColor(Color.DARK_GRAY);
@@ -220,57 +221,61 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.drawString("Back", 618, 520);
             g.setColor(Color.white);
 
-            // 'Back' Stamps
+            // 'Back' option stamps (For design purposes)
             g.fillOval(580, 500, 7, 7);
             g.fillOval(682, 521, 7, 7);
             g.fillOval(682, 500, 7, 7);
             g.fillOval(580, 521, 7, 7);
         }
 
-        // 'Easy' mode in game
+        // Drawings for screen 4, 'Easy Mode' screen
         if (screen == 4) {
-            // Draw background image
+            // Drawing of background image
             g.drawImage(triangles, 0, 0, 800, 600, null);
-
         }
-        // 'Medium' mode in game
+
+        // Drawings for screen 5, 'Medium Mode' screen
         if (screen == 5) {
-            // Draw background image
+            // Drawing of background image
             g.drawImage(abstract4, 0, 0, 800, 600, null);
-
         }
-        // 'Insane' mode in game
+
+        // Drawings for screen 6, 'Insane Mode' screen
         if (screen == 6) {
-            // Draw background image
+            // Drawing of background image
             g.drawImage(startMenu, 0, 0, 800, 600, null);
-            health = 200;
         }
 
         // All of the game content if screen is greater than and or equal to 4 and if screen is less than or equal to 6
         if (screen >= 4 && screen <= 6) {
-            // Create player ball (the minion character
+            // Create player ball (the minion character)
             g.setColor(Color.DARK_GRAY);
             g.fillOval(P1.x, P1.y, P1.width, P1.height);
             g.drawImage(playerMinion, P1.x, P1.y, P1.width, P1.height, null);
 
-            // Array to go through each enemy draw their designs to be the same
+            // Array to go through each enemy and draw their designs to be the same
             g.setColor(Color.white);
             for (int i = 0; i < enemies.length; i++) {
                 g.fill3DRect(enemies[i].x, enemies[i].y, enemies[i].width, enemies[i].height, true);
             }
-            // If health is O, then switch screens to screen 7. the death screen
+
+            // If health is O, then switch screens to screen 7, the death screen
             if (health == 0) {
                 screen = 7;
             }
 
-            // Draw health bar
-            g.setColor(Color.red);
+            // Drawings of the health bar
             // Health background rectangle
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(6, 5, 80, 20);
+            g.setColor(Color.red);
+            // Create red section of the death! Decreases by 25 each enemy hit!
             g.fillRect(6, 5, 80 * health / 100, 20);
             g.setColor(Color.white);
             g.setFont(gameFont);
             g.drawString("Health: " + health, 10, 20);
         }
+
         // Drawings for screen 7, 'Death Screen'
         if (screen == 7) {
             // Draw background image including the designs created with photoshop
@@ -281,9 +286,9 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.fillRect(200, 280, 140, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
-            g.drawString("Game Over! ", 236, 300);
+            g.drawString("Game Over! ", 234, 300);
 
-            // Game Modes
+            // 'Game Modes' option
             g.setColor(Color.DARK_GRAY);
             g.fillRect(459, 280, 140, 30);
             g.setColor(Color.white);
@@ -291,13 +296,13 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.drawString("Game Modes", 490, 300);
 
             // Stamps for design on each option on screen 7
-            // 'Game Over' stamps
+            // 'Game Over' option stamps
             g.fillOval(200, 280, 7, 7);
             g.fillOval(332, 280, 7, 7);
             g.fillOval(200, 302, 7, 7);
             g.fillOval(332, 302, 7, 7);
 
-            // 'Game Modes' stamps
+            // 'Game Modes' option stamps
             g.fillOval(459, 280, 7, 7);
             g.fillOval(591, 280, 7, 7);
             g.fillOval(459, 302, 7, 7);
@@ -309,7 +314,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             // Draw background haze
             g.setColor(haze);
             g.fillRect(0, 0, WIDTH, HEIGHT);
-            // Draw the background text
+            // Draw the background text ("Paused... Press alt to resume!"
             g.drawImage(pauseScreen, 0, 0, 800, 600, null);
         }
     }
@@ -323,7 +328,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
         // This is used to limit the framerate later on
         long startTime;
         long deltaTime;
-
+        // Allow for the music (audio) to loop while the game is open!
         music.loop();
         // The main game loop section
         // Game will end if you set done = false;
@@ -333,70 +338,75 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             startTime = System.currentTimeMillis();
 
             // GAME LOGIC STARTS HERE 
-            // If 'Game Controls' was clicked
+            // If 'Game Controls', on screen 0, was clicked
             if (screen == 0) {
                 // If 'About Game' is clicked on, the screen then becomes screen 1
                 if (button1) {
-                    if (mouseX > 569 && mouseX < 709 && mouseY > 280 && mouseY < 310) { //(569, 280, 140, 30)
+                    // Coordinates for 'About Game' to be clicked within
+                    if (mouseX > 569 && mouseX < 709 && mouseY > 280 && mouseY < 310) {
                         screen = 1;
-                        System.out.println("Button1");
                     }
                 }
 
-                // If 'Game Controls' was clicked on, screen 0 changes to screen 
+                // If 'Game Controls', on screen 0, was clicked on, the screen then becomes screen 2 
                 if (button1) {
-                    if (mouseX > 110 && mouseX < 250 && mouseY > 280 && mouseY < 310) {   //(110, 280, 140, 30)
+                    // Coordinates for 'Game Controls' to be clicked within
+                    if (mouseX > 110 && mouseX < 250 && mouseY > 280 && mouseY < 310) {
                         screen = 2;
-                        System.out.println("Button2");
                     }
                 }
 
-                // If 'Game Modes' is clicked on, the screen then becomes screen 3, showing the user the game modes
+                // If 'Game Modes', on screen 0, was clicked on, the screen then becomes screen 3
                 if (button1) {
-                    if (mouseX > 340 && mouseX < 480 && mouseY > 280 && mouseY < 310) { // (340, 280, 140, 30)
+                    // Coordinates for 'Game Modes' to be clicked within
+                    if (mouseX > 340 && mouseX < 480 && mouseY > 280 && mouseY < 310) {
                         screen = 3;
-                        System.out.println("Button3");
                     }
+                    // Make button 1 false to prevent from causing issues with any other screens
                     button1 = false;
                 }
 
-                // If 'Back' in 'About Game' is clicked 
+                // If 'Back' in 'About Game', 'Game Controls', and 'Game Modes' were clicked on, screen becomes 0 (Start Menu)
+                // If 'Back' in 'About Game' is clicked, screen then becomes screen 0 (Start Menu)
             } else if (screen == 1) {
                 if (button1) {
+                    // Coordinates for 'Back' to be clicked within
                     if (mouseX > 550 && mouseX < 660 && mouseY > 525 && mouseY < 555) {
                         screen = 0;
                     }
                 }
 
-                // If 'Back in 'Game Controls' is clicked
+                // If 'Back' in 'Game Controls' is clicked, screen then becomes screen 0 (Start Menu)
             } else if (screen == 2) {
                 if (button1) {
+                    // Coordinates for 'Back' to be clicked within
                     if (mouseX > 550 && mouseX < 660 && mouseY > 525 && mouseY < 555) {
                         screen = 0;
                     }
                 }
 
+                // If 'Back' in 'Game Modes' is clicked, screen then becomes screen 0 (Start Menu)
             } else if (screen == 3) {
-                // If the 'Back' in 'Game Modes' was selected
                 if (button1) {
+                    // Coordinates for 'Back' to be clicked within
                     if (mouseX > 580 && mouseX < 690 && mouseY > 500 && mouseY < 530) {
                         screen = 0;
                     }
                 }
 
-                // If 'Easy' mode was clicked
+                // If 'Easy' mode is clicked
                 if (button1) {
                     if (mouseX > 110 && mouseX < 250 && mouseY > 280 && mouseY < 310) {
                         screen = 4;
                         speed = 3;
                         health = 100;
-                        // Resetting the game mode
-                        // Replace minion
+                        // Resetting the 'Easy' mode
+                        // Replace the player minion's position
                         P1.y = 280;
                         P1.x = 390;
                         P1.width = 35;
                         P1.height = 35;
-                        // Replace the minions
+                        // Replace the enemies positions
                         enemy.x = 70;
                         enemy.y = 150;
                         enemy.width = 10;
@@ -416,7 +426,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         enemy4.y = HEIGHT / 2 - 20;
                         enemy4.width = 10;
                         enemy4.height = 10;
-
+                        // Replace every variable used!
                         boolean p1Up = false;
                         boolean p1Down = false;
                         boolean p1Right = false;
@@ -431,13 +441,13 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         screen = 4;
                         speed = 8;
                         health = 100;
-                        // Resetting the game mode
-                        // Replace minion
+                        // Resetting the 'Medium' mode
+                        // Replace the player minion's position
                         P1.y = 280;
                         P1.x = 390;
                         P1.width = 35;
                         P1.height = 35;
-                        // Replace the minions
+                        // Replace the enemies positions
                         enemy.x = 70;
                         enemy.y = 150;
                         enemy.width = 10;
@@ -457,7 +467,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         enemy4.y = HEIGHT / 2 - 20;
                         enemy4.width = 10;
                         enemy4.height = 10;
-
+                        // Replace every variable used!
                         boolean p1Up = false;
                         boolean p1Down = false;
                         boolean p1Right = false;
@@ -466,19 +476,19 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         int[] moveY = {1, 1, -1, -1};
                         boolean button1 = false;
                     }
-
 
                     // If 'Insane' mode is clicked 
                     if (mouseX > 569 && mouseX < 709 && mouseY > 280 && mouseY < 310) {
                         screen = 4;
                         health = 200;
                         speed = 20;
-                        // Replace minion
+                        // Resetting the 'Insane' mode
+                        // Replace the player minion's position
                         P1.y = 280;
                         P1.x = 390;
                         P1.width = 35;
                         P1.height = 35;
-                        // Replace the minions
+                        // Replace the enemies positions
                         enemy.x = 70;
                         enemy.y = 150;
                         enemy.width = 10;
@@ -498,7 +508,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         enemy4.y = HEIGHT / 2 - 20;
                         enemy4.width = 10;
                         enemy4.height = 10;
-
+                        // Replace every variable used!
                         boolean p1Up = false;
                         boolean p1Down = false;
                         boolean p1Right = false;
@@ -508,78 +518,82 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         boolean button1 = false;
 
                     }
+                    // Make button 1 false to prevent from causing issues with any other screens
                     button1 = false;
                 }
 
-                // If 'Game Modes' is clicked 
+                // If 'Game Modes' is clicked, screen changes to screen 3
             } else if (screen == 7) {
                 if (button1) {
-                    if (mouseX > 469 && mouseX < 609 && mouseY > 280 && mouseY < 310) { //(459, 280, 140, 30) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    // Coordinates for 'Game Modes' to be clicked within
+                    if (mouseX > 469 && mouseX < 609 && mouseY > 280 && mouseY < 310) {
                         screen = 3;
                     }
+                    // Make button 1 false to prevent from causing issues with any other screens
                     button1 = false;
                 }
+
                 // Game logic for game modes 'Easy', 'Medium', and 'Insane'
             } else {
-                // The game itself (player and enemy movement
+                // The game itself (player and enemy movement)
                 // Array that goes through all minions and collisions with screen
                 if (!alt) {
                     for (int i = 0; i < enemies.length; i++) {
                         enemies[i].x = enemies[i].x + moveX[i] * speed;
                         enemies[i].y = enemies[i].y + moveY[i] * speed;
-                        // Ball world collisions
-                        // Did bottom of ball hit bottom of screen?
+                        // Enemy collisions
+                        // Did the bottom of the enemies hit the bottom of screen?
                         if (enemies[i].y + enemies[i].height > HEIGHT) {
                             moveY[i] = -1;
                         }
-                        // Ball hit top of screen?
+                        // Did the enemies hit the top of the screen?
                         if (enemies[i].y < 0) {
                             moveY[i] = 1;
                         }
-                        // Did right of ball hit right of screen?
+                        // Did the right side of the enemies hit the right side of screen?
                         if (enemies[i].x + enemies[i].width > WIDTH) {
                             moveX[i] = -1;
                         }
-                        // Ball hit left of screen?
+                        // Did the enemies hit the left side of the screen?
                         if (enemies[i].x < 0) {
                             moveX[i] = 1;
                         }
                     }
 
                     // Make player minion move
-                    // If W pressed, move p1 up
+                    // If W is pressed, move minion up
                     if (p1Up && P1.y > 0) {
                         P1.y = P1.y - speed;
-                        // If S is pressed, move p1 down
+                        // If S is pressed, move minion down
                     } else if (p1Down && P1.y + P1.height < HEIGHT) {
                         P1.y = P1.y + speed;
                     }
-
-                    // If D pressed, move p1 right
+                    // If A is pressed, move minion left
                     if (p1Left && P1.x > 0) {
                         P1.x = P1.x - speed;
+                        // If D is pressed, move minion right    
                     } else if (p1Right && P1.x + P1.width < WIDTH) {
                         P1.x = P1.x + speed;
                     }
 
-                    // For loop used to interact when minions hit the player 
+                    // For loop used to interact when enemies hit the player minion 
                     for (int i = 0; i < enemies.length; i++) {
                         if (enemies[i].intersects(P1)) {
                             health = health - 25;
-                            // If player health is 0, game ends 
+                            // If player health is 0, game ends (Takes player to screen 7)
                             if (health == -25) {
                                 screen = 7;
                             }
                         }
                     }
 
-                    // For loop used to interact when minions hit the player to bounce off   
+                    // For loop used to interact when minions hit the player to bounce off CORRECTLY (prevent square on square overlap glitch)
                     for (int i = 0; i < enemies.length; i++) {
                         if (enemies[i].intersects(P1)) {
                             moveX[i] = -moveX[i];
                             moveY[i] = -moveY[i];
                         }
-                        // Prevents the enemiy to overlap above the player's minion
+                        // Prevents the enemies to overlap above the player's minion
                         while (enemies[i].intersects(P1)) {
                             enemies[i].x = enemies[i].x + moveX[i];
                             enemies[i].y = enemies[i].y + moveY[i];
@@ -597,7 +611,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             deltaTime = System.currentTimeMillis() - startTime;
             try {
                 if (deltaTime > desiredTime) {
-                    //took too much time, don't wait
+                    // Took too much time, don't wait
                     Thread.sleep(1);
                 } else {
 
@@ -617,7 +631,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
         JFrame frame = new JFrame("My Game");
 
         // Creates an instance of my game
-        AbstractRun game = new AbstractRun();
+        MinionRun game = new MinionRun();
         // Sets the size of my game
         game.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         // Adds the game to the window
@@ -634,12 +648,12 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
         // Add mouse listener
         game.addMouseListener(game);
 
-        // Starts my game loop
+        // Starts my game loop!
         game.run();
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
+    public void keyTyped(KeyEvent e) { //                                          !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
 
     @Override
@@ -647,23 +661,23 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
         // Grab the keycode from the event
         int key = e.getKeyCode();
         // Figure out what key is pressed
-        // If the W key being pressed
+        // If the W key is being pressed
         if (key == KeyEvent.VK_W) {
             p1Up = true;
-            // If the S key being pressed
         }
+        // If the S key is being pressed
         if (key == KeyEvent.VK_S) {
             p1Down = true;
-            // If the D key being pressed
         }
+        // If the D key is being pressed
         if (key == KeyEvent.VK_D) {
             p1Right = true;
-            // If the A key being pressed
         }
+        // If the A key is being pressed
         if (key == KeyEvent.VK_A) {
             p1Left = true;
         }
-        // If the alt key is pressed
+        // If the alt key is being pressed specifically within screens 4 to 6
         if (key == KeyEvent.VK_ALT && screen >= 4 && screen <= 6) {
             alt = !alt;
         }
@@ -673,36 +687,39 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     public void keyReleased(KeyEvent e) {
         // Grab the keycode from the event
         int key = e.getKeyCode();
-        // Figure out what key is pressed
-        // If the W key being pressed
+        // Figure out what key is released
+        // If the W key is released
         if (key == KeyEvent.VK_W) {
             p1Up = false;
-            // If the S key being pressed
-        } else if (key == KeyEvent.VK_S) {
+        }
+        // If the S key is released
+        if (key == KeyEvent.VK_S) {
             p1Down = false;
-            // If the D key being pressed
-        } else if (key == KeyEvent.VK_D) {
+        }
+        // If the D key is released
+        if (key == KeyEvent.VK_D) {
             p1Right = false;
-            // If the A key being pressed
-        } else if (key == KeyEvent.VK_A) {
+        }
+        // If the A key is released
+        if (key == KeyEvent.VK_A) {
             p1Left = false;
         }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        // Create mouseX and mouseY (used for the coordinates when options are clicked)
         mouseX = e.getX();
         mouseY = e.getY();
         // Create new integer for the mouse clicks
         int button = e.getButton();
         // Recognize the mouse click (BUTTON1 = Left click)
         if (button == MouseEvent.BUTTON1) {
-
             button1 = true;
         }
     }
 
-    @Override
+    @Override //                                                                   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public void mousePressed(MouseEvent e) {
     }
 
