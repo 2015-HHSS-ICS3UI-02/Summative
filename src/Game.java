@@ -24,15 +24,17 @@ public class Game extends JComponent implements KeyListener {
     // you just need to select an approproate framerate
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
-    Rectangle main = new Rectangle(0, 0, 50, 50);
+    Rectangle main = new Rectangle(600, 600, 50, 50);
+    Rectangle ghost1 = new Rectangle(250, 200, 50, 50);
     //Food particles
     ArrayList<Rectangle> food = new ArrayList<Rectangle>();
-    int speed = 5;
+    int speed = 3;
     int score = 0;
     boolean mainUp = false;
     boolean mainDown = false;
     boolean mainLeft = false;
     boolean mainRight = false;
+    
     BufferedImage foods = ImageHelper.loadImage("PacmanFOOD.jpg");
 
     // drawing of the game happens in here
@@ -68,6 +70,7 @@ public class Game extends JComponent implements KeyListener {
 //        g.fillOval(825, 165, 25, 25);
 //        g.fillOval(925, 165, 25, 25);
         g.setColor(Color.blue);
+        g.fillRect(ghost1.x, ghost1.y, ghost1.width, ghost1.height);
         g.drawRect(50, 50, 200, 100);
         g.drawRect(WIDTH - 200, HEIGHT - 200, 100, 100);
         g.drawRect(250, 300, 50, 200);
@@ -112,7 +115,6 @@ public class Game extends JComponent implements KeyListener {
 
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
-
        
             if (mainDown == true && main.y < HEIGHT - main.height) {
                 main.y = main.y + speed;
@@ -269,6 +271,166 @@ public class Game extends JComponent implements KeyListener {
                 if (main.intersects(WIDTH - 200, HEIGHT - 200, 100, 100)) {
                     main.x = WIDTH - 100;
                 }
+            }
+            // ghost 1 ai
+            if(main.y < ghost1.y){
+                ghost1.y = ghost1.y - speed;
+                if (ghost1.intersects(50, 50, 200, 100)) {
+                    ghost1.x = 250;
+                }
+                if (ghost1.intersects(350, 50, 300, 100)) {
+                    ghost1.x = 650;
+                }
+                if (ghost1.intersects(WIDTH - 200, 50, 100, 100)) {
+                    ghost1.x = WIDTH - 100;
+                }
+                if (ghost1.intersects(50, 300, 100, 200)) {
+                    ghost1.x = 150;
+                }
+                if (ghost1.intersects(250, 300, 50, 200)) {
+                    ghost1.x = 300;
+                }
+                if (ghost1.intersects(WIDTH / 2 - 100, HEIGHT / 2 - 100, 200, 200)) {
+                    ghost1.x = WIDTH / 2 + 100;
+                }
+                if (ghost1.intersects(WIDTH - 325, 300, 50, 200)) {
+                    ghost1.x = WIDTH - 275;
+                }
+                if (ghost1.intersects(WIDTH - 200, 300, 100, 200)) {
+                    ghost1.x = WIDTH - 100;
+                }
+                if (ghost1.intersects(50, HEIGHT - 200, 100, 150)) {
+                    ghost1.x = 150;
+                }
+                if (ghost1.intersects(250, HEIGHT - 150, 300, 100)) {
+                    ghost1.x = 550;
+                }
+                if (ghost1.intersects(WIDTH - 350, HEIGHT - 200, 50, 100)) {
+                    ghost1.x = WIDTH - 300;
+                }
+                if (ghost1.intersects(WIDTH - 200, HEIGHT - 200, 100, 100)) {
+                    ghost1.x = WIDTH - 100;
+                }
+            }
+            if(main.y > ghost1.y){
+                ghost1.y = ghost1.y + speed;
+                if (ghost1.y > 0 && ghost1.y < 150 && ghost1.x < 50) {
+                    ghost1.x = 0;
+                }
+                if (ghost1.y > 250 && ghost1.y < 500 && ghost1.x < 50) {
+                    ghost1.x = 0;
+                }
+                if (ghost1.y > HEIGHT - 250 && ghost1.y < HEIGHT - 50 && ghost1.x < 50) {
+                    ghost1.x = 0;
+                }
+                if (ghost1.y > 250 && ghost1.y < 500 && ghost1.x > 200 && ghost1.x < 250) {
+                    ghost1.x = 200;
+                }
+                if (ghost1.y > HEIGHT - 200 && ghost1.y < HEIGHT - 50 && ghost1.x > 200 && ghost1.x < 250) {
+                    ghost1.x = 200;
+                }
+                if (ghost1.y > 0 && ghost1.y < 150 && ghost1.x > 300 && ghost1.x < 350) {
+                    ghost1.x = 300;
+                }
+                if (ghost1.y > HEIGHT / 2 - 150 && ghost1.y < HEIGHT / 2 + 100 && ghost1.x > WIDTH / 2 - 150 && ghost1.x < WIDTH / 2 - 100) {
+                    ghost1.x = WIDTH / 2 - 150;
+                }
+                if (ghost1.y > HEIGHT - 250 && ghost1.y < HEIGHT - 100 && ghost1.x > WIDTH - 400 && ghost1.x < WIDTH - 350) {
+                    ghost1.x = WIDTH - 400;
+                }
+                if (ghost1.y > 250 && ghost1.y < 500 && ghost1.x > WIDTH - 375 && ghost1.x < WIDTH - 325) {
+                    ghost1.x = WIDTH - 375;
+                }
+                if (ghost1.y > 0 && ghost1.y < 150 && ghost1.x > WIDTH - 250 && ghost1.x < WIDTH - 200) {
+                    ghost1.x = WIDTH - 250;
+                }
+                if (ghost1.y > 250 && ghost1.y < 500 && ghost1.x > WIDTH - 250 && ghost1.x < WIDTH - 200) {
+                    ghost1.x = WIDTH - 250;
+                }
+                if (ghost1.y > HEIGHT - 250 && ghost1.y < HEIGHT - 100 && ghost1.x > WIDTH - 250 && ghost1.x < WIDTH - 200) {
+                    ghost1.x = WIDTH - 250;
+                }
+            }
+            if(main.x < ghost1.x){
+                ghost1.x = ghost1.x - speed/2;
+                if (ghost1.intersects(50, 50, 200, 100)) {
+                    ghost1.x = 250;
+                }
+                if (ghost1.intersects(350, 50, 300, 100)) {
+                    ghost1.x = 650;
+                }
+                if (ghost1.intersects(WIDTH - 200, 50, 100, 100)) {
+                    ghost1.x = WIDTH - 100;
+                }
+                if (ghost1.intersects(50, 300, 100, 200)) {
+                    ghost1.x = 150;
+                }
+                if (ghost1.intersects(250, 300, 50, 200)) {
+                    ghost1.x = 300;
+                }
+                if (ghost1.intersects(WIDTH / 2 - 100, HEIGHT / 2 - 100, 200, 200)) {
+                    ghost1.x = WIDTH / 2 + 100;
+                }
+                if (ghost1.intersects(WIDTH - 325, 300, 50, 200)) {
+                    ghost1.x = WIDTH - 275;
+                }
+                if (ghost1.intersects(WIDTH - 200, 300, 100, 200)) {
+                    ghost1.x = WIDTH - 100;
+                }
+                if (ghost1.intersects(50, HEIGHT - 200, 100, 150)) {
+                    ghost1.x = 150;
+                }
+                if (ghost1.intersects(250, HEIGHT - 150, 300, 100)) {
+                    ghost1.x = 550;
+                }
+                if (ghost1.intersects(WIDTH - 350, HEIGHT - 200, 50, 100)) {
+                    ghost1.x = WIDTH - 300;
+                }
+                if (ghost1.intersects(WIDTH - 200, HEIGHT - 200, 100, 100)) {
+                    ghost1.x = WIDTH - 100;
+                }
+            }
+            if(main.x > ghost1.x){
+                ghost1.x = ghost1.x + speed;
+                if (ghost1.y > 0 && ghost1.y < 150 && ghost1.x < 50) {
+                    ghost1.x = 0;
+                }
+                if (ghost1.y > 250 && ghost1.y < 500 && ghost1.x < 50) {
+                    ghost1.x = 0;
+                }
+                if (ghost1.y > HEIGHT - 250 && ghost1.y < HEIGHT - 50 && ghost1.x < 50) {
+                    ghost1.x = 0;
+                }
+                if (ghost1.y > 250 && ghost1.y < 500 && ghost1.x > 200 && ghost1.x < 250) {
+                    ghost1.x = 200;
+                }
+                if (ghost1.y > HEIGHT - 200 && ghost1.y < HEIGHT - 50 && ghost1.x > 200 && ghost1.x < 250) {
+                    ghost1.x = 200;
+                }
+                if (ghost1.y > 0 && ghost1.y < 150 && ghost1.x > 300 && ghost1.x < 350) {
+                    ghost1.x = 300;
+                }
+                if (ghost1.y > HEIGHT / 2 - 150 && ghost1.y < HEIGHT / 2 + 100 && ghost1.x > WIDTH / 2 - 150 && ghost1.x < WIDTH / 2 - 100) {
+                    ghost1.x = WIDTH / 2 - 150;
+                }
+                if (ghost1.y > HEIGHT - 250 && ghost1.y < HEIGHT - 100 && ghost1.x > WIDTH - 400 && ghost1.x < WIDTH - 350) {
+                    ghost1.x = WIDTH - 400;
+                }
+                if (ghost1.y > 250 && ghost1.y < 500 && ghost1.x > WIDTH - 375 && ghost1.x < WIDTH - 325) {
+                    ghost1.x = WIDTH - 375;
+                }
+                if (ghost1.y > 0 && ghost1.y < 150 && ghost1.x > WIDTH - 250 && ghost1.x < WIDTH - 200) {
+                    ghost1.x = WIDTH - 250;
+                }
+                if (ghost1.y > 250 && ghost1.y < 500 && ghost1.x > WIDTH - 250 && ghost1.x < WIDTH - 200) {
+                    ghost1.x = WIDTH - 250;
+                }
+                if (ghost1.y > HEIGHT - 250 && ghost1.y < HEIGHT - 100 && ghost1.x > WIDTH - 250 && ghost1.x < WIDTH - 200) {
+                    main.x = WIDTH - 250;
+                }
+            }
+            if(main.intersects(ghost1)){
+                done = true;
             }
                  Iterator<Rectangle> collect = food.iterator();
             while (collect.hasNext()) {
