@@ -4,7 +4,7 @@
  */
 
 import sun.audio.*;    //import the sun.audio package
-import java.util.Timer; // Impot the java.util.Timer package
+import java.util.Timer; // Import the java.util.Timer package
 import java.io.*;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -33,7 +33,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
     // Create player(s) 
-    Rectangle P1 = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 35, 35);
+    Rectangle P1 = new Rectangle(300, 420, 35, 35);
     // Ball control and speed
     int[] moveX = {1, -1, 1, -1};
     int[] moveY = {1, 1, -1, -1};
@@ -59,6 +59,8 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     int mouseY = 0;
     // Starting the game 
     boolean alt = false;
+    // Create restart boolean
+    boolean restart = false;
     // Display the players health
     int health = 100;
     // Game Font
@@ -283,13 +285,6 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.setFont(gameFont);
             g.drawString("Game Over! ", 376, 300);
 
-            // Play again?
-            g.setColor(Color.DARK_GRAY);
-            g.fillRect(110, 280, 140, 30);
-            g.setColor(Color.white);
-            g.setFont(gameFont);
-            g.drawString("Play Again", 150, 300);
-
             // Game Modes
             g.setColor(Color.DARK_GRAY);
             g.fillRect(569, 280, 140, 30);
@@ -298,13 +293,6 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             g.drawString("Game Modes", 600, 300);
 
             // Stamps for design on each option on screen 7
-            // 'Play Again' stamps
-            g.setColor(Color.CYAN);
-            g.fillOval(110, 280, 7, 7);
-            g.fillOval(242, 280, 7, 7);
-            g.fillOval(110, 302, 7, 7);
-            g.fillOval(242, 302, 7, 7);
-
             // 'Game Over' stamps
             g.fillOval(340, 280, 7, 7);
             g.fillOval(472, 280, 7, 7);
@@ -355,6 +343,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         System.out.println("Button1");
                     }
                 }
+
                 // If 'Game Controls' was clicked on, screen 0 changes to screen 
                 if (button1) {
                     if (mouseX > 110 && mouseX < 250 && mouseY > 280 && mouseY < 310) {   //(110, 280, 140, 30)
@@ -378,13 +367,16 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                     if (mouseX > 550 && mouseX < 660 && mouseY > 525 && mouseY < 555) {
                         screen = 0;
                     }
-                } // If 'Back in 'Game Controls' is clicked
+                }
+
+                // If 'Back in 'Game Controls' is clicked
             } else if (screen == 2) {
                 if (button1) {
                     if (mouseX > 550 && mouseX < 660 && mouseY > 525 && mouseY < 555) {
                         screen = 0;
                     }
                 }
+
             } else if (screen == 3) {
                 // If the 'Back' in 'Game Modes' was selected
                 if (button1) {
@@ -398,19 +390,124 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                     if (mouseX > 110 && mouseX < 250 && mouseY > 280 && mouseY < 310) {
                         screen = 4;
                         speed = 3;
+                        health = 100;
+                        // Resetting the game mode
+                        // Replace minion
+                        P1.y = 300;
+                        P1.x = 370;
+                        P1.width = 35;
+                        P1.height = 35;
+                        // Replace the minions
+                        enemy.x = 70;
+                        enemy.y = 150;
+                        enemy.width = 10;
+                        enemy.height = 10;
+
+                        enemy2.x = 40;
+                        enemy2.y = 400;
+                        enemy2.width = 10;
+                        enemy2.height = 10;
+
+                        enemy3.x = 50;
+                        enemy3.y = HEIGHT / 2 - 5;
+                        enemy3.width = 10;
+                        enemy3.height = 10;
+
+                        enemy4.x = 5;
+                        enemy4.y = HEIGHT / 2 - 20;
+                        enemy4.width = 10;
+                        enemy4.height = 10;
+
+                        boolean p1Up = false;
+                        boolean p1Down = false;
+                        boolean p1Right = false;
+                        boolean p1Left = false;
+                        int[] moveX = {1, -1, 1, -1};
+                        int[] moveY = {1, 1, -1, -1};
+                        boolean button1 = false;
                     }
 
                     // If 'Medium' mode is clicked
                     if (mouseX > 340 && mouseX < 480 && mouseY > 280 && mouseY < 310) {
                         screen = 4;
                         speed = 8;
+                        health = 100;
+                        // Resetting the game mode
+                        // Replace minion
+                        P1.y = 340;
+                        P1.x = 280;
+                        P1.width = 35;
+                        P1.height = 35;
+                        // Replace the minions
+                        enemy.x = 70;
+                        enemy.y = 150;
+                        enemy.width = 10;
+                        enemy.height = 10;
+
+                        enemy2.x = 40;
+                        enemy2.y = 400;
+                        enemy2.width = 10;
+                        enemy2.height = 10;
+
+                        enemy3.x = 50;
+                        enemy3.y = HEIGHT / 2 - 5;
+                        enemy3.width = 10;
+                        enemy3.height = 10;
+
+                        enemy4.x = 5;
+                        enemy4.y = HEIGHT / 2 - 20;
+                        enemy4.width = 10;
+                        enemy4.height = 10;
+
+                        boolean p1Up = false;
+                        boolean p1Down = false;
+                        boolean p1Right = false;
+                        boolean p1Left = false;
+                        int[] moveX = {1, -1, 1, -1};
+                        int[] moveY = {1, 1, -1, -1};
+                        boolean button1 = false;
                     }
+
 
                     // If 'Insane' mode is clicked 
                     if (mouseX > 569 && mouseX < 709 && mouseY > 280 && mouseY < 310) {
                         screen = 4;
                         health = 200;
                         speed = 20;
+                        // Replace minion
+                        P1.y = 340;
+                        P1.x = 280;
+                        P1.width = 35;
+                        P1.height = 35;
+                        // Replace the minions
+                        enemy.x = 70;
+                        enemy.y = 150;
+                        enemy.width = 10;
+                        enemy.height = 10;
+
+                        enemy2.x = 40;
+                        enemy2.y = 400;
+                        enemy2.width = 10;
+                        enemy2.height = 10;
+
+                        enemy3.x = 50;
+                        enemy3.y = HEIGHT / 2 - 5;
+                        enemy3.width = 10;
+                        enemy3.height = 10;
+
+                        enemy4.x = 5;
+                        enemy4.y = HEIGHT / 2 - 20;
+                        enemy4.width = 10;
+                        enemy4.height = 10;
+
+                        boolean p1Up = false;
+                        boolean p1Down = false;
+                        boolean p1Right = false;
+                        boolean p1Left = false;
+                        int[] moveX = {1, -1, 1, -1};
+                        int[] moveY = {1, 1, -1, -1};
+                        boolean button1 = false;
+
                     }
                     button1 = false;
                 }
@@ -483,20 +580,14 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                             moveX[i] = -moveX[i];
                             moveY[i] = -moveY[i];
                         }
-//                        while (enemies[i].intersects(P1)) {                               DO I NEED THIS? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
-//                            enemies[i].x = enemies[i].x + moveX[i];
-//                            enemies[i].x = enemies[i].x + moveY[i];
-//
-//                        }
-                    }
-
-                    // Properly makes the enemies intersect with the minion player          WHAT ID THE DIFFERENCE? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-                    for (int i = 0; i < enemies.length; i++) {
-                        if (enemies[i].intersects(P1)) {
+                        while (enemies[i].intersects(P1)) {                              // DO I NEED THIS? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
                             enemies[i].x = enemies[i].x + moveX[i];
-                            enemies[i].x = enemies[i].x + moveY[i];
+                            enemies[i].y = enemies[i].y + moveY[i];
+
                         }
                     }
+
+
                 }
             }
 
