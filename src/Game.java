@@ -40,7 +40,7 @@ public class Game extends JComponent implements KeyListener {
     // back background
     Rectangle screen = new Rectangle(800, 600, 50, 50);
     // player
-    Rectangle android = new Rectangle(200, 200, 50, 50);
+    Rectangle android = new Rectangle(200, 200, 75, 75);
     int movex = 0;
     int movey = 0;
     boolean air = false;
@@ -57,8 +57,8 @@ public class Game extends JComponent implements KeyListener {
     int score1 = 0;
     
     // android pic
-    Rectangle player = new Rectangle(200, 200, 50, 50);
-    BufferedImage guy = ImageHelper.loadImage("Android_robot.png");
+    Rectangle player = new Rectangle(200, 200, 75, 75);
+    BufferedImage guy = ImageHelper.loadImage("droid-logo-red.png");
     
     //marshmellow pic
     Rectangle bigblock = new Rectangle(450, 360, 200, 350);
@@ -83,18 +83,20 @@ public class Game extends JComponent implements KeyListener {
         g.setColor(Color.black);
         for (Rectangle block : blocks) {
 
-            g.fillRect(block.x, block.y, block.width, block.height);
+        g.fillRect(block.x, block.y, block.width, block.height);
+        
         }
 
-        g.setColor(Color.GREEN);
+        g.setColor(Color.BLACK);
         g.fillRect(x, y, 50, 50);
         g.fillRect(android.x, android.y, android.width, android.height);
 
         if (keypressed) {
-            g.setColor(Color.RED);
-            g.fillRect(300, 300, 100, 100);
+        g.setColor(Color.RED);
+        g.fillRect(300, 300, 100, 100);
+        
         }
-
+        
         // score
         g.setColor(Color.BLACK);
         g.setFont(gameFont);
@@ -165,7 +167,6 @@ public class Game extends JComponent implements KeyListener {
             android.y = android.y + movey;
 
             // if player becomes lower than the ground (bottom of screen)
-
             if (android.y + android.height > HEIGHT) {
 
                 android.y = HEIGHT - android.height;
@@ -228,21 +229,18 @@ public class Game extends JComponent implements KeyListener {
     public static void main(String[] args) {
         // creates a windows to show my game
         JFrame frame = new JFrame("My Game");
-
         // creates an instance of my game
         Game game = new Game();
         // sets the size of my game
         game.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         // adds the game to the window
         frame.add(game);
-
         // sets some options and size of the window automatically
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         // shows the window to the user
         frame.setVisible(true);
-
         // starts my game loop
         game.run();
     }
