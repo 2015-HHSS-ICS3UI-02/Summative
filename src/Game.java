@@ -30,6 +30,7 @@ public class Game extends JComponent implements KeyListener{
     static final int HEIGHT = 800;
     
     BufferedImage satellite = ImageHelper.loadImage("satellite.png");
+    BufferedImage earth = ImageHelper.loadImage("earth.png");
     BufferedImage sunflare = ImageHelper.loadImage("sunflare.png");       
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
@@ -83,7 +84,12 @@ public class Game extends JComponent implements KeyListener{
         g.setFont(gameFont);
         g.fillOval(496,396,8,8);
         g.drawImage(satellite, (int)xpos - 4,(int)ypos - 4,30,30, null);
-        g.drawImage(sunflare,420 ,320,160,160, null);
+        if(mission == 1 || mission == 2 || mission == 3  || mission == 4 ){
+            g.drawImage(sunflare,400 ,300,200,200, null);
+        }
+        if(mission == 5){
+            g.drawImage(earth,400 ,300,200,200, null);
+        }
         g.drawString(("Distance:" + dist1),760,20);
         g.drawString(("Angle:" + angle1),760,40);
         g.drawString(("Gravitation:" + gforce1),760,60);
@@ -265,20 +271,20 @@ public class Game extends JComponent implements KeyListener{
             if(mission == 5){
                 if(reset == true){                                                             
                     won = false;
-                    xpos = 20;                                                                  
+                    xpos = 200;                                                                  
                     ypos = 400;                                                              
-                    fuel = 30;                                                               
-                    xspeed = 0.5;                                                                
-                    yspeed = 1;                                                                  
+                    fuel = 50;                                                               
+                    xspeed = 0;                                                                
+                    yspeed = 1.29;                                                                  
                     xpos1 = 500;                                                                
                     ypos1 = 400;                                                                
-                    mass1 = 1000;                                                                  
+                    mass1 = 500;                                                                  
                     m_end = new Rectangle(450, 200, 100, 10);
                     reset = false;
                     objective = "Keep the orbit consistenly below 400";
                     count = 0;
                     }
-                    if(dist1 <= 7){
+                    if(dist1 <= 100){
                         reset = true;
                     }
             }
