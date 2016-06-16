@@ -65,7 +65,6 @@ public class OnlyTonight extends JComponent implements KeyListener {
     BufferedImage GameOver = ImageHelper.loadImage("Game Over.jpg");
     BufferedImage WinningScreen1 = ImageHelper.loadImage("WinningScreen1.jpg");
     BufferedImage WinningScreen2 = ImageHelper.loadImage("WinningScreen2.jpg");
-    
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
     long desiredFPS = 60;
@@ -155,8 +154,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
     // game font
     Font otType = new Font("Agency FB", Font.BOLD, 40);
     Font pongType = new Font("Arial", Font.BOLD, 40);
-    
-    long nextTick = 0; 
+    long nextTick = 0;
 
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
@@ -184,7 +182,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
 
         // game code
         if (menuSelection == 0 && enterKey == 1 && !pong) {
-            
+
             // background colour
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -202,7 +200,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
                     gameOver = true;
                 }
             }
-            
+
             // Theo
             if (dir == 'r') {
                 g.drawImage(theoStandRight, theo.x, theo.y, theo.width, theo.height, null);
@@ -234,12 +232,12 @@ public class OnlyTonight extends JComponent implements KeyListener {
             if (spaceBar == true && theo.intersects(deskTrigger)) {
                 g.drawImage(letterScreen, 0, 0, null);
             }
-            
+
             // game over
             if (gameOver) {
                 g.drawImage(GameOver, 0, 0, WIDTH, HEIGHT, null);                                // EDIt
             }
-            
+
             // timer
             g.setColor(Color.WHITE);
             g.setFont(otType);
@@ -258,8 +256,8 @@ public class OnlyTonight extends JComponent implements KeyListener {
                 helpPage = helpPage - 1;
                 theoLeft = false;
             }
-            
-            if (helpPage == 0){
+
+            if (helpPage == 0) {
                 g.drawImage(helpScreen, 0, 0, WIDTH, HEIGHT, null);
             } else if (helpPage == 1) {
                 g.drawImage(helpScreen2, 0, 0, WIDTH, HEIGHT, null);
@@ -267,7 +265,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
                 helpPage = 0;
                 enterKey = 0;
             }
-            
+
         } else if (menuSelection == 2 && enterKey == 1) {
             g.drawImage(story1, 0, 0, WIDTH, HEIGHT, null);
             // continue to next pic
@@ -375,7 +373,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
                 } else if (typewriterInput.equalsIgnoreCase("humans")) {
                     String s = (String) JOptionPane.showInputDialog(
                             this,
-                            "You're on the right path, but your answer is too long.", "Clue #2",                // EDIT
+                            "You're on the right path, but your answer is too long.", "Clue #2", // EDIT
                             JOptionPane.PLAIN_MESSAGE, null, null, "Press OK.");
                 } else if (!typewriterInput.equals(typewriterClue)) {
                     String s = (String) JOptionPane.showInputDialog(
@@ -396,9 +394,9 @@ public class OnlyTonight extends JComponent implements KeyListener {
                     done = true;
                 } else if (!safeInput.equals(safeClue)) {
                     String s = (String) JOptionPane.showInputDialog(
-                        this,
-                        "The code was incorrect.", "Safe",
-                        JOptionPane.PLAIN_MESSAGE, null, null, "Press OK.");
+                            this,
+                            "The code was incorrect.", "Safe",
+                            JOptionPane.PLAIN_MESSAGE, null, null, "Press OK.");
                 }
             }
 
@@ -448,20 +446,20 @@ public class OnlyTonight extends JComponent implements KeyListener {
                             theoLeft = false;
                         }
                     }
-                    
+
                 } else if (enterKey == 1) {
                     // countdown
-                    if(nextTick == 0){
+                    if (nextTick == 0) {
                         nextTick = System.currentTimeMillis() + 1000;
                     }
-                    if(System.currentTimeMillis() > nextTick){
+                    if (System.currentTimeMillis() > nextTick) {
                         countdown--;
                         nextTick = System.currentTimeMillis() + 1000;
                     }
                     if (countdown == 0) {
                         gameOver = true;
                     }
-                    
+
                     if (theoUp && theo.y > 72) {
                         theo.y = theo.y - speed;
                         dir = 'u';
@@ -719,7 +717,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
                         JOptionPane.PLAIN_MESSAGE, null, null, "Press OK.");
                 pongClue = false;
             }
-            
+
             // win game
             if (winGame == true) {
                 gameOver = true;
@@ -741,8 +739,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
             } else {
                 try {
                     Thread.sleep(desiredTime - deltaTime);
-                } catch (Exception e) {
-                };
+                } catch (Exception e) {};
             }
         }
     }
