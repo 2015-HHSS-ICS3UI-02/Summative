@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 
-import sun.audio.*;    //import the sun.audio package
 import java.util.Timer; // Import the java.util.Timer package
 import java.io.*;
 import java.awt.Color;
@@ -33,7 +32,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
     // Create player(s) 
-    Rectangle P1 = new Rectangle(300, 420, 35, 35);
+    Rectangle P1 = new Rectangle(290, 370, 35, 35);
     // Ball control and speed
     int[] moveX = {1, -1, 1, -1};
     int[] moveY = {1, 1, -1, -1};
@@ -59,8 +58,6 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     int mouseY = 0;
     // Starting the game 
     boolean alt = false;
-    // Create restart boolean
-    boolean restart = false;
     // Display the players health
     int health = 100;
     // Game Font
@@ -80,6 +77,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
     Color haze = new Color(255, 255, 255, 100);
     // Add a timer
     Timer timer = new Timer();
+    Sound music = new Sound("Compass.wav");
     // Drawing of the game happens in here
     // We use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
@@ -280,30 +278,30 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
             // What happens at the end of the game
             // You died! Game Over!
             g.setColor(Color.DARK_GRAY);
-            g.fillRect(340, 280, 140, 30);
+            g.fillRect(200, 280, 140, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
-            g.drawString("Game Over! ", 376, 300);
+            g.drawString("Game Over! ", 236, 300);
 
             // Game Modes
             g.setColor(Color.DARK_GRAY);
-            g.fillRect(569, 280, 140, 30);
+            g.fillRect(459, 280, 140, 30);
             g.setColor(Color.white);
             g.setFont(gameFont);
-            g.drawString("Game Modes", 600, 300);
+            g.drawString("Game Modes", 490, 300);
 
             // Stamps for design on each option on screen 7
             // 'Game Over' stamps
-            g.fillOval(340, 280, 7, 7);
-            g.fillOval(472, 280, 7, 7);
-            g.fillOval(340, 302, 7, 7);
-            g.fillOval(472, 302, 7, 7);
+            g.fillOval(200, 280, 7, 7);
+            g.fillOval(332, 280, 7, 7);
+            g.fillOval(200, 302, 7, 7);
+            g.fillOval(332, 302, 7, 7);
 
             // 'Game Modes' stamps
-            g.fillOval(568, 280, 7, 7);
-            g.fillOval(701, 280, 7, 7);
-            g.fillOval(568, 302, 7, 7);
-            g.fillOval(701, 302, 7, 7);
+            g.fillOval(459, 280, 7, 7);
+            g.fillOval(591, 280, 7, 7);
+            g.fillOval(459, 302, 7, 7);
+            g.fillOval(591, 302, 7, 7);
         }
 
         // Drawings for 'Pause Screen'
@@ -326,6 +324,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
         long startTime;
         long deltaTime;
 
+        music.loop();
         // The main game loop section
         // Game will end if you set done = false;
         boolean done = false;
@@ -393,8 +392,8 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         health = 100;
                         // Resetting the game mode
                         // Replace minion
-                        P1.y = 300;
-                        P1.x = 370;
+                        P1.y = 280;
+                        P1.x = 390;
                         P1.width = 35;
                         P1.height = 35;
                         // Replace the minions
@@ -434,8 +433,8 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         health = 100;
                         // Resetting the game mode
                         // Replace minion
-                        P1.y = 340;
-                        P1.x = 280;
+                        P1.y = 280;
+                        P1.x = 390;
                         P1.width = 35;
                         P1.height = 35;
                         // Replace the minions
@@ -475,8 +474,8 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         health = 200;
                         speed = 20;
                         // Replace minion
-                        P1.y = 340;
-                        P1.x = 280;
+                        P1.y = 280;
+                        P1.x = 390;
                         P1.width = 35;
                         P1.height = 35;
                         // Replace the minions
@@ -515,7 +514,7 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                 // If 'Game Modes' is clicked 
             } else if (screen == 7) {
                 if (button1) {
-                    if (mouseX > 569 && mouseX < 709 && mouseY > 140 && mouseY < 310) {
+                    if (mouseX > 469 && mouseX < 609 && mouseY > 280 && mouseY < 310) { //(459, 280, 140, 30) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         screen = 3;
                     }
                     button1 = false;
@@ -574,20 +573,18 @@ public class AbstractRun extends JComponent implements KeyListener, MouseListene
                         }
                     }
 
-                    // For loop used to interact when minions hit the player to bounce off  WHAT ID THE DIFFERENCE? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+                    // For loop used to interact when minions hit the player to bounce off   
                     for (int i = 0; i < enemies.length; i++) {
                         if (enemies[i].intersects(P1)) {
                             moveX[i] = -moveX[i];
                             moveY[i] = -moveY[i];
                         }
-                        while (enemies[i].intersects(P1)) {                              // DO I NEED THIS? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+                        // Prevents the enemiy to overlap above the player's minion
+                        while (enemies[i].intersects(P1)) {
                             enemies[i].x = enemies[i].x + moveX[i];
                             enemies[i].y = enemies[i].y + moveY[i];
-
                         }
                     }
-
-
                 }
             }
 
