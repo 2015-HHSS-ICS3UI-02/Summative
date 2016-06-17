@@ -92,9 +92,7 @@ public class Runner extends JComponent implements KeyListener {
         // always clear the screen first!
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
-
         // GAME DRAWING GOES HERE 
-
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
@@ -105,7 +103,6 @@ public class Runner extends JComponent implements KeyListener {
 
         } else {
             g.setColor(Color.WHITE);
-
 
             //draw background
             g.drawImage(Terrain, 0, 0, this);
@@ -137,9 +134,9 @@ public class Runner extends JComponent implements KeyListener {
             g.setFont(gameFont);
             g.drawString("Score:" + score, WIDTH / 2 - 100, 100);
             g.drawString("Bosstimer:" + bosstimer, WIDTH / 2 - 100, 300);
-            if(bosstimer>17){
-                g.drawString("Watch out!" , WIDTH- 400, HEIGHT/2);
-                
+            if (bosstimer > 17) {
+                g.drawString("Watch out!", WIDTH - 400, HEIGHT / 2);
+
             }
             //draw level up sign
             if (score > 25 && score < 28) {
@@ -149,9 +146,7 @@ public class Runner extends JComponent implements KeyListener {
                 g.drawString("Level Up!", WIDTH / 2 - 150, 300);
                 levelUp = true;
             }
-            
-            
-                    
+
             //load images for sonic movement
             Sanimation[0] = ImageHelper.loadImage("Sonic Ball1.png");
             Sanimation[1] = ImageHelper.loadImage("Sonic Ball2.png");
@@ -162,9 +157,6 @@ public class Runner extends JComponent implements KeyListener {
 
                 //draw animation of sonic ball
                 g.drawImage(Sanimation[(int) frame], player.x, player.y, this);
-
-
-
 
             }
 
@@ -178,19 +170,16 @@ public class Runner extends JComponent implements KeyListener {
                 g.setFont(EndgameFont);
                 g.drawString("Final Score:" + score, WIDTH / 2 - 200, HEIGHT / 2 + 100);
 
-            
-                
-        }
+            }
 
-
-        // GAME DRAWING ENDS HERE
+            // GAME DRAWING ENDS HERE
         }
     }
 
     // The main game loop
     // In here is where all the logic for my game will go
-    public void run(){
-    
+    public void run() {
+
         // Used to keep track of time used to draw and update the game
         // This is used to limit the framerate later on
         long startTime;
@@ -198,21 +187,18 @@ public class Runner extends JComponent implements KeyListener {
 
         // the main game loop section
         // game will end if you set done = false;
-
         while (!done) {
             // determines when we started so we can keep a framerate
             startTime = System.currentTimeMillis();
 
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
-            
             background.setLoop(true);
-            if(!background.isPlaying()){
-            background.play();
+            if (!background.isPlaying()) {
+                background.play();
             }
-            
-            if (start) {
 
+            if (start) {
 
                 if (!done && System.currentTimeMillis() - scoretime > scoredelay) {
                     score++;
@@ -225,17 +211,17 @@ public class Runner extends JComponent implements KeyListener {
                 }
                 //BOSS
                 if (bosstimer > 20) {
-                    if(!buzzer.isPlaying()){
-                       buzzer.play();
+                    if (!buzzer.isPlaying()) {
+                        buzzer.play();
                     }
-                    
+
                     bossrec.x = bossrec.x - moveboss * 10;
                     if (bossrec.x + 608 < 0) {
                         bossrec.x = 1275;
                         bosstimer = 0;
                     }
                 }
-                
+
                 //make bullet 1 move
                 enemy1.x = enemy1.x - moveX1 * 10;
 
@@ -248,24 +234,28 @@ public class Runner extends JComponent implements KeyListener {
                 //make bullet 4 move
                 enemy4.x = enemy4.x - moveX4 * 10;
 
-
-
-
-
                 //if bullets gets to left of screen, move them to far right,and make y random, and set bullet to random speed
-
                 //generate random speed number up to 3
                 int randspeed = (int) (Math.random() * 3);
                 if (enemy1.x + 196 < 0) {
-                    
-                    if(bossrec.x>1275|| bossrec.x + 608<0 ){
+
                     //set bullet to far right    
                     enemy1.x = 1248;
-                    }
+                    
                     //random number for y coord
                     int rand = (int) (Math.random() * 1051);
                     //input random y coord
                     enemy1.y = rand;
+                    //if enemy coord intersects with any other bullet at y coord,re-random the y coord
+                    
+                    //if the spawned y position overlaps with another bullet, reassign it to another y coordinate
+                    if(enemy1.y > enemy2.y - 89 && enemy1.y < enemy2.y + 89||enemy1.y > enemy3.y - 89 && enemy1.y < enemy3.y + 89 && enemy1.y > enemy4.y - 89 && enemy1.y < enemy4.y + 89){
+                        int rand2 = (int) (Math.random() * 1051);
+                        enemy1.y = rand2;
+                    }
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
+                    }
                     //if level up booleen is true(time has past a certain point)
                     if (levelUp == true) {
                         //if it does not generate a 0(no speed), change the speed of enemy to make it go faster
@@ -275,14 +265,21 @@ public class Runner extends JComponent implements KeyListener {
                     }
                 }
                 if (enemy2.x + 196 < 0) {
-                    if(bossrec.x>1275|| bossrec.x + 608<0){
+
                     //set bullet to far right
                     enemy2.x = 1248;
-                    }
+
                     //random number for y coord
                     int rand = (int) (Math.random() * 1051);
                     enemy2.y = rand;
-
+                    //if the spawned y position overlaps with another bullet, reassign it to another y coordinate
+                    if(enemy2.y > enemy1.y - 89 && enemy2.y < enemy1.y + 89||enemy2.y > enemy3.y - 89 && enemy2.y < enemy3.y + 89 && enemy2.y > enemy4.y - 89 && enemy2.y < enemy4.y + 89){
+                        int rand2 = (int) (Math.random() * 1051);
+                        enemy2.y = rand2;
+                    }
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
+                    }
                     if (levelUp == true) {
                         if (randspeed != 0) {
                             moveX2 = randspeed;
@@ -290,12 +287,19 @@ public class Runner extends JComponent implements KeyListener {
                     }
                 }
                 if (enemy3.x + 196 < 0) {
-                    if(bossrec.x>1275|| bossrec.x + 608<0){
+
                     enemy3.x = 1248;
-                    }
+
                     int rand = (int) (Math.random() * 1051);
                     enemy3.y = rand;
-
+                    //if the spawned y position overlaps with another bullet, reassign it to another y coordinate
+                    if(enemy3.y > enemy1.y - 89 && enemy3.y < enemy1.y + 89||enemy3.y > enemy2.y - 89 && enemy3.y < enemy2.y + 89 && enemy3.y > enemy4.y - 89 && enemy3.y < enemy4.y + 89){
+                        int rand2 = (int) (Math.random() * 1051);
+                        enemy2.y = rand2;
+                    }
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
+                    }
                     if (levelUp == true) {
                         if (randspeed != 0) {
                             moveX3 = randspeed;
@@ -303,12 +307,19 @@ public class Runner extends JComponent implements KeyListener {
                     }
                 }
                 if (enemy4.x + 196 < 0) {
-                    if(bossrec.x>1275|| bossrec.x + 608<0){
+
                     enemy4.x = 1248;
-                    }
+
                     int rand = (int) (Math.random() * 1051);
                     enemy4.y = rand;
-
+                    //if the spawned y position overlaps with another bullet, reassign it to another y coordinate
+                    if(enemy4.y > enemy1.y - 89 && enemy4.y < enemy1.y + 89||enemy4.y > enemy3.y - 89 && enemy4.y < enemy3.y + 89 && enemy4.y > enemy2.y - 89 && enemy4.y < enemy2.y + 89){
+                        int rand2 = (int) (Math.random() * 1051);
+                        enemy2.y = rand2;
+                    }
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
+                    }
                     if (levelUp == true) {
                         if (randspeed != 0) {
                             moveX4 = randspeed;
@@ -317,11 +328,19 @@ public class Runner extends JComponent implements KeyListener {
                 }
                 //if enemy is under the screen(y = HEIGHT), random the y coordinate
                 if (enemy1.y > HEIGHT - 89) {
-                    if(bossrec.x>1275|| bossrec.x + 608<0){
-                    enemy1.x = 1248;
-                    }
                     int rand = (int) (Math.random() * 1051);
                     enemy1.y = rand;
+                    //if the spawned y position overlaps with another bullet, reassign it to another y coordinate
+                    if(enemy1.y > enemy2.y - 89 && enemy1.y < enemy2.y + 89||enemy1.y > enemy3.y - 89 && enemy1.y < enemy3.y + 89 && enemy1.y > enemy4.y - 89 && enemy1.y < enemy4.y + 89){
+                        int rand2 = (int) (Math.random() * 1051);
+                        enemy1.y = rand2;
+                    }
+                    enemy1.x = 1248;
+
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
+                    }
+
                     //if it does not generate a 0(no speed), change the speed of enemy
                     if (levelUp == true) {
                         if (randspeed != 0) {
@@ -330,11 +349,19 @@ public class Runner extends JComponent implements KeyListener {
                     }
                 }
                 if (enemy2.y > HEIGHT - 89) {
-                    if(bossrec.x>1275|| bossrec.x + 608<0){
+
                     enemy2.x = 1248;
-                    }
+
                     int rand = (int) (Math.random() * 1051);
                     enemy2.y = rand;
+                    //if the spawned y position overlaps with another bullet, reassign it to another y coordinate
+                    if(enemy2.y > enemy1.y - 89 && enemy2.y < enemy1.y + 89||enemy2.y > enemy3.y - 89 && enemy2.y < enemy3.y + 89 && enemy2.y > enemy4.y - 89 && enemy2.y < enemy4.y + 89){
+                        int rand2 = (int) (Math.random() * 1051);
+                        enemy2.y = rand2;
+                    }
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
+                    }
                     //if it does not generate a 0(no speed), change the speed of enemy
                     if (levelUp == true) {
                         if (randspeed != 0) {
@@ -343,11 +370,19 @@ public class Runner extends JComponent implements KeyListener {
                     }
                 }
                 if (enemy3.y > HEIGHT - 89) {
-                    if(bossrec.x>1275|| bossrec.x + 608<0){
+
                     enemy3.x = 1248;
-                    }
+
                     int rand = (int) (Math.random() * 1051);
                     enemy3.y = rand;
+                    //if the spawned y position overlaps with another bullet, reassign it to another y coordinate
+                    if(enemy3.y > enemy1.y - 89 && enemy3.y < enemy1.y + 89||enemy3.y > enemy2.y - 89 && enemy3.y < enemy2.y + 89 && enemy3.y > enemy4.y - 89 && enemy3.y < enemy4.y + 89){
+                        int rand2 = (int) (Math.random() * 1051);
+                        enemy2.y = rand2;
+                    }
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
+                    }
                     //if it does not generate a 0(no speed), change the speed of enemy
                     if (levelUp == true) {
                         if (randspeed != 0) {
@@ -356,11 +391,19 @@ public class Runner extends JComponent implements KeyListener {
                     }
                 }
                 if (enemy4.y > HEIGHT - 89) {
-                    if(bossrec.x>1275|| bossrec.x + 608<0){
+
                     enemy4.x = 1248;
-                    }
+
                     int rand = (int) (Math.random() * 1051);
                     enemy4.y = rand;
+                    //if the spawned y position overlaps with another bullet, reassign it to another y coordinate
+                    if(enemy4.y > enemy1.y - 89 && enemy4.y < enemy1.y + 89||enemy4.y > enemy3.y - 89 && enemy4.y < enemy3.y + 89 && enemy4.y > enemy2.y - 89 && enemy4.y < enemy2.y + 89){
+                        int rand2 = (int) (Math.random() * 1051);
+                        enemy2.y = rand2;
+                    }
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
+                    }
                     //if it does not generate a 0(no speed), change the speed of enemy
                     if (levelUp == true) {
                         if (randspeed != 0) {
@@ -370,10 +413,14 @@ public class Runner extends JComponent implements KeyListener {
                 }
                 //if any of bullets intersect, random them again to make them not intersect\
                 //if enemy 1 y coord is in range of enemy 2
+                
+                //NOTE: CHANGE SECTION
                 if (enemy1.y > enemy2.y - 89 && enemy1.y < enemy2.y + 89) {
                     //move enemy coord back to far right
-                    if(bossrec.x>1275|| bossrec.x + 608<0){
+
                     enemy1.x = 1248;
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
                     }
                     //create random number between 1051 and 0, and input it to y coord of enemy
                     int rand = (int) (Math.random() * 1051);
@@ -386,11 +433,14 @@ public class Runner extends JComponent implements KeyListener {
                     }
                 }
                 if (enemy1.y > enemy3.y - 89 && enemy1.y < enemy3.y + 89) {
-                    if(bossrec.x>1275|| bossrec.x + 608<0){
+
                     enemy1.x = 1248;
-                    }
+
                     int rand = (int) (Math.random() * 1051);
                     enemy1.y = rand;
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
+                    }
                     //if it does not generate a 0(no speed), change the speed of enemy
                     if (levelUp == true) {
                         if (randspeed != 0) {
@@ -399,11 +449,14 @@ public class Runner extends JComponent implements KeyListener {
                     }
                 }
                 if (enemy1.y > enemy4.y - 89 && enemy1.y < enemy4.y + 89) {
-                    if(bossrec.x>1275|| bossrec.x + 608<0){
+
                     enemy1.x = 1248;
-                    }
+
                     int rand = (int) (Math.random() * 1051);
                     enemy1.y = rand;
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
+                    }
                     //if it does not generate a 0(no speed), change the speed of enemy
                     if (levelUp == true) {
                         if (randspeed != 0) {
@@ -412,11 +465,14 @@ public class Runner extends JComponent implements KeyListener {
                     }
                 }
                 if (enemy2.y > enemy3.y - 89 && enemy2.y < enemy3.y + 89) {
-                    if(bossrec.x>1275|| bossrec.x + 608<0){
+
                     enemy2.x = 1248;
-                    }
+
                     int rand = (int) (Math.random() * 1051);
                     enemy2.y = rand;
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
+                    }
                     //if it does not generate a 0(no speed), change the speed of enemy
                     if (levelUp == true) {
                         if (randspeed != 0) {
@@ -425,11 +481,14 @@ public class Runner extends JComponent implements KeyListener {
                     }
                 }
                 if (enemy2.y > enemy4.y - 89 && enemy2.y < enemy4.y + 89) {
-                    if(bossrec.x>1275|| bossrec.x + 608<0){
+
                     enemy2.x = 1248;
-                    }
+
                     int rand = (int) (Math.random() * 1051);
                     enemy2.y = rand;
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
+                    }
                     //if it does not generate a 0(no speed), change the speed of enemy
                     if (levelUp == true) {
                         if (randspeed != 0) {
@@ -438,11 +497,14 @@ public class Runner extends JComponent implements KeyListener {
                     }
                 }
                 if (enemy3.y > enemy4.y - 89 && enemy3.y < enemy4.y + 89) {
-                    if(bossrec.x>1275|| bossrec.x + 608<0){
+
                     enemy3.x = 1248;
-                    }
+
                     int rand = (int) (Math.random() * 1051);
                     enemy3.y = rand;
+                    if (bossrec.x < 1275) {
+                        moveX1 = 0;
+                    }
                     //if it does not generate a 0(no speed), change the speed of enemy
                     if (levelUp == true) {
                         if (randspeed != 0) {
@@ -484,21 +546,16 @@ public class Runner extends JComponent implements KeyListener {
                     frame = 0;
                 }
 
-                if (player.intersects(enemy1) || player.intersects(enemy2) || player.intersects(enemy3) || player.intersects(enemy4)|| player.intersects(bossrec)) {
+                if (player.intersects(enemy1) || player.intersects(enemy2) || player.intersects(enemy3) || player.intersects(enemy4) || player.intersects(bossrec)) {
                     done = true;
 
                 }
 
             }
-            
-
 
             // GAME LOGIC ENDS HERE 
-
             // update the drawing (calls paintComponent)
             repaint();
-
-
 
             // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
             // USING SOME SIMPLE MATH
@@ -580,7 +637,6 @@ public class Runner extends JComponent implements KeyListener {
         } else if (key == KeyEvent.VK_A) {
             playerLeft = false;
         }
-
 
     }
 }
