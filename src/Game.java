@@ -39,8 +39,10 @@ public class Game extends JComponent implements KeyListener{
     long desiredFPS = 120;
     long desiredTime = (1000)/desiredFPS;
     
-    String objective = "";                                                              //states the mission objective
-    String reason = "";                                                                   //explains to the player why they have lost
+    int[] TArrayx = new int[200];                                                          //creates array with n values
+    int[] TArrayy = new int[200]; 
+    String objective = "";                                                             //states the mission objective
+    String reason = "";                                                                //explains to the player why they have lost
     
     double xpos = 0;                                                                    //player x position
     double ypos = 0;                                                                    //player y position
@@ -63,6 +65,9 @@ public class Game extends JComponent implements KeyListener{
     Rectangle m_end = new Rectangle(0, 0, 0, 0);                                        //mission end rectangle
                                    
     int count = 0;                                                                      //counts frames for traces
+    int tracex = 0; 
+    int tracey = 0; 
+    int trailcount = 0;
     int mission = 1;                                                                    //each int is a mission
     int maxtime = 1;                                                                    //max time for the mission
     
@@ -240,7 +245,7 @@ public class Game extends JComponent implements KeyListener{
                     won = false;
                     xpos = -100;                                                                  
                     ypos = 240;                                                              
-                    fuel = 40;                                                               
+                    fuel = 30;                                                               
                     xspeed = 0.75;                                                                
                     yspeed = 0.35;                                                                  
                     xpos1 = 500;                                                                
@@ -251,7 +256,7 @@ public class Game extends JComponent implements KeyListener{
                     objective = "Keep the orbit consistenly below 400";
                     count = 0;
                     }
-                    if(count >= 4000){
+                    if(count >= 4500){
                         won = true;
                         mission = mission + 1;
                         reason = "Mission complete, reset to go to next mission"; 
@@ -259,35 +264,7 @@ public class Game extends JComponent implements KeyListener{
                     if(dist1 <= 7){
                         reset = true;
                     }
-                    if(dist1 >= 400 && count > 1000){
-                        reset = true;
-                }
-            }
-            if(mission == 4){
-                if(reset == true){                                                             
-                    won = false;
-                    xpos = 200;                                                                  
-                    ypos = 280;                                                              
-                    fuel = 30;                                                               
-                    xspeed = 0.65;                                                                
-                    yspeed = 0.35;                                                                  
-                    xpos1 = 500;                                                                
-                    ypos1 = 400;                                                                
-                    mass1 = 100;                                                                  
-                    m_end = new Rectangle(450, 200, 100, 10);
-                    reset = false;
-                    objective = "Keep the orbit consistenly below 400";
-                    count = 0;
-                    }
-                    if(count >= 4000){
-                        won = true;
-                        mission = mission + 1;
-                        reason = "Mission complete, reset to go to next mission"; 
-                    }   
-                    if(dist1 <= 7){
-                        reset = true;
-                    }
-                    if(dist1 >= 400){
+                    if(dist1 >= 400 && count >= 300){
                         reset = true;
                 }
             }
@@ -337,12 +314,30 @@ public class Game extends JComponent implements KeyListener{
                 fuel = fuel - 1;
             }
             
+            if((count % 10) == 0){
+                TArrayx[tracex] = (int)xpos;
+                tracex = tracex + 1;
+            }
+            
+            if((count % 10) == 0){
+                TArrayy[tracey] = (int)ypos;
+                tracey = tracey + 1;
+            }
+            
             xpos = xpos + xspeed;
             ypos = ypos + yspeed;
             
             //COUNTING FRAMES
             
             count = count + 1;
+            
+            if(tracex == 200){
+                tracex = 0;
+            }
+            if(tracey == 200){
+                tracey = 0;
+            }
+            
             
             }
             
