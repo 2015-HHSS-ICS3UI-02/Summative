@@ -14,6 +14,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioSystem;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -75,7 +77,7 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
     // Add haze background for the eighth screen, the pause screen
     Color haze = new Color(255, 255, 255, 100);
     // Add music!
-//  Sound music = new Sound("Tron Legacy - Son Of Flynn (Remix) - Extended!.wav"); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // Sound music = new Sound("Tron Legacy - Son Of Flynn (Remix) - Extended!.wav"); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // We use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
     //** add this into your application code as appropriate
@@ -252,6 +254,18 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
             g.fillRect(0, 0, WIDTH, HEIGHT);
         }
 
+        // Drawings of the health bar
+        // Health background rectangle                                              !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if (screen == 6) {
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(6, 5, 120, 20);
+            // Create red section of the death! Decreases by 25 each enemy hit!
+            g.fillRect(6, 5, 80 * health / 100, 20);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Health: " + health, 10, 20);
+        }
+
         // All of the game content if screen is greater than and or equal to 4 and if screen is less than or equal to 6
         if (screen >= 4 && screen <= 6) {
             // Create player ball (the minion character)
@@ -271,16 +285,15 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
             }
 
             // Drawings of the health bar
-            // Health background rectangle
+            // Health background rectangle                                                                  HEALTH BAR IN THE BACKGROUND!!!!!!!!!!!!!!
             g.setColor(Color.DARK_GRAY);
-            g.fillRect(6, 5, 80, 20);
+            g.fillRect(6, 5, 200, 20);
             g.setColor(Color.red);
             // Create red section of the death! Decreases by 25 each enemy hit!
             g.fillRect(6, 5, 80 * health / 100, 20);
             g.setColor(Color.white);
             g.setFont(gameFont);
             g.drawString("Health: " + health, 10, 20);
-
         }
 
 
@@ -336,8 +349,9 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
         // This is used to limit the framerate later on
         long startTime;
         long deltaTime;
-        // Allow for the music (audio) to loop while the game is open!
-//        music.loop();
+        // Allow for the music (audio) to loop while the game is open!                  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //music.loop();
+
         // The main game loop section
         // Game will end if you set done = false;
         boolean done = false;
@@ -550,10 +564,9 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
                 if (!alt) {
                     if (screen == 6) {
                         System.out.println("here");
-                        if (screenX < -WIDTH) {                                                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        if (screenX < -WIDTH) {
                             screenX = 0;
                         }
-
                         screenX--;
                     }
 
@@ -672,7 +685,7 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
     }
 
     @Override
-    public void keyTyped(KeyEvent e) { //                                          !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public void keyTyped(KeyEvent e) { //                                          
     }
 
     @Override
@@ -738,7 +751,7 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
         }
     }
 
-    @Override //                                                                   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    @Override //                                                                  
     public void mousePressed(MouseEvent e) {
     }
 
