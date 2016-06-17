@@ -196,7 +196,7 @@ public class Game extends JComponent implements KeyListener{
                     won = false;
                     xpos = 460;                                                                  
                     ypos = 400;                                                              
-                    fuel = 65;                                                               
+                    fuel = 60;                                                               
                     xspeed = 0;                                                                
                     yspeed = 1.58;                                                                  
                     xpos1 = 500;                                                                
