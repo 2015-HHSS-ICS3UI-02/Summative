@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -24,20 +25,21 @@ public class Game extends JComponent implements KeyListener {
     // you just need to select an approproate framerate
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
-    Rectangle main = new Rectangle(400, 500, 50, 50);
-    Rectangle ghost1 = new Rectangle(250, 200, 50, 50);
-    Rectangle ghost2 = new Rectangle(400, 0, 50, 50);
-    //Food particles
+     //Food particles
     ArrayList<Rectangle> food = new ArrayList<Rectangle>();
+    Rectangle main = new Rectangle(500, 200, 50, 50);
+    Rectangle ghost1 = new Rectangle(250, 200, 50, 50);
+    Rectangle ghost2 = new Rectangle(0, 200, 50, 50);
+    Rectangle ghost3 = new Rectangle(0, 525, 50, 50); 
     int speed = 3;
+    int moveX = 1;
     int score = 0;
     boolean mainUp = false;
     boolean mainDown = false;
     boolean mainLeft = false;
     boolean mainRight = false;
-
     BufferedImage foods = ImageHelper.loadImage("PacmanFOOD.jpg");
-
+    Font gameFont = new Font("Arial", Font.PLAIN, 40);
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
@@ -51,9 +53,10 @@ public class Game extends JComponent implements KeyListener {
         g.fillRect(0, 0, WIDTH, HEIGHT);
         g.setColor(Color.white);
         g.fillRect(main.x, main.y, main.width, main.height);
+        g.drawString("Score: " + score, WIDTH / 2 - 100, 100);
         g.setColor(Color.CYAN);
 
-//        g.fillOval(325, 15, 25, 25);
+        g.fillOval(400, 15, 25, 25);
 //        g.fillOval(425, 15, 25, 25);
 //        g.fillOval(525, 15, 25, 25);
 //        g.fillOval(625, 15, 25, 25);
@@ -78,6 +81,7 @@ public class Game extends JComponent implements KeyListener {
         g.drawRect(WIDTH / 2 - 100, HEIGHT / 2 - 100, 200, 200);
         g.drawRect(WIDTH - 200, 50, 100, 100);
         g.drawRect(WIDTH - 350, HEIGHT - 200, 50, 100);
+        g.fillRect(ghost3.x, ghost3.y, ghost2.width, ghost3.height);
         g.setColor(Color.yellow);
         g.drawRect(50, HEIGHT - 200, 100, 150);
         g.drawRect(250, HEIGHT - 150, 300, 100);
@@ -87,15 +91,9 @@ public class Game extends JComponent implements KeyListener {
         g.setColor(Color.green);
         g.drawRect(50, 300, 100, 200);
         g.drawRect(WIDTH - 200, 300, 100, 200);
-
-        for (Rectangle block : food) {
-            g.drawImage(foods, block.x, block.y, this);
-        }
-        food.add(new Rectangle(325, 15, 25, 25));
-        food.add(new Rectangle(425, 15, 25, 25));
-        food.add(new Rectangle(525, 15, 25, 25));
-
-        // GAME DRAWING ENDS HERE
+        
+              
+//         GAME DRAWING ENDS HERE
     }
 
     // The main game loop
@@ -114,16 +112,10 @@ public class Game extends JComponent implements KeyListener {
             startTime = System.currentTimeMillis();
 
             // all your game rules and move is done in here
-            // GAME LOGIC STARTS HERE        
-            if (ghost2.x < WIDTH - 50 && ghost2.width > 0) {
-                ghost2.x = ghost2.x + speed;
-                if(ghost2.x == 600){
-                    ghost2.x = ghost2.x - speed;
-                }
-            }
-        
-                
-            
+            // GAME LOGIC STARTS HERE   
+        food.add(new Rectangle(325, 15, 25, 25));
+        food.add(new Rectangle(425, 15, 25, 25));
+        food.add(new Rectangle(525, 15, 25, 25));
             if (mainDown == true && main.y < HEIGHT - main.height) {
                 main.y = main.y + speed;
                 if (main.intersects(50, 50, 200, 100)) {
@@ -283,6 +275,7 @@ public class Game extends JComponent implements KeyListener {
             // ghost 1 ai
             if (main.y < ghost1.y) {
                 ghost1.y = ghost1.y - speed;
+                
                 if (ghost1.intersects(50, 50, 200, 100)) {
                     ghost1.y = 150;
                 }
@@ -437,22 +430,31 @@ public class Game extends JComponent implements KeyListener {
                     ghost1.x = WIDTH - 250;
                 }
             }
-
-            if (main.intersects(ghost1)) {
+            // ghost 2 ai
+            ghost2.x = ghost2.x + moveX * speed;
+            if (ghost2.x + ghost2.width > WIDTH) {
+                moveX = -1;
+            }
+            if (ghost2.x < 0) {
+                moveX = 1;
+            }
+            // ghost 3 ai
+            ghost3.x = ghost3.x + moveX * speed;
+            if (ghost3.x + ghost3.width > WIDTH) {
+                moveX = -1;
+            }
+            if (ghost3.x < 0) {
+                moveX = 1;
+            }
+            // if hit by a ghost
+            if (main.intersects(ghost1) || main.intersects(ghost2) || main.intersects(ghost3)) {
                 done = true;
             }
-            Iterator<Rectangle> collect = food.iterator();
-            while (collect.hasNext()) {
-                // recognizing the dust
-                Rectangle food = collect.next();
-                // If player touches dust, collects it and stores it
-                if (main.intersects(food)) {
-                    collect.remove();
-                    //adds to score
-                    score++;
-                }
+           
+            if(main.intersects(325, 15, 25, 25)){
+                score++;
             }
-
+            
             // GAME LOGIC ENDS HERE 
             // update the drawing (calls paintComponent)
             repaint();
@@ -462,8 +464,10 @@ public class Game extends JComponent implements KeyListener {
             deltaTime = System.currentTimeMillis() - startTime;
             if (deltaTime > desiredTime) {
                 //took too much time, don't wait
+                 
             } else {
                 try {
+                    
                     Thread.sleep(desiredTime - deltaTime);
                 } catch (Exception e) {
                 };
