@@ -31,7 +31,7 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
     long desiredTime = (1000) / desiredFPS;
     // Create player 
     Rectangle P1 = new Rectangle(290, 370, 35, 35);
-    // Ball control
+    // Player minion control
     int[] moveX = {1, -1, 1, -1};
     int[] moveY = {1, 1, -1, -1};
     // Speed integer
@@ -55,6 +55,10 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
     // Mouse X and Y integers
     int mouseX = 0;
     int mouseY = 0;
+    // Integers to make the background move                                             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    int screenX = 250;
+    int screenY = 200;
+    int distChange = -1;
     // Create boolean for alt key 
     boolean alt = false;
     // Integer for player health
@@ -64,8 +68,6 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
     // Create background images for the game screens and player!
     BufferedImage triangles = ImageHelper.loadImage("Abstract 1.jpg");
     BufferedImage playerMinion = ImageHelper.loadImage("minion.png");
-    BufferedImage startMenu = ImageHelper.loadImage("Abstract 5.png");
-    BufferedImage abstract4 = ImageHelper.loadImage("Abstract 4.jpg");
     BufferedImage welcome = ImageHelper.loadImage("Start Menu.jpg");
     BufferedImage aboutGame = ImageHelper.loadImage("About Game (GOOD)_1.jpg");
     BufferedImage gameControls = ImageHelper.loadImage("Game Controls.jpg");
@@ -237,13 +239,13 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
         // Drawings for screen 5, 'Medium Mode' screen
         if (screen == 5) {
             // Drawing of background image
-            g.drawImage(abstract4, 0, 0, 800, 600, null);
+            g.drawImage(triangles, 0, 0, 800, 600, null);
         }
 
         // Drawings for screen 6, 'Insane Mode' screen
         if (screen == 6) {
             // Drawing of background image
-            g.drawImage(startMenu, 0, 0, 800, 600, null);
+            g.drawImage(triangles, 0, 0, 800, 600, null);
         }
 
         // All of the game content if screen is greater than and or equal to 4 and if screen is less than or equal to 6
@@ -274,6 +276,11 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
             g.setColor(Color.white);
             g.setFont(gameFont);
             g.drawString("Health: " + health, 10, 20);
+
+        }
+        // Make the background image able to move
+        if (screen == 6) {
+            g.drawImage(triangles, screenX, screenY, WIDTH, HEIGHT, null);                              // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
 
         // Drawings for screen 7, 'Death Screen'
@@ -479,6 +486,16 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
 
                     // If 'Insane' mode is clicked 
                     if (mouseX > 569 && mouseX < 709 && mouseY > 280 && mouseY < 310) {
+                        // Make the background image of screen 6 move!
+                        if (screen == 6) {
+                            if (screenX < 250) {                                                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                distChange = +1;
+                            }
+                            if (screenX < 300) {
+                                distChange = -1;
+                            }
+                            screenX = screenX + distChange;
+                        }
                         screen = 4;
                         health = 200;
                         speed = 20;
