@@ -568,7 +568,6 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
                 if (!alt) {
                     // Make screen in the background move! INSANE MODE!!!!!!!!!!!!!!
                     if (screen == 6) {
-                        System.out.println("here");
                         if (screenX < -WIDTH) {
                             screenX = 0;
                         }
