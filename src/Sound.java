@@ -48,6 +48,7 @@ public class Sound {
     public void loop() {
         new Thread(new Runnable() {
             public void run() {
+                // Makes the song loop while the game is open
                 sound.setFramePosition(0);
                 sound.loop(Clip.LOOP_CONTINUOUSLY);
             }

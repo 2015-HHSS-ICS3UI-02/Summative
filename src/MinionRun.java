@@ -25,7 +25,7 @@ import javax.swing.JFrame;
  */
 public class MinionRun extends JComponent implements KeyListener, MouseListener {
 
-    // Height and Width of Minion Run
+    // Height and Width of the screen size for Minion Run
     static final int WIDTH = 800;
     static final int HEIGHT = 600;
     // Set the framerate and delay for Minion Run
@@ -38,26 +38,26 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
     int[] moveY = {1, 1, -1, -1};
     // Speed integer
     int speed = 5;
-    // Screen setting:  7 Screens in total
+    // Screen setting:  7 screens in total
     int screen = 0;
     // Create the enemies
     Rectangle enemy = new Rectangle(70, 150, 10, 10);
     Rectangle enemy2 = new Rectangle(40, 400, 10, 10);
     Rectangle enemy3 = new Rectangle(50, HEIGHT / 2 - 5, 10, 10);
     Rectangle enemy4 = new Rectangle(5, HEIGHT / 2 - 20, 10, 10);
-    // Create array for enemies to be easily drawn and to easily work with in game logic
+    // Create array for enemies to be easily drawn and to easily work within game logic
     Rectangle[] enemies = {enemy, enemy2, enemy3, enemy4};
     // Player controls
     boolean p1Up = false;
     boolean p1Down = false;
     boolean p1Right = false;
     boolean p1Left = false;
-    // Create boolean for mouse click
+    // Create boolean for the left mouse click
     boolean button1 = false;
-    // Mouse X and Y integers
+    // Mouse X and Y integers (Used to click within coordinates)
     int mouseX = 0;
     int mouseY = 0;
-    // Integers to make the background move                                            
+    // Integers to make the background move (For 'Insane' game mode)                                          
     int screenX = 0;
     // Create boolean for alt key 
     boolean alt = false;
@@ -69,15 +69,15 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
     BufferedImage triangles = ImageHelper.loadImage("Abstract 1.jpg");
     BufferedImage playerMinion = ImageHelper.loadImage("minion.png");
     BufferedImage welcome = ImageHelper.loadImage("Start Menu.jpg");
-    BufferedImage aboutGame = ImageHelper.loadImage("About Game (GOOD)_1.jpg");
+    BufferedImage aboutGame = ImageHelper.loadImage("About Game.jpg");
     BufferedImage gameControls = ImageHelper.loadImage("Game Controls.jpg");
-    BufferedImage gameModes = ImageHelper.loadImage("Game Modes1.jpg");
+    BufferedImage gameModes = ImageHelper.loadImage("Game Modes.jpg");
     BufferedImage deathScreen = ImageHelper.loadImage("Death Screen.jpg");
     BufferedImage pauseScreen = ImageHelper.loadImage("pausedscreen.png");
-    // Add haze background for the eighth screen, the pause screen
+    // Add haze background for the 'Paused' screen
     Color haze = new Color(255, 255, 255, 100);
     // Add music!
-    // Sound music = new Sound("Tron Legacy - Son Of Flynn (Remix) - Extended!.wav"); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    Sound music = new Sound("Martin garrix - Oops (Original Mix) (FREE DOWNLOAD).wav");
     // We use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
     //** add this into your application code as appropriate
@@ -234,12 +234,32 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
         if (screen == 4) {
             // Drawing of background image
             g.drawImage(triangles, 0, 0, 800, 600, null);
+            // Drawings of the health bar
+            // Health background rectangle                                                                
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(6, 5, 80, 20);
+            g.setColor(Color.red);
+            // Create red section of the death! Decreases health by each enemy hit!
+            g.fillRect(6, 5, 80 * health / 100, 20);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Health: " + health, 10, 20);
         }
 
         // Drawings for screen 5, 'Medium Mode' screen
         if (screen == 5) {
             // Drawing of background image
             g.drawImage(triangles, 0, 0, 800, 600, null);
+            // Drawings of the health bar
+            // Health background rectangle                                                                  
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(6, 5, 100, 20);
+            g.setColor(Color.red);
+            // Create red section of the death! Decreases health by each enemy hit!
+            g.fillRect(6, 5, 100 * health / 100, 20);
+            g.setColor(Color.white);
+            g.setFont(gameFont);
+            g.drawString("Health: " + health, 10, 20);
         }
 
         // Drawings for screen 6, 'Insane Mode' screen
@@ -247,26 +267,25 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
             // Drawing of background image
             g.drawImage(triangles, screenX, 0, 800, 600, null);
             g.drawImage(triangles, screenX + 800, 0, 800, 600, null);
-            // Randomize the colours (Red, Green, and Blue!)
+            // Randomize the colours (Red, Green, and Blue!) FLASH THE PLAYER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             Color fun = new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255), 50);
             // Set the colours!
             g.setColor(fun);
             g.fillRect(0, 0, WIDTH, HEIGHT);
-        }
 
-        // Drawings of the health bar
-        // Health background rectangle                                              !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if (screen == 6) {
+            // Drawings of the health bar
+            // Health background rectangle                                                              
             g.setColor(Color.DARK_GRAY);
-            g.fillRect(6, 5, 120, 20);
-            // Create red section of the death! Decreases by 25 each enemy hit!
+            g.fillRect(6, 5, 160, 20);
+            g.setColor(Color.red);
+            // Create red section of the death! Decreases health by each enemy hit!
             g.fillRect(6, 5, 80 * health / 100, 20);
             g.setColor(Color.white);
             g.setFont(gameFont);
             g.drawString("Health: " + health, 10, 20);
         }
 
-        // All of the game content if screen is greater than and or equal to 4 and if screen is less than or equal to 6
+        // All of the game content if screen is 4-6
         if (screen >= 4 && screen <= 6) {
             // Create player ball (the minion character)
             g.setColor(Color.DARK_GRAY);
@@ -280,22 +299,10 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
             }
 
             // If health is O, then switch screens to screen 7, the death screen
-            if (health == 0) {
+            if (health <= 0) {
                 screen = 7;
             }
-
-            // Drawings of the health bar
-            // Health background rectangle                                                                  HEALTH BAR IN THE BACKGROUND!!!!!!!!!!!!!!
-            g.setColor(Color.DARK_GRAY);
-            g.fillRect(6, 5, 200, 20);
-            g.setColor(Color.red);
-            // Create red section of the death! Decreases by 25 each enemy hit!
-            g.fillRect(6, 5, 80 * health / 100, 20);
-            g.setColor(Color.white);
-            g.setFont(gameFont);
-            g.drawString("Health: " + health, 10, 20);
         }
-
 
         // Drawings for screen 7, 'Death Screen'
         if (screen == 7) {
@@ -349,8 +356,8 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
         // This is used to limit the framerate later on
         long startTime;
         long deltaTime;
-        // Allow for the music (audio) to loop while the game is open!                  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //music.loop();
+        // Allow for the music (audio) to loop while the game is open!                 
+        music.loop();
 
         // The main game loop section
         // Game will end if you set done = false;
@@ -448,21 +455,22 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
                         enemy4.y = HEIGHT / 2 - 20;
                         enemy4.width = 10;
                         enemy4.height = 10;
-                        // Replace every variable used!
+                        // Replace everything used (booleans and integers)!
                         boolean p1Up = false;
                         boolean p1Down = false;
                         boolean p1Right = false;
                         boolean p1Left = false;
                         int[] moveX = {1, -1, 1, -1};
                         int[] moveY = {1, 1, -1, -1};
-                        boolean button1 = false;
                     }
+                    // Make button 1 false to prevent from causing issues with any other screens
+                    button1 = false;
 
                     // If 'Medium' mode is clicked
                     if (mouseX > 340 && mouseX < 480 && mouseY > 280 && mouseY < 310) {
                         screen = 5;
                         speed = 8;
-                        health = 100;
+                        health = 120;
                         // Resetting the 'Medium' mode
                         // Replace the player minion's position
                         P1.y = 280;
@@ -489,23 +497,22 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
                         enemy4.y = HEIGHT / 2 - 20;
                         enemy4.width = 10;
                         enemy4.height = 10;
-                        // Replace every variable used!
+                        // Replace everything used (booleans and integers)!
                         boolean p1Up = false;
                         boolean p1Down = false;
                         boolean p1Right = false;
                         boolean p1Left = false;
                         int[] moveX = {1, -1, 1, -1};
                         int[] moveY = {1, 1, -1, -1};
-                        boolean button1 = false;
                     }
+                    // Make button 1 false to prevent from causing issues with any other screens
+                    button1 = false;
 
                     // If 'Insane' mode is clicked 
                     if (mouseX > 569 && mouseX < 709 && mouseY > 280 && mouseY < 310) {
-                        // Make the background image of screen 6 move!
-
                         screen = 6;
                         health = 200;
-                        speed = 10;
+                        speed = 14;
                         // Resetting the 'Insane' mode
                         // Replace the player minion's position
                         P1.y = 280;
@@ -532,21 +539,19 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
                         enemy4.y = HEIGHT / 2 - 20;
                         enemy4.width = 10;
                         enemy4.height = 10;
-                        // Replace every variable used!
+                        // Replace everything used (booleans and integers)!
                         boolean p1Up = false;
                         boolean p1Down = false;
                         boolean p1Right = false;
                         boolean p1Left = false;
                         int[] moveX = {1, -1, 1, -1};
                         int[] moveY = {1, 1, -1, -1};
-                        boolean button1 = false;
-
                     }
                     // Make button 1 false to prevent from causing issues with any other screens
                     button1 = false;
                 }
 
-                // If 'Game Modes' is clicked, screen changes to screen 3
+                // If 'Game Modes' is clicked from screen 7, screen changes to screen 3
             } else if (screen == 7) {
                 if (button1) {
                     // Coordinates for 'Game Modes' to be clicked within
@@ -560,8 +565,8 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
                 // Game logic for game modes 'Easy', 'Medium', and 'Insane'
             } else {
                 // The game itself (player and enemy movement)
-                // Array that goes through all minions and collisions with screen
                 if (!alt) {
+                    // Make screen in the background move! INSANE MODE!!!!!!!!!!!!!!
                     if (screen == 6) {
                         System.out.println("here");
                         if (screenX < -WIDTH) {
@@ -570,6 +575,7 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
                         screenX--;
                     }
 
+                    // Array that goes through all minions and collisions with screen
                     for (int i = 0; i < enemies.length; i++) {
                         enemies[i].x = enemies[i].x + moveX[i] * speed;
                         enemies[i].y = enemies[i].y + moveY[i] * speed;
@@ -611,6 +617,7 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
                     // For loop used to interact when enemies hit the player minion 
                     for (int i = 0; i < enemies.length; i++) {
                         if (enemies[i].intersects(P1)) {
+                            // Each enemy hit, make the player minion loose 25 health
                             health = health - 25;
                             // If player health is 0, game ends (Takes player to screen 7)
                             if (health == -25) {
@@ -619,13 +626,13 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
                         }
                     }
 
-                    // For loop used to interact when minions hit the player to bounce off CORRECTLY (prevent square on square overlap glitch)
+                    // For loop used to interact when minions hit the player 
                     for (int i = 0; i < enemies.length; i++) {
                         if (enemies[i].intersects(P1)) {
                             moveX[i] = -moveX[i];
                             moveY[i] = -moveY[i];
                         }
-                        // Prevents the enemies to overlap above the player's minion
+                        // Prevents the enemies to overlap above the player's minion and to bounce off CORRECTLY (prevent square on square overlap glitch)
                         while (enemies[i].intersects(P1)) {
                             enemies[i].x = enemies[i].x + moveX[i];
                             enemies[i].y = enemies[i].y + moveY[i];
@@ -660,11 +667,11 @@ public class MinionRun extends JComponent implements KeyListener, MouseListener 
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         // Creates a windows to show my game
-        JFrame frame = new JFrame("My Game");
+        JFrame frame = new JFrame("Minion Run");
 
-        // Creates an instance of my game
+        // Creates an instance of Minion Run
         MinionRun game = new MinionRun();
-        // Sets the size of my game
+        // Sets the size of Minion Run
         game.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         // Adds the game to the window
         frame.add(game);
