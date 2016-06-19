@@ -34,6 +34,7 @@ public class Game extends JComponent implements KeyListener{
     BufferedImage sunflare = ImageHelper.loadImage("sunflare.png");       
     BufferedImage checkpoint = ImageHelper.loadImage("checkpoint.png");
     BufferedImage checkpointvert = ImageHelper.loadImage("checkpointvert.png");  
+    BufferedImage space = ImageHelper.loadImage("space.jpg");  
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
     long desiredFPS = 120;
@@ -80,10 +81,11 @@ public class Game extends JComponent implements KeyListener{
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, WIDTH, HEIGHT);
         // GAME DRAWING GOES HERE
+        g.drawImage(space,-200, 0, WIDTH + 400, HEIGHT,null);
         g.setColor(Color.WHITE);
         g.setFont(gameFont);
         g.drawImage(satellite, (int)xpos - 4,(int)ypos - 4,30,30, null);
-        g.drawRect(840, 0, 149, 90);
+        g.drawRect(840, 0, 159, 90);
         g.drawRect(1, 1, 250, 50);
         
         if(mission > 0){                                                                    //Unless on the title screen
@@ -98,12 +100,15 @@ public class Game extends JComponent implements KeyListener{
         }else{                                                                              //If on title screen
             g.setFont(bigFont);                                                                 //Game title in large font
             g.drawString(("VOID"),470,40);  
+            g.drawString(("Press enter to begin!"),380,200);  
             g.setFont(gameFont);                                                                //States controls to the player
             g.drawString(("Controls:"),40,680);                                             
             g.drawString(("W-A-S-D - Thrusters"),40,700);
             g.drawString(("P - Pause"),40,740);   
             g.drawString(("R - Reset Mission"),40,720);
-            g.drawString(("T - While Paused, Reset to Title"),40,760);  
+            g.drawString(("T - While Paused, Reset to Title"),40,760);
+            g.drawString(("<- Ship Control Panel ->"),845,45);
+            g.drawString(("< - Mission Number and Objective - >"),10, 30);
         }
 
         if(mission == 1 || mission == 2 || mission == 3  || mission == 4  || mission == 5){ //Sunflare graphic for the following missions
@@ -119,11 +124,17 @@ public class Game extends JComponent implements KeyListener{
         if((mission == 3)){
             g.drawImage(checkpoint,m_end.x, m_end.y, m_end.width, m_end.height,null);
         }
-        if(won == true){                                                                    //
-            g.drawString("Mission complete, reset to go continue to next mission",400,780);
+        if(won == true){                                                                   
+            g.drawString("Mission complete, reset to continue to next mission.",360,780);
         }
         if(pause == true){
-            g.drawString(("The game has been paused. To return to titlescreen press T"),310,300);
+            g.setFont(bigFont);                                                              
+            g.drawString(("PAUSED"),455,500);
+            g.setFont(gameFont); 
+            if(mission > 0){
+                g.drawString(("Press T to return to title screen"),410,760);
+            }
+        
         }
 
         // GAME DRAWING ENDS HERE
@@ -413,6 +424,9 @@ public class Game extends JComponent implements KeyListener{
                 mission = mission + 1; 
         } else if(key == KeyEvent.VK_T && pause == true){
            mission = 0;
+           reset = true;
+        } else if(key == KeyEvent.VK_ENTER && mission == 0){
+           mission = 1;
            reset = true;
         }
        
