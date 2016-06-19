@@ -42,7 +42,6 @@ public class Game extends JComponent implements KeyListener{
     int[] TArrayx = new int[200];                                                          //creates array with n values
     int[] TArrayy = new int[200]; 
     String objective = "";                                                             //states the mission objective
-    String reason = "";                                                                //explains to the player why they have lost
     
     double xpos = 0, ypos = 0;                                                          //player x and y positions
     double fuel = 100;                                                                  //player fuel for acceleration
@@ -50,14 +49,14 @@ public class Game extends JComponent implements KeyListener{
     double xpos1 = 500, ypos1 = 400;                                                    //object 1 x and y positions
     double mass1 = 0;                                                                   //mass of object 1
     double dist1 = 0, angle1 = 0, gforce1 = 0;                                          //player distance, angle and gforce from object 1
-    double xpos2 = 500, ypos2 = 400;                                                    //object 2 x and y positions
+    double xpos2 = -100, ypos2 = -100;                                                    //object 2 x and y positions
     double mass2 = 0;                                                                   //mass of object 2
     double dist2 = 0, angle2 = 0, gforce2 = 0;                                          //player distance, angle and gforce from object 1
     
     Rectangle m_end = new Rectangle(0, 0, 0, 0);                                        //mission end rectangle
                                    
     int count = 0;                                                                      //counts frames for traces
-    int mission = 1;                                                                    //each int is a mission
+    int mission = 0;                                                                    //each int is a mission
     int maxtime = 1;                                                                    //max time for the mission
     
     boolean won = true;                                                                 //boolean true
@@ -83,36 +82,50 @@ public class Game extends JComponent implements KeyListener{
         // GAME DRAWING GOES HERE
         g.setColor(Color.WHITE);
         g.setFont(gameFont);
-        g.fillOval((int)xpos1 - 4,(int)ypos1 - 4,8,8);
-        if(mission == 5){
-        g.fillOval((int)xpos2 - 4,(int)ypos2 - 4,8,8);
-        }
         g.drawImage(satellite, (int)xpos - 4,(int)ypos - 4,30,30, null);
-        if(mission == 1 || mission == 2 || mission == 3  || mission == 4){
-            g.drawImage(sunflare,400 ,300,200,200, null);
+        g.drawRect(840, 0, 149, 90);
+        g.drawRect(1, 1, 250, 50);
+        
+        if(mission > 0){                                                                    //Unless on the title screen
+            g.drawString(("Distance 1: " + (int)dist1) + " units",850,20);                      //Displays distance
+            g.drawString(("Fuel:" + fuel),850,40);                                              //Displays fuel
+            g.drawString(("M.E.T.:" + (int)(count / 120) + " seconds"),850,60);                 //Displays total time
+            g.drawString(("Mission " + mission),10,20);                                         //Displays mission number
+            if(mission == 5){                                                                   //Displays distance from object two
+                g.drawString(("Distance 2: " + (int)dist2) + " units",850,80);
+            }
+            g.drawString(objective,10,40);                                                      //Displays objective
+        }else{                                                                              //If on title screen
+            g.setFont(bigFont);                                                                 //Game title in large font
+            g.drawString(("VOID"),470,40);  
+            g.setFont(gameFont);                                                                //States controls to the player
+            g.drawString(("Controls:"),40,680);                                             
+            g.drawString(("W-A-S-D - Thrusters"),40,700);
+            g.drawString(("P - Pause"),40,740);   
+            g.drawString(("R - Reset Mission"),40,720);
+            g.drawString(("T - While Paused, Reset to Title"),40,760);  
         }
-        if(mission == 5){
+
+        if(mission == 1 || mission == 2 || mission == 3  || mission == 4  || mission == 5){ //Sunflare graphic for the following missions
+            g.drawImage(sunflare,(int)xpos1 - 100,(int)ypos1 - 100,200,200, null);
+            g.drawImage(sunflare,(int)xpos2 - 100,(int)ypos2 - 100,200,200, null);
+        }
+        if(mission == 8){                                                                   //Earth graphic for the following missions
             g.drawImage(earth,400,300,200,200, null);
         }
-        g.drawString(("Distance 1: " + dist1),760,20);
-        g.drawString(("Angle:" + angle1),760,40);
-        g.drawString(("Gravitation:" + gforce1),760,60);
-        g.drawString(("Fuel:" + fuel),760,80);   
-        g.drawString(("M.E.T.:" + count + " seconds"),760,100);  
-        g.drawString(("Mission " + mission),10,20);
-        g.drawString(objective,10,40); 
-        if(mission == 5 || mission == 6 || mission == 7){
-            g.drawString(("Distance 2: " + dist2),760,120);
-        }
-        if((mission == 1)){
-                g.drawImage(checkpointvert,m_end.x, m_end.y, m_end.width, m_end.height,null);
+        if((mission == 1)){                                                                 //Checkpoint graphic for the following missions
+            g.drawImage(checkpointvert,m_end.x, m_end.y, m_end.width, m_end.height,null);
         }
         if((mission == 3)){
-                g.drawImage(checkpoint,m_end.x, m_end.y, m_end.width, m_end.height,null);
+            g.drawImage(checkpoint,m_end.x, m_end.y, m_end.width, m_end.height,null);
         }
-        if(won == true){
-            g.drawString((reason),420,780);
+        if(won == true){                                                                    //
+            g.drawString("Mission complete, reset to go continue to next mission",400,780);
         }
+        if(pause == true){
+            g.drawString(("The game has been paused. To return to titlescreen press T"),310,300);
+        }
+
         // GAME DRAWING ENDS HERE
     }
     
@@ -142,6 +155,23 @@ public class Game extends JComponent implements KeyListener{
             
 
             if(pause == false){ 
+            if(mission == 0){
+                if(reset == true){                                                             
+                    won = false;
+                    xpos = 499;                                                                  
+                    ypos = 400;                                                              
+                    fuel = 100000;                                                               
+                    xspeed = 0;                                                                
+                    yspeed = 0;                                                                  
+                    xpos1 = -100;                                                                
+                    ypos1 = -100;                                                                
+                    mass1 = 0;                                                                  
+                    maxtime = 2000;
+                    m_end = new Rectangle(590, 350, 10, 100);
+                    reset = false;                                                                   
+                    count = 0;
+                }
+            }
             if(mission == 1){
                 if(reset == true){                                                             
                     won = false;
@@ -162,7 +192,6 @@ public class Game extends JComponent implements KeyListener{
                 if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width)){
                     won = true;
                     mission = mission + 1;
-                    reason = "Mission complete, reset to go to next mission"; 
                 }
                 if(dist1 <= 7){
                     reset = true;
@@ -180,13 +209,12 @@ public class Game extends JComponent implements KeyListener{
                     ypos1 = 400;                                                                
                     mass1 = 100;                                
                     reset = false;
-                    objective = "Reach an distance of 500 units";
+                    objective = "Achieve a distance of over 500 units";
                     count = 0;
                     }
                     if(dist1 >= 500){
                         won = true;
                         mission = mission + 1;
-                        reason = "Mission complete, reset to go to next mission"; 
                     }
                     if(dist1 <= 7){
                         reset = true;
@@ -211,7 +239,6 @@ public class Game extends JComponent implements KeyListener{
                     if(ypos <= (m_end.y + m_end.height) && ypos >= (m_end.y) && xpos >= (m_end.x) && xpos <= (m_end.x + m_end.width)){
                         won = true;
                         mission = mission + 1;
-                        reason = "Mission complete, reset to go to next mission"; 
                     }   
                     if(dist1 <= 7){
                         reset = true;
@@ -230,13 +257,12 @@ public class Game extends JComponent implements KeyListener{
                     mass1 = 100;                                                                  
                     m_end = new Rectangle(450, 200, 100, 10);
                     reset = false;
-                    objective = "Keep the orbit consistenly below 400";
+                    objective = "Achieve an orbit consistenly below 400 units";
                     count = 0;
                     }
                     if(count >= 4500){
                         won = true;
                         mission = mission + 1;
-                        reason = "Mission complete, reset to go to next mission"; 
                     }   
                     if(dist1 <= 7){
                         reset = true;
@@ -249,22 +275,26 @@ public class Game extends JComponent implements KeyListener{
                 if(reset == true){                                                             
                     won = false;
                     xpos = 500;                                                                  
-                    ypos = 250;                                                              
-                    fuel = 20000;                                                               
-                    xspeed = 1.35;                                                                
+                    ypos = 660;                                                              
+                    fuel = 80;                                                               
+                    xspeed = 0.8;                                                                
                     yspeed = 0;                                                                  
                     xpos1 = 500;                                                                
-                    ypos1 = 400;                                                                
-                    mass1 = 300;     
+                    ypos1 = 700;                                                                
+                    mass1 = 30;     
                     xpos2 = 500;                                                                
                     ypos2 = 100;                                                                
-                    mass2 = 10;
+                    mass2 = 30;
                     m_end = new Rectangle(450, 200, 100, 10);
                     reset = false;
-                    objective = "Keep the orbit consistenly below 400";
+                    objective = "Reach a steady orbit around object 2";
                     count = 0;
                     }
-                    if(dist1 <= 100){
+                
+                if(dist1 <= 7){
+                        reset = true;
+                    }
+                if(dist2 <= 7){
                         reset = true;
                     }
             }
@@ -380,9 +410,12 @@ public class Game extends JComponent implements KeyListener{
            pause = false;
        } else if(key == KeyEvent.VK_P){
                 won = true;
-                mission = mission + 1;
-                reason = "Mission complete, reset to go to next mission"; 
-    }
+                mission = mission + 1; 
+        } else if(key == KeyEvent.VK_T && pause == true){
+           mission = 0;
+           reset = true;
+        }
+       
     }
 
     @Override
