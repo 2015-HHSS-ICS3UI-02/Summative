@@ -72,6 +72,8 @@ public class Summative extends JComponent implements KeyListener{
         // GAME DRAWING GOES HERE 
         g.drawImage(field, moveX, moveY, WIDTH, HEIGHT, null);
         g.setColor(Color.white);
+        g.fillRect(lg.x, lg.y, lg.width, lg.height);
+        g.fillRect(rg.x, rg.y, rg.width, rg.height);
         g.fillRect(SB.x, SB.y, SB.width, SB.height);
         g.setColor(Color.red);
         g.fillRect(red.x, red.y, red.width, red.height);
@@ -79,9 +81,8 @@ public class Summative extends JComponent implements KeyListener{
         g.setColor(Color.blue);
         g.fillRect(blue.x, blue.y, blue.width, blue.height);
         g.fillRect(blue2.x, blue2.y, blue2.width, blue2.height);
-        g.setColor(Color.white);
-        g.fillRect(lg.x, lg.y, lg.width, lg.height);
-        g.fillRect(rg.x, rg.y, rg.width, rg.height);
+        
+        
         // GAME DRAWING ENDS HERE
     }
     
@@ -279,6 +280,16 @@ public class Summative extends JComponent implements KeyListener{
             else if(SB.x > blue2.x){
               SB.x = SB.x + moveX*moveX;  
             }
+            }
+            
+            if(SB.intersects(rg)){
+                SB.y = HEIGHT/2;
+                SB.x = WIDTH/2;
+            }
+            
+            if(SB.intersects(lg)){
+                SB.y = HEIGHT/2;
+                SB.x = WIDTH/2;
             }
             
             // GAME LOGIC ENDS HERE 
