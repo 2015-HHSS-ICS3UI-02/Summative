@@ -44,37 +44,25 @@ public class Game extends JComponent implements KeyListener{
     String objective = "";                                                             //states the mission objective
     String reason = "";                                                                //explains to the player why they have lost
     
-    double xpos = 0;                                                                    //player x position
-    double ypos = 0;                                                                    //player y position
+    double xpos = 0, ypos = 0;                                                          //player x and y positions
     double fuel = 100;                                                                  //player fuel for acceleration
-    double xspeed = 0;                                                                  //player x velocity
-    double yspeed = 0;                                                                  //player y velocity
-    double xpos1 = 500;                                                                 //object 1 x position
-    double ypos1 = 400;                                                                 //object 1 y position
-    double mass1 = 0;                                                                  //mass of object 1
-    double dist1 = 0;                                                                   //player distance from object 1
-    double angle1 = 0;                                                                  //player angle from object 1
-    double gforce1 = 0;                                                                 //player gforce from object 1
-    double xpos2 = 500;                                                                 //object 1 x position
-    double ypos2 = 400;                                                                 //object 1 y position
-    double mass2 = 0;                                                                  //mass of object 1
-    double dist2 = 0;                                                                   //player distance from object 1
-    double angle2 = 0;                                                                  //player angle from object 1
-    double gforce2 = 0;                                                                 //player gforce from object 1
+    double xspeed = 0, yspeed = 0;                                                      //player x and y velocities
+    double xpos1 = 500, ypos1 = 400;                                                    //object 1 x and y positions
+    double mass1 = 0;                                                                   //mass of object 1
+    double dist1 = 0, angle1 = 0, gforce1 = 0;                                          //player distance, angle and gforce from object 1
+    double xpos2 = 500, ypos2 = 400;                                                    //object 2 x and y positions
+    double mass2 = 0;                                                                   //mass of object 2
+    double dist2 = 0, angle2 = 0, gforce2 = 0;                                          //player distance, angle and gforce from object 1
     
     Rectangle m_end = new Rectangle(0, 0, 0, 0);                                        //mission end rectangle
                                    
     int count = 0;                                                                      //counts frames for traces
-    int tracex = 0; 
-    int tracey = 0; 
-    int trailcount = 0;
     int mission = 1;                                                                    //each int is a mission
     int maxtime = 1;                                                                    //max time for the mission
     
     boolean won = true;                                                                 //boolean true
     boolean pause = false;                                                              //boolean for game paused
     boolean reset = true;                                                               //boolean to reset game
-    boolean titlescreen = true;                                                         //boolean for title screen
     
     boolean ynegative_accel = false;
     boolean ypositive_accel = false;
@@ -103,8 +91,8 @@ public class Game extends JComponent implements KeyListener{
         if(mission == 1 || mission == 2 || mission == 3  || mission == 4){
             g.drawImage(sunflare,400 ,300,200,200, null);
         }
-        if(mission == 6){
-            g.drawImage(earth,400 ,300,200,200, null);
+        if(mission == 5){
+            g.drawImage(earth,400,300,200,200, null);
         }
         g.drawString(("Distance 1: " + dist1),760,20);
         g.drawString(("Angle:" + angle1),760,40);
@@ -152,19 +140,8 @@ public class Game extends JComponent implements KeyListener{
             
              //APPLYING GRAVITY
             
-            dist1 = Math.sqrt(Math.pow((xpos - xpos1), 2) + Math.pow((ypos - ypos1),2));     //Finds distance to object 1
-            gforce1 = mass1 / Math.pow(dist1, 2);                                            //Finds gforce of object 1
-            angle1 = Math.atan2((ypos - ypos1),(xpos - xpos1));                              //finds angle to object 1
-            xspeed = xspeed - gforce1 * Math.cos(angle1);                                    //Adds components of gforce onto player
-            yspeed = yspeed - gforce1 * Math.sin(angle1);
-            
-            dist2 = Math.sqrt(Math.pow((xpos - xpos2), 2) + Math.pow((ypos - ypos2),2));     //Finds distance to object 1
-            gforce2 = mass2 / Math.pow(dist2, 2);                                            //Finds gforce of object 1
-            angle2 = Math.atan2((ypos - ypos2),(xpos - xpos2));                              //finds angle to object 1
-            xspeed = xspeed - gforce2 * Math.cos(angle2);                                    //Adds components of gforce onto player
-            yspeed = yspeed - gforce2 * Math.sin(angle2);
-            
-            if(pause == false){
+
+            if(pause == false){ 
             if(mission == 1){
                 if(reset == true){                                                             
                     won = false;
@@ -196,7 +173,7 @@ public class Game extends JComponent implements KeyListener{
                     won = false;
                     xpos = 460;                                                                  
                     ypos = 400;                                                              
-                    fuel = 60;                                                               
+                    fuel = 65;                                                               
                     xspeed = 0;                                                                
                     yspeed = 1.58;                                                                  
                     xpos1 = 500;                                                                
@@ -272,56 +249,55 @@ public class Game extends JComponent implements KeyListener{
                 if(reset == true){                                                             
                     won = false;
                     xpos = 500;                                                                  
-                    ypos = 400;                                                              
+                    ypos = 250;                                                              
                     fuel = 20000;                                                               
-                    xspeed = 0;                                                                
+                    xspeed = 1.35;                                                                
                     yspeed = 0;                                                                  
                     xpos1 = 500;                                                                
-                    ypos1 = 600;                                                                
-                    mass1 = 100;     
+                    ypos1 = 400;                                                                
+                    mass1 = 300;     
                     xpos2 = 500;                                                                
-                    ypos2 = 200;                                                                
-                    mass2 = 100;
+                    ypos2 = 100;                                                                
+                    mass2 = 10;
                     m_end = new Rectangle(450, 200, 100, 10);
                     reset = false;
                     objective = "Keep the orbit consistenly below 400";
                     count = 0;
                     }
-                    if(dist1 <= 8){
+                    if(dist1 <= 100){
                         reset = true;
                     }
-                    if(dist2 <= 8){
-                        reset = true;
-                    }
-                    
             }
+            
             //APPLYING PLAYER ACCELERATION
             
+            dist1 = Math.sqrt(Math.pow((xpos - xpos1), 2) + Math.pow((ypos - ypos1),2));     //Finds distance to object 1
+            gforce1 = mass1 / Math.pow(dist1, 2);                                            //Finds gforce of object 1
+            angle1 = Math.atan2((ypos - ypos1),(xpos - xpos1));                              //finds angle to object 1
+            xspeed = xspeed - gforce1 * Math.cos(angle1);                                    //Adds components of gforce onto player
+            yspeed = yspeed - gforce1 * Math.sin(angle1);
+            
+            dist2 = Math.sqrt(Math.pow((xpos - xpos2), 2) + Math.pow((ypos - ypos2),2));     //Finds distance to object 1
+            gforce2 = mass2 / Math.pow(dist2, 2);                                            //Finds gforce of object 1
+            angle2 = Math.atan2((ypos - ypos2),(xpos - xpos2));                              //finds angle to object 1
+            xspeed = xspeed - gforce2 * Math.cos(angle2);                                    //Adds components of gforce onto player
+            yspeed = yspeed - gforce2 * Math.sin(angle2);
+            
             if(ynegative_accel == true && fuel > 0){                                         //Engages acceleration based on player keystrokes
-                yspeed = yspeed - 0.01;
-                fuel = fuel - 1;
+                yspeed = yspeed - 0.005;
+                fuel = fuel - 0.5;
             }
             if(ypositive_accel == true && fuel > 0){
-                yspeed = yspeed + 0.01;
-                fuel = fuel - 1;
+                yspeed = yspeed + 0.005;
+                fuel = fuel - 0.5;
             }
             if(xnegative_accel == true && fuel > 0){
-                xspeed = xspeed - 0.01;
-                fuel = fuel - 1;
+                xspeed = xspeed - 0.005;
+                fuel = fuel - 0.5;
             }
             if(xpositive_accel == true && fuel > 0){
-                xspeed = xspeed + 0.01;
-                fuel = fuel - 1;
-            }
-            
-            if((count % 10) == 0){
-                TArrayx[tracex] = (int)xpos;
-                tracex = tracex + 1;
-            }
-            
-            if((count % 10) == 0){
-                TArrayy[tracey] = (int)ypos;
-                tracey = tracey + 1;
+                xspeed = xspeed + 0.005;
+                fuel = fuel - 0.5;
             }
             
             xpos = xpos + xspeed;
@@ -330,14 +306,6 @@ public class Game extends JComponent implements KeyListener{
             //COUNTING FRAMES
             
             count = count + 1;
-            
-            if(tracex == 200){
-                tracex = 0;
-            }
-            if(tracey == 200){
-                tracey = 0;
-            }
-            
             
             }
             
