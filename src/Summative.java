@@ -30,8 +30,8 @@ public class Summative extends JComponent implements KeyListener{
     //making all the players and the ball
     
     Rectangle SB = new Rectangle(WIDTH/2, HEIGHT/2, 20, 20);
-        int moveX = 4;
-        int moveY = 4;
+        int moveX = 3;
+        int moveY = 3;
         int speed = 3;    
         
     Rectangle red = new Rectangle (250, HEIGHT/2 - 25, 25, 25);
@@ -116,8 +116,13 @@ public class Summative extends JComponent implements KeyListener{
             }
             if(blue2.y < 32){
                 blue2.y = 32;
-                
+              
             }
+            if(SB.y < 32) {
+                SB.y = SB.y + moveY*speed;
+            }  
+                
+            
             if(red.y > 545){
                 red.y = 545;
             }
@@ -129,7 +134,13 @@ public class Summative extends JComponent implements KeyListener{
             }
             if(blue2.y > 545){
                 blue2.y = 545;
+             
             }
+                if(SB.y > 545){
+                SB.y = SB.y - moveY*speed*speed;
+            } 
+                
+            
             
             if(red.x < 35){
                 red.x = 35;
@@ -142,6 +153,10 @@ public class Summative extends JComponent implements KeyListener{
             }
             if(blue2.x < 35){
                 blue2.x = 35;
+            }
+            
+            if(SB.x < 35){
+                SB.x = SB.x + moveX*speed;
             }
             
             if(red.x > 745){
@@ -157,45 +172,49 @@ public class Summative extends JComponent implements KeyListener{
                 blue2.x = 745;
             }
             
+            if(SB.x > 745){
+                SB.x = SB.x - moveX*speed;
+            }
+            
             if(redUP){
-                red.y = red.y - speed*3;
+                red.y = red.y - speed*2;
             } else if (redDOWN){
-                red.y = red.y + speed*3;
+                red.y = red.y + speed*2;
             }
             if(redLEFT){
-                red.x = red.x - speed*3;
+                red.x = red.x - speed*2;
             } else if (redRIGHT){
-               red.x = red.x + speed*3;
+               red.x = red.x + speed*2;
             }
             if(red2UP){
-                red2.y = red2.y - speed*3;
+                red2.y = red2.y - speed*2;
             } else if (red2DOWN){
-                red2.y = red2.y + speed*3;
+                red2.y = red2.y + speed*2;
             }
             if(red2LEFT){
-                red2.x = red2.x - speed*3;
+                red2.x = red2.x - speed*2;
             } else if (red2RIGHT){
-               red2.x = red2.x + speed*3;
+               red2.x = red2.x + speed*2;
             }
             if(blueUP){
-                blue.y = blue.y - speed*3;
+                blue.y = blue.y - speed*2;
             } else if (blueDOWN){
-                blue.y = blue.y + speed*3;
+                blue.y = blue.y + speed*2;
             }
             if(blueLEFT){
-                blue.x = blue.x - speed*3;
+                blue.x = blue.x - speed*2;
             } else if (blueRIGHT){
-               blue.x = blue.x + speed*3;
+               blue.x = blue.x + speed*2;
             }
             if(blue2UP){
-                blue2.y = blue2.y - speed*3;
+                blue2.y = blue2.y - speed*2;
             } else if (blue2DOWN){
-                blue2.y = blue2.y + speed*3;
+                blue2.y = blue2.y + speed*2;
             }
             if(blue2LEFT){
-                blue2.x = blue2.x - speed*3;
+                blue2.x = blue2.x - speed*2;
             } else if (blue2RIGHT){
-               blue2.x = blue2.x + speed*3;
+               blue2.x = blue2.x + speed*2;
             }
             
             if(SB.intersects(red)){
