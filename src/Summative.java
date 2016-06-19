@@ -7,6 +7,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
 
 
@@ -27,7 +28,7 @@ public class Summative extends JComponent implements KeyListener{
     long desiredFPS = 60;
     long desiredTime = (1000)   /desiredFPS;
     //making all the players and the ball
-    Rectangle field = new Rectangle (WIDTH, HEIGHT, 800, 600);
+    
     Rectangle SB = new Rectangle(WIDTH/2, HEIGHT/2, 20, 20);
         int moveX = 1;
         int moveY = 1;
@@ -54,6 +55,8 @@ public class Summative extends JComponent implements KeyListener{
     boolean blue2DOWN = false;
     boolean blue2LEFT = false;
     boolean blue2RIGHT = false;
+    
+    BufferedImage field = ImageHelper.loadImage("field.png");
 
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
@@ -65,6 +68,7 @@ public class Summative extends JComponent implements KeyListener{
         g.clearRect(0, 0, WIDTH, HEIGHT);
         
         // GAME DRAWING GOES HERE 
+        g.drawImage(field, moveX, moveY, WIDTH, HEIGHT, null);
         g.setColor(Color.white);
         g.fillRect(SB.x, SB.y, SB.width, SB.height);
         g.setColor(Color.red);
@@ -96,6 +100,58 @@ public class Summative extends JComponent implements KeyListener{
             
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
+            if(red.y < 32){
+                red.y = 32;
+            }
+            if(red2.y < 32){
+                red2.y = 32;
+            }
+            if(blue.y < 32){
+                blue.y = 32;
+            }
+            if(blue2.y < 32){
+                blue2.y = 32;
+                
+            }
+            if(red.y > 545){
+                red.y = 545;
+            }
+            if(red2.y > 545){
+                red2.y = 545;
+            }
+            if(blue.y > 545){
+                blue.y = 545;
+            }
+            if(blue2.y > 545){
+                blue2.y = 545;
+            }
+            
+            if(red.x < 35){
+                red.x = 35;
+            }
+            if(red2.x < 35){
+                red2.x = 35;
+            }
+            if(blue.x < 35){
+                blue.x = 35;
+            }
+            if(blue2.x < 35){
+                blue2.x = 35;
+            }
+            
+            if(red.x > 745){
+                red.x = 745;
+            }
+            if(red2.x > 745){
+                red2.x = 745;
+            }
+            if(blue.x > 745){
+                blue.x = 745;
+            }
+            if(blue2.x > 745){
+                blue2.x = 745;
+            }
+            
             if(redUP){
                 red.y = red.y - speed*3;
             } else if (redDOWN){
