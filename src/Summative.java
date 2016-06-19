@@ -30,14 +30,16 @@ public class Summative extends JComponent implements KeyListener{
     //making all the players and the ball
     
     Rectangle SB = new Rectangle(WIDTH/2, HEIGHT/2, 20, 20);
-        int moveX = 1;
-        int moveY = 1;
+        int moveX = 4;
+        int moveY = 4;
         int speed = 3;    
         
     Rectangle red = new Rectangle (250, HEIGHT/2 - 25, 25, 25);
     Rectangle blue = new Rectangle (550, HEIGHT/2 - 25, 25, 25);
     Rectangle red2 = new Rectangle (250, HEIGHT/2 + 25, 25, 25);
     Rectangle blue2 = new Rectangle (550, HEIGHT/2 + 25, 25, 25);
+    Rectangle lg = new Rectangle (27, 255, 12, 100); 
+    Rectangle rg = new Rectangle (768, 255, 12, 100);
     //making the movments for the players
     boolean redUP = false;
     boolean redDOWN = false;
@@ -77,6 +79,9 @@ public class Summative extends JComponent implements KeyListener{
         g.setColor(Color.blue);
         g.fillRect(blue.x, blue.y, blue.width, blue.height);
         g.fillRect(blue2.x, blue2.y, blue2.width, blue2.height);
+        g.setColor(Color.white);
+        g.fillRect(lg.x, lg.y, lg.width, lg.height);
+        g.fillRect(rg.x, rg.y, rg.width, rg.height);
         // GAME DRAWING ENDS HERE
     }
     
@@ -193,7 +198,70 @@ public class Summative extends JComponent implements KeyListener{
                blue2.x = blue2.x + speed*3;
             }
             
-
+            if(SB.intersects(red)){
+            
+                if(SB.y <= red.y - (red.height/2)){
+             SB.y = SB.y - moveY*moveY;   
+            }
+                else if(SB.y >= red.y + (red.height/2)){
+              SB.y = SB.y + moveY*moveY;  
+            }
+            if(SB.x < red.x){
+              SB.x = SB.x - moveX*moveX;  
+            }
+            else if(SB.x > red.x){
+              SB.x = SB.x + moveX*moveX;  
+            }
+            }
+            
+            if(SB.intersects(red2)){
+            
+                if(SB.y <= red2.y - (red2.height/2)){
+             SB.y = SB.y - moveY*moveY;   
+            }
+                else if(SB.y >= red2.y + (red2.height/2)){
+              SB.y = SB.y + moveY*moveY;  
+            }
+            if(SB.x < red2.x){
+              SB.x = SB.x - moveX*moveX;  
+            }
+            else if(SB.x > red2.x){
+              SB.x = SB.x + moveX*moveX;  
+            }
+            }
+            
+            if(SB.intersects(blue)){
+            
+                if(SB.y <= blue.y - (blue.height/2)){
+             SB.y = SB.y - moveY*moveY;   
+            }
+                else if(SB.y >= blue.y + (blue.height/2)){
+              SB.y = SB.y + moveY*moveY;  
+            }
+            if(SB.x < blue.x){
+              SB.x = SB.x - moveX*moveX;  
+            }
+            else if(SB.x > blue.x){
+              SB.x = SB.x + moveX*moveX;  
+            }
+            }
+            
+            if(SB.intersects(blue2)){
+            
+                if(SB.y <= blue2.y - (blue2.height/2)){
+             SB.y = SB.y - moveY*moveY;   
+            }
+                else if(SB.y >= blue2.y + (blue2.height/2)){
+              SB.y = SB.y + moveY*moveY;  
+            }
+            if(SB.x < blue2.x){
+              SB.x = SB.x - moveX*moveX;  
+            }
+            else if(SB.x > blue2.x){
+              SB.x = SB.x + moveX*moveX;  
+            }
+            }
+            
             // GAME LOGIC ENDS HERE 
             
             // update the drawing (calls paintComponent)
