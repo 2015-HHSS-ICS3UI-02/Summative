@@ -299,6 +299,10 @@ public class Summative extends JComponent implements KeyListener{
                 score2++;
             }
             
+            if(score1 == 3 || score2 ==3){
+            done = true;
+        }
+            
             // GAME LOGIC ENDS HERE 
             
             // update the drawing (calls paintComponent)
