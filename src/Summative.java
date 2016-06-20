@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.JComponent;
@@ -59,7 +60,9 @@ public class Summative extends JComponent implements KeyListener{
     boolean blue2RIGHT = false;
     
     BufferedImage field = ImageHelper.loadImage("field.png");
-
+    int score1 = 0;
+    int score2 = 0;
+    gamefont = new Font ("Times New Roman", Font.PLAIN, 40);
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
@@ -82,7 +85,9 @@ public class Summative extends JComponent implements KeyListener{
         g.fillRect(blue.x, blue.y, blue.width, blue.height);
         g.fillRect(blue2.x, blue2.y, blue2.width, blue2.height);
         
-        
+        g.setFont(gamefont);
+        g.drawString("", WIDTH/2 + 100, 100);
+        g.drawString("", WIDTH/2 - 100, 100);
         // GAME DRAWING ENDS HERE
     }
     
@@ -285,11 +290,13 @@ public class Summative extends JComponent implements KeyListener{
             if(SB.intersects(rg)){
                 SB.y = HEIGHT/2;
                 SB.x = WIDTH/2;
+                score1++;
             }
             
             if(SB.intersects(lg)){
                 SB.y = HEIGHT/2;
                 SB.x = WIDTH/2;
+                score2++;
             }
             
             // GAME LOGIC ENDS HERE 
