@@ -97,7 +97,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
     // safe
     Rectangle safe = new Rectangle(466, 68, 74, 69);
     Rectangle safeTrigger = new Rectangle(466, 137, 74, 10);
-    // dialog triggers
+    // dialog trigger
     Rectangle waiTrigger = new Rectangle(150, 425, 38, 53);
     // movement
     int speed = 2;
@@ -151,6 +151,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
     Font otType = new Font("Agency FB", Font.BOLD, 40);
     Font pongType = new Font("Arial", Font.BOLD, 40);
     long nextTick = 0;
+    Sound song = new Sound("Miguel Herrero - Cave.wav");
 
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
@@ -337,6 +338,7 @@ public class OnlyTonight extends JComponent implements KeyListener {
         long startTime;
         long deltaTime;
 
+        song.loop();
         // the main game loop section
         // game will end if you set done = false;
         boolean done = false;
@@ -447,13 +449,13 @@ public class OnlyTonight extends JComponent implements KeyListener {
                         }
                     }
 
-                } else if (enterKey == 1) {
+                } else if (menuSelection == 0 && enterKey == 1) {
                     // countdown
                     if (nextTick == 0) {
                         // add second to counter each time 1000 milliseconds pass
                         nextTick = System.currentTimeMillis() + 1000;
                     }
-                    if (System.currentTimeMillis() > nextTick && !winGame) {
+                    if (System.currentTimeMillis() > nextTick && !winGame && !gameOver) {
                         // decrease by 1 each time 1000 milliseconds pass
                         countdown--;
                         nextTick = System.currentTimeMillis() + 1000;
