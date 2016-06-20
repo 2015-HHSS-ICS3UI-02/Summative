@@ -24,50 +24,47 @@ import javax.swing.JFrame;
 public class Game extends JComponent implements KeyListener{
 
     // Height and Width of our game
-    static final int WIDTH = 1000;
-    static final int HEIGHT = 640;
+    static final int WIDTH = 1000;      // width of the game when running 
+    static final int HEIGHT = 640;      // height of the game when running
     
-    BufferedImage west = ImageHelper.loadImage("WildWest2.0.jpg");
-    BufferedImage west2 = ImageHelper.loadImage("WildWest3.jpg");
-    BufferedImage character = ImageHelper.loadImage("FlyingGuy.png");
-    BufferedImage title = ImageHelper.loadImage("TitleScreen2.jpg");   
-    BufferedImage spikes = ImageHelper.loadImage("spikes.png");   
-    BufferedImage gameover = ImageHelper.loadImage("GameOver2.jpg");
+    BufferedImage west = ImageHelper.loadImage("WildWest2.0.jpg");      // image of wild west 
+    BufferedImage character = ImageHelper.loadImage("FlyingGuy.png");       // character's png
+    BufferedImage title = ImageHelper.loadImage("TitleScreen2.jpg");        // title screen picture
+    BufferedImage spikes = ImageHelper.loadImage("spikes.png");         // obstacles in the game
+    BufferedImage gameover = ImageHelper.loadImage("GameOver2.jpg");        // game over screen
     
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
-    long desiredFPS = 60;
+    long desiredFPS = 60;       
     long desiredTime = (1000)/desiredFPS;
     
     int moveX = 1;      // moving on x axis 
     int moveY = 1;      // moving on y axis
-    int dy = 0;
+    int dy = 0;         // integer for gravity 
     
-    int score = 0;
-    int speed = 3;
-    int speedX = 3;     // the speed 
-    int speedY = 3;
-    int count = 0;
-    int count2 = 1000;
-    int count3 = 1500;
-    int bulletSpeed;
-    int bulletSpeed2;
-    int randNum = (int) (Math.random() * (300 - 1 + 20) + 1);
-    int randNum2 = (int) (Math.random() * (200 - 1 + 15) + 1);
+    int score = 0;      // score int is initially set to be 0 
+    int speed = 3;      // the speed of character
+    int speedX = 3;     // the speed on the x axis
+    int speedY = 3;     // the speed on the y axis
+    int count = 0;      // the integer to make the background scroll
+    int count2 = 1000;  // the integer for the first set of spikes -- spawns in at 1000
+    int count3 = 1500;  // the integer for the second set of spikes -- spawns in at 1500
+    int randNum = (int) (Math.random() * (300 - 1 + 20) + 1);   // integer for the position on the y axis the spikes will spawn in (between 300 and 20)
+    int randNum2 = (int) (Math.random() * (200 - 1 + 15) + 1);  // integer for the position on the y axis the spikes will spawn in (between 200 and 15)
     
-    boolean pLEFT = false;
-    boolean pRIGHT = false;
-    boolean pJUMP = false;
-    boolean reset = false;
-    int enterKey = 0;
+    boolean pLEFT = false;      // boolean for moving to the left 
+    boolean pRIGHT = false;     // boolean for moving to the right 
+    boolean pJUMP = false;      // boolean for going up
+    boolean reset = false;      // boolean for resetting the game
+    int enterKey = 0;           // boolean for pressing enter on main menu
     
-    int gravity = 1;
+    int gravity = 1;            // integer for the gravity in the game 
     
-    Rectangle player = new Rectangle(25, 1, 140, 140);
-    Rectangle spikes1 = new Rectangle(500, randNum, 250, 100);
-    Rectangle spikes2 = new Rectangle(500, randNum2, 250, 100);
+    Rectangle player = new Rectangle(25, 1, 140, 140);      // the players hitbox 
+    Rectangle spikes1 = new Rectangle(500, randNum, 250, 100);      // the first set of spikes hitbox 
+    Rectangle spikes2 = new Rectangle(500, randNum2, 250, 100);     // the second set of spikes hitbox
     
-    Font gameFont = new Font("Agency FB", Font.PLAIN, 40);
+    Font gameFont = new Font("Agency FB", Font.PLAIN, 40);      // the font the score will appear in
     
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
@@ -81,22 +78,22 @@ public class Game extends JComponent implements KeyListener{
         // GAME DRAWING GOES HERE 
         
         
-        if(enterKey == 0){
+        if(enterKey == 0){      // when the integer enterKey is 0, the game will be on the title screen
             g.drawImage(title, 0, 0, WIDTH, HEIGHT, null);
         }
-        if(enterKey == 1){
+        if(enterKey == 1){      // when the integer enterKey is 1, the game will be playable
         
-        g.drawImage(west, count, 0, WIDTH, HEIGHT, null);
-        g.drawImage(west, count + 1000, 0, WIDTH, HEIGHT, null);
-        g.drawImage(character, player.x, player.y, player.width, player.height, null);
-        g.drawImage(spikes, spikes1.x, spikes1.y, 500, 200, null);
-        g.drawImage(spikes, spikes2.x, spikes2.y, 500, 200, null);
+        g.drawImage(west, count, 0, WIDTH, HEIGHT, null);       // drawing for the background of wild west 
+        g.drawImage(west, count + 1000, 0, WIDTH, HEIGHT, null);        // drawing for the second west that will alternate between the original as the screen scrolls
+        g.drawImage(character, player.x, player.y, player.width, player.height, null);      // drawing for the character in the game 
+        g.drawImage(spikes, spikes1.x, spikes1.y, 500, 200, null);      // drawing for the first set of spikes
+        g.drawImage(spikes, spikes2.x, spikes2.y, 500, 200, null);      // drawing for the second set of spikes
         }    
         
-        g.setFont(gameFont);
-        g.drawString("Score: " + score, 850, 40);
+        g.setFont(gameFont);        // the game font 
+        g.drawString("Score: " + score, 850, 40);       // the score will appear in top right and will say Score: + whatever the actual score is 
         
-        if(enterKey == 2){
+        if(enterKey == 2){      // when the integer enterKey is equal to 2, the game will display the game over screen
             g.drawImage(gameover, 0, 0, WIDTH, HEIGHT, null);    
         }
         // GAME DRAWING ENDS HERE
@@ -137,7 +134,7 @@ public class Game extends JComponent implements KeyListener{
             if(player.y < 0){
                 player.y = 0;
             }
-            
+            // boundries
             if(player.y + player.height > HEIGHT){
                 enterKey = 2;
             }
@@ -145,14 +142,14 @@ public class Game extends JComponent implements KeyListener{
             if(count < -1000){
                 count = 0;
             }      
-            
+            // make the first set of spikes move along with the screen
             if(count2 < -1000){
                 count2 = WIDTH;
                 randNum = (int) (Math.random() * (300 - 1 + 20) + 1);
                 spikes1.y = randNum;
                 score++;
             }
-            
+            // make the second set of spikes move along with the screen
             if(count3 < -1500){
                 count3 = WIDTH;
                 randNum2 = (int) (Math.random() * (150 - 1 + 10) + 1);
@@ -167,61 +164,62 @@ public class Game extends JComponent implements KeyListener{
             }if (pJUMP){
                 dy = -10;
             } 
-
+            // gravity code, what goes up comes back down
             dy = dy + gravity;
             player.y = player.y + dy;
 
-            // hits the floor
+            // when player hits the floor
             if(player.y > 485){
                 player.y = 485;
                 dy = 0;
             }
-
+            // boundries
             if(player.y < HEIGHT){
                 player.y = player.y + speedY;
             }
             
-            
-            // speed of which screen scrolls
+            // speed of which the screen and spikes scroll 
             count = count - 4;
             count2 = count2 - 10;
             count3 = count3 - 6;
             
+            // the spikes x positions are equal to the count integers
             spikes1.x = count2;
             spikes2.x = count3;
             
+            // if the player intersects with the first set of spikes, the game over screen will be displayed
             if(player.intersects(spikes1)){
                 enterKey = 2;
             }
-            
+            // if the player intersects with the second set of spikes, the game over screen will be displayed
             if(player.intersects(spikes2)){
                 enterKey = 2;
             }
-           
+           // if the reset button is pressed, everything will be set back to 0
             if(reset == true){
                 int moveX = 1;      // moving on x axis 
                 int moveY = 1;      // moving on y axis
-                int dy = 0;
+                int dy = 0;         // for gravity 
     
-                score = 0;
-                speed = 3;
-                speedX = 3;     // the speed 
-                speedY = 3;
-                count = 0;
-                count2 = 1000;
-                count3 = 1500;
-                randNum = (int) (Math.random() * (300 - 1 + 20) + 1);
-                randNum2 = (int) (Math.random() * (200 - 1 + 15) + 1);
-                pLEFT = false;
-                pRIGHT = false;
-                pJUMP = false;
-                enterKey = 0;
-                gravity = 1;
-                player = new Rectangle(25, 1, 140, 140);
-                spikes1 = new Rectangle(500, randNum, 250, 100);
-                spikes2 = new Rectangle(500, randNum2, 250, 100);
-                Font gameFont = new Font("Agency FB", Font.PLAIN, 40);
-                reset = false;
+                score = 0;          // score is set back to 0
+                speed = 3;          // speed is set back to 3
+                speedX = 3;         // the speed on x axis is set back to 3
+                speedY = 3;         // the speed on y axis is set back to 3
+                count = 0;          // the int count is set back to 0
+                count2 = 1000;      // the int count2 is set back to 0
+                count3 = 1500;      // the int count3 is set back to 0
+                randNum = (int) (Math.random() * (300 - 1 + 20) + 1);       // the random y positions are back to the original positions
+                randNum2 = (int) (Math.random() * (200 - 1 + 15) + 1);      // the random y positions are back to the original positions
+                pLEFT = false;      // the left is false 
+                pRIGHT = false;     // the right is false
+                pJUMP = false;      // the up is false
+                enterKey = 0;       // the enter key is 0
+                gravity = 1;        // the gravity is back to 1
+                player = new Rectangle(25, 1, 140, 140);        // the rectangles are back to the original spots 
+                spikes1 = new Rectangle(500, randNum, 250, 100);    // the rectangles are back to the original spots       
+                spikes2 = new Rectangle(500, randNum2, 250, 100);   // the rectangles are back to the original spots 
+                Font gameFont = new Font("Agency FB", Font.PLAIN, 40);  // the font is reset 
+                reset = false;      // reset is equal to false 
             }
             
             // GAME LOGIC ENDS HERE 
@@ -279,28 +277,28 @@ public class Game extends JComponent implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_A) {
+        if (key == KeyEvent.VK_A) { // when the key a is pressed, the player will move left 
             pLEFT = true;
         } else if (key == KeyEvent.VK_D) {
-            pRIGHT = true; 
+            pRIGHT = true;          // when the key d is pressed, the player will move right
         } else if (key == KeyEvent.VK_W){
-            pJUMP = true;
-        } else if (key == KeyEvent.VK_ENTER){
-            enterKey = 1;
+            pJUMP = true;           // when the key w is pressed, the player will move up
+        } else if (key == KeyEvent.VK_V){
+            enterKey = 1;           // when the key Enter is pressed, the game will start
         } else if (key == KeyEvent.VK_R){
-            reset = true;
+            reset = true;           // when the key r is pressed, the game will reset 
         }  
     }
     
     @Override
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();   
-        if (key == KeyEvent.VK_A) {
+        if (key == KeyEvent.VK_A) {// when the key a isn't pressed, the player wont move left  
             pLEFT = false;
         } else if (key == KeyEvent.VK_D) {
-            pRIGHT = false; 
+            pRIGHT = false;         // when the key d isn't pressed, the player wont move right
         } else if (key == KeyEvent.VK_W){
-            pJUMP = false;
+            pJUMP = false;          // when the key w isn't pressed, the player wont move up
         }
     }
 }
