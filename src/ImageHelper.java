@@ -15,10 +15,10 @@ import javax.imageio.ImageIO;
  * @author hadik9595
  */
 public class ImageHelper {
-    public static BufferedImage loadImage(String name){
+    public static BufferedImage loadImage(String Main){
         BufferedImage img = null;
         try{
-            img = ImageIO.read(new File(name));
+            img = ImageIO.read(new File(Main));
         }catch(Exception e){
             e.printStackTrace();
             System.exit(0);
