@@ -26,8 +26,9 @@ public class game extends JComponent implements KeyListener {
     // you just need to select an approproate framerate
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
+    
     //page
-    int page = 0;
+    int page =0;
     //size of the rock
     int w = 20;
     int h = 20;
@@ -44,6 +45,7 @@ public class game extends JComponent implements KeyListener {
     //font for string input
     Font gamefont = new Font("Arial", Font.ITALIC, 40);
     Font gamefont1 = new Font("Arial", Font.PLAIN, 20);
+    Font titlefont = new Font("Arial", Font.PLAIN,40);
     //rock
     Rectangle rock = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, w, h);
     //number of rock in screen
@@ -68,6 +70,7 @@ public class game extends JComponent implements KeyListener {
 
         // GAME DRAWING GOES HERE 
         //if page is 0 which is introduction screen
+        
         if (page == 0) {
             //draw a border
             g.setColor(Color.ORANGE);
