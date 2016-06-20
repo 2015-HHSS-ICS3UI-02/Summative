@@ -118,7 +118,7 @@ public class Tetris extends JComponent implements KeyListener {
             g.setColor(Color.gray);
         }
 
-        //put the shape in the top centre of the grid
+        //put the shape in the top of the grid
         for (int row = 0; row < shapes[piece].length; row++) {
             for (int col = 0; col < shapes[piece][row].length; col++) {
                 if (shapes[piece][row][col]) {
@@ -147,33 +147,88 @@ public class Tetris extends JComponent implements KeyListener {
 
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
-
             //make the piece fall down the screen
             y++;
-
             //collisions
-            if (x < 0 || x >= (WIDTH / 10) * 10 - shapes.length || y < 0) {
-                y = y + 0;
-            }
-
+            //checking to see if the piece collides with other pieces
             for (int row = 0; row < shapes[piece].length; row++) {
                 for (int col = 0; col < shapes[piece][row].length; col++) {
                     if (shapes[piece][row][col] && grid[y / (HEIGHT / 16) + row][x / (WIDTH / 10) + col] != null) {
+                        y = 0;
+                        x = 4 * WIDTH / 10;
+                        int randNum = (int) (Math.random() * (6 - 0 + 0)) + 1;
+                        piece = randNum;
                         System.out.println("hit");
-                        
-                    }
+
+                    } 
                 }
             }
 
             if (y >= (HEIGHT / 16) * 14) {
                 if (piece == 0) {
-                    //g.setColor(Color.red);
+                    //colour grid where the piece fell, same colour as piece
+                    for (int row = 0; row < shapes[piece].length; row++) {
+                        for (int col = 0; col < shapes[piece][0].length; col++) {
+                            if (shapes[piece][row][col]) {
+                                grid[y / (HEIGHT / 16) + row][x / (WIDTH / 10) + col] = Color.red;
+                                System.out.println("r: " + (y / (HEIGHT / 16) + row) + "   c: " + (x / (WIDTH / 10) + col));
+                            }
+                        }
+                    }
+                    //set a new random piece back at the top
+                    y = 0;
+                    x = 4 * WIDTH / 10;
+                    int randNum = (int) (Math.random() * (6 - 0 + 0)) + 1;
+                    piece = randNum;
+
                 } else if (piece == 1) {
-                    //g.setColor(Color.blue);
+                    //colour grid where the piece fell, same colour as piece
+                    for (int row = 0; row < shapes[piece].length; row++) {
+                        for (int col = 0; col < shapes[piece][0].length; col++) {
+                            if (shapes[piece][row][col]) {
+                                grid[y / (HEIGHT / 16) + row][x / (WIDTH / 10) + col] = Color.blue;
+                                System.out.println("r: " + (y / (HEIGHT / 16) + row) + "   c: " + (x / (WIDTH / 10) + col));
+                            }
+                        }
+                    }
+                    //set a new random piece back at the top
+                    y = 0;
+                    x = 4 * WIDTH / 10;
+                    int randNum = (int) (Math.random() * (6 - 0 + 0)) + 1;
+                    piece = randNum;
+
                 } else if (piece == 2) {
-                    //g.setColor(Color.green);
+                    //colour grid where the piece fell, same colour as piece
+                    for (int row = 0; row < shapes[piece].length; row++) {
+                        for (int col = 0; col < shapes[piece][0].length; col++) {
+                            if (shapes[piece][row][col]) {
+                                grid[y / (HEIGHT / 16) + row][x / (WIDTH / 10) + col] = Color.green;
+                                System.out.println("r: " + (y / (HEIGHT / 16) + row) + "   c: " + (x / (WIDTH / 10) + col));
+                            }
+                        }
+                    }
+                    //set a new random piece back at the top
+                    y = 0;
+                    x = 4 * WIDTH / 10;
+                    int randNum = (int) (Math.random() * (6 - 0 + 0)) + 1;
+                    piece = randNum;
+
                 } else if (piece == 3) {
-                    //g.setColor(Color.black);
+                    //colour grid where the piece fell, same colour as piece
+                    for (int row = 0; row < shapes[piece].length; row++) {
+                        for (int col = 0; col < shapes[piece][0].length; col++) {
+                            if (shapes[piece][row][col]) {
+                                grid[y / (HEIGHT / 16) + row][x / (WIDTH / 10) + col] = Color.black;
+                                System.out.println("r: " + (y / (HEIGHT / 16) + row) + "   c: " + (x / (WIDTH / 10) + col));
+                            }
+                        }
+                    }
+                    //set a new random piece back at the top
+                    y = 0;
+                    x = 4 * WIDTH / 10;
+                    int randNum = (int) (Math.random() * (6 - 0 + 0)) + 1;
+                    piece = randNum;
+
                 } else if (piece == 4) {
                     //colour grid where the piece fell, same colour as piece
                     for (int row = 0; row < shapes[piece].length; row++) {
@@ -186,6 +241,7 @@ public class Tetris extends JComponent implements KeyListener {
                     }
                     //set a new random piece back at the top
                     y = 0;
+                    x = 4 * WIDTH / 10;
                     int randNum = (int) (Math.random() * (6 - 0 + 0)) + 1;
                     piece = randNum;
 
@@ -201,6 +257,7 @@ public class Tetris extends JComponent implements KeyListener {
                     }
                     //set a new random piece back at the top
                     y = 0;
+                    x = 4 * WIDTH / 10;
                     int randNum = (int) (Math.random() * (6 - 0 + 0)) + 1;
                     piece = randNum;
 
@@ -216,22 +273,15 @@ public class Tetris extends JComponent implements KeyListener {
                     }
                     //set a new random piece back at the top
                     y = 0;
+                    x = 4 * WIDTH / 10;
                     int randNum = (int) (Math.random() * (6 - 0 + 0)) + 1;
                     piece = randNum;
                 }
             }
 
-            if (piece == 0) {
-                for (int i = 0; i < 4; i++) {
-                }
-            }
-
             // GAME LOGIC ENDS HERE 
-
             // update the drawing (calls paintComponent)
             repaint();
-
-
 
             // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
             // USING SOME SIMPLE MATH
@@ -284,10 +334,14 @@ public class Tetris extends JComponent implements KeyListener {
         int key = e.getKeyCode();
         //make the piece move based on what key is pressed
         if (key == KeyEvent.VK_RIGHT) {
-            x = x + WIDTH / 10;
+            if (x <= 360) {
+                x = x + WIDTH / 10;
+            }
         }
         if (key == KeyEvent.VK_LEFT) {
-            x = x - WIDTH / 10;
+            if (x > 0) {
+                x = x - WIDTH / 10;
+            }
         }
         if (key == KeyEvent.VK_DOWN) {
             y = y + HEIGHT / 16;
