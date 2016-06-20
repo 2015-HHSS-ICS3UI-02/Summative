@@ -30,7 +30,7 @@ public class Game extends JComponent implements KeyListener {
     Rectangle ghost2 = new Rectangle(50, 200, 50, 50);
     Rectangle ghost3 = new Rectangle(0, 525, 50, 50);
     Rectangle ghost4 = new Rectangle(0, 0, 50, 50);
-    // sets how fast main and enemies move move
+    // sets how fast main block and enemies move move
     int speed = 3;
     // sets direction the enemies move in
     int moveX = 1;
@@ -42,7 +42,7 @@ public class Game extends JComponent implements KeyListener {
     // amount of time 
     int time = 3000;
     // sets which screen it is on
-    int screen = 0;  
+    int screen = 1;  
     boolean mainUp = false;
     boolean mainDown = false;
     boolean mainLeft = false;
@@ -50,7 +50,7 @@ public class Game extends JComponent implements KeyListener {
     boolean dead = false;
     boolean start = false;
     // upload the image of title page
-    BufferedImage title = ImageHelper.loadImage("Title.jpg");
+    BufferedImage title = ImageHelper.loadImage("TitleScreen.jpg");
     // uploads the game over screen
     BufferedImage end = ImageHelper.loadImage("GameOver.jpg");
     // sets font
@@ -65,14 +65,14 @@ public class Game extends JComponent implements KeyListener {
 
         // GAME DRAWING GOES HERE 
         // if on first screen
-        if (screen == 0) {
+        if (screen == 1) {
             g.setColor(Color.black);
             g.fillRect(0, 0, WIDTH, HEIGHT);
             // draw the image of title screen
             g.drawImage(title, 0, 0, this);
         }
         // if on second screen
-        if (screen == 1 ) {
+        if (screen == 2 ) {
             // clears screen
             g.clearRect(0, 0, WIDTH, HEIGHT);
             // sets colour to black
@@ -125,13 +125,18 @@ public class Game extends JComponent implements KeyListener {
             g.fillRect(ghost4.x, ghost4.y, ghost4.width, ghost4.height);
         }
         // if on third screen
-        if (screen == 2) {
+        if (screen == 3) {
             // clears screen
             g.clearRect(0, 0, WIDTH, HEIGHT);
+            // sets colour to black
             g.setColor(Color.black);
+            // fills entire screen black
             g.fillRect(0, 0, WIDTH, HEIGHT);
+            // draws game over screen
             g.drawImage(end, 0, 0, this);
+            // sets colour to red
             g.setColor(Color.red);          
+            // draws final score
             g.drawString( "" + score, WIDTH/2, HEIGHT/2);
         }
 //         GAME DRAWING ENDS HERE
@@ -154,23 +159,32 @@ public class Game extends JComponent implements KeyListener {
 
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE   
-//        food.add(new Rectangle(325, 15, 25, 25));
-//        food.add(new Rectangle(425, 15, 25, 25));
-//        food.add(new Rectangle(525, 15, 25, 25));
-            if (screen == 0) {
+            // if on first screen
+            if (screen == 1) {
+                // if up key is pressed
                 if (mainUp == true) {
-                    screen = 1;
+                    // changes to second screen
+                    screen = 2;
+                    // starts game
                     start = true;
                 }
             }
-            if(screen == 1 && start == true) {
+            // if on second screen and game has started
+            if(screen == 2 && start == true) {
+                // decreases time
                 time--;
+                // if time hits 0
                 if (time == 0) {
-                    screen=2;
+                    // changes to third screen
+                    screen=3;
+                    // finishes game
                     done=true;
                 }
+                // if down key is pressed and main block is above the bottom of screen
                 if (mainDown == true && main.y < HEIGHT - main.height) {
+                    // moves main block down
                     main.y = main.y + speed;
+                    // if main block hits any wall
                     if (main.intersects(50, 50, 200, 100)) {
                         main.y = 0;
                     }
@@ -208,8 +222,11 @@ public class Game extends JComponent implements KeyListener {
                         main.y = HEIGHT - 250;
                     }
                 }
+                // if up key is pressed and main block is below top of screen
                 if (mainUp == true && main.y > 0) {
+                    // moves main block up
                     main.y = main.y - speed;
+                    // if main block hits any wall
                     if (main.intersects(50, 50, 200, 100)) {
                         main.y = 150;
                     }
@@ -247,8 +264,11 @@ public class Game extends JComponent implements KeyListener {
                         main.y = HEIGHT - 100;
                     }
                 }
+                // if right key is pressed and main block is left of right side of screen
                 if (mainRight == true && main.x < WIDTH - main.width) {
+                    // main block moves right
                     main.x = main.x + speed;
+                    // if main block hits any wall
                     if (main.intersects(50, 50, 200, 100)) {
                         main.x = 0;
                     }
@@ -286,8 +306,11 @@ public class Game extends JComponent implements KeyListener {
                         main.x = WIDTH - 250;
                     }
                 }
+                // if left key is pressed and main is right of left side of screen
                 if (mainLeft == true && main.x > 0) {
+                    // main block moves left
                     main.x = main.x - speed;
+                    // if main block hits any wall
                     if (main.intersects(50, 50, 200, 100)) {
                         main.x = 250;
                     }
@@ -325,23 +348,31 @@ public class Game extends JComponent implements KeyListener {
                         main.x = WIDTH - 100;
                     }
                 }
-                // ghost 1 ai
+                // blue enemy block AI
                 ghost1.x = ghost1.x + moveX * speed;
+                // if blue enemy block hits right of screen
                 if (ghost1.x + ghost1.width > WIDTH) {
+                    // blue enemy block moves left 
                     moveX = -1;
+                    // if score is greater than 100
                     if (score > 100) {
+                        // speeds up the blue enemy block
                         moveX = -2;
                     }
                 }
+                 // if blue enemy block hits left of screen
                 if (ghost1.x < 0) {
+                    // blue enemy block moves right 
                     moveX = 1;
+                    // if score is greater than 100
                     if (score > 100) {
+                        // speeds up blue enemy block
                         moveX = 2;
                     }
-                }
-//            
-                // ghost 2 ai
+                }           
+                // yellow enemy block AI
                 ghost2.x = ghost2.x + moveX2 * speed;
+                // if yellow enemy block hits left of screen
                 if (ghost2.x + ghost2.width > WIDTH) {
                     moveX2 = -1;
                 }
@@ -350,6 +381,7 @@ public class Game extends JComponent implements KeyListener {
                 }
                 // ghost 3 ai
                 ghost3.x = ghost3.x + moveX3 * speed;
+                // if red enemy block hits left of screen
                 if (ghost3.x + ghost3.width > WIDTH) {
                     moveX3 = -1;
                 }
@@ -357,18 +389,23 @@ public class Game extends JComponent implements KeyListener {
                     moveX3 = 1;
                 }
                 ghost4.x = ghost4.x + moveX4 * speed;
+                // if green enemy block hits left of screen
                 if (ghost4.x + ghost4.width > WIDTH) {
                     moveX4 = -1;
                 }
                 if (ghost4.x < 0) {
                     moveX4 = 1;
                 }
-                // if hit by a ghost
+                // if hit by any enemy block
                 if (main.intersects(ghost1) || main.intersects(ghost2) || main.intersects(ghost3) || main.intersects(ghost4)) {
-                    screen=2;
+                    // changes to third screen
+                    screen=3;
+                    // finishes game
                     done=true;
                 }
+                // if main block is on the cyan circle
                 if (main.intersects(400, 15, 25, 25)) {
+                    // increases score
                     score++;
                 }
                 
