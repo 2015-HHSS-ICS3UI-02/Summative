@@ -137,6 +137,7 @@ public class Game extends JComponent implements KeyListener {
             // sets colour to red
             g.setColor(Color.red);          
             // draws final score
+             g.setFont(gameFont);
             g.drawString( "" + score, WIDTH/2, HEIGHT/2);
         }
 //         GAME DRAWING ENDS HERE
