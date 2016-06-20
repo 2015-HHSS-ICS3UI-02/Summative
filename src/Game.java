@@ -102,7 +102,7 @@ public class Game extends JComponent implements KeyListener{
             g.drawString(objective,10,40);                                                      //Displays objective
         }else{                                                                                  //If on title screen
             g.setFont(bigFont);                                                                 //Game title in large font
-            g.drawString(("ORBIT"),470,40);  
+            g.drawString(("V.O.I.D."),470,40);  
             g.drawString(("Press enter to begin!"),380,200);  
             g.setFont(gameFont);                                                                //States controls to the player
             g.drawString(("Controls:"),40,680);                                             
