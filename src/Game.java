@@ -283,7 +283,7 @@ public class Game extends JComponent implements KeyListener{
             pRIGHT = true;          // when the key d is pressed, the player will move right
         } else if (key == KeyEvent.VK_W){
             pJUMP = true;           // when the key w is pressed, the player will move up
-        } else if (key == KeyEvent.VK_V){
+        } else if (key == KeyEvent.VK_ENTER){
             enterKey = 1;           // when the key Enter is pressed, the game will start
         } else if (key == KeyEvent.VK_R){
             reset = true;           // when the key r is pressed, the game will reset 
