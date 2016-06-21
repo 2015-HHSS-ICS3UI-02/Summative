@@ -26,7 +26,7 @@ public class Tetris extends JComponent implements KeyListener {
     long desiredTime = (1000) / desiredFPS;
     //make an array for the grid
     Color[][] grid = new Color[16][10];
-    //create the different game pieces
+    //create the different game pieces as 2-dimensional arrays
     boolean[][] Jshape = {
         {true, false, false},
         {true, true, true}
@@ -58,6 +58,30 @@ public class Tetris extends JComponent implements KeyListener {
     boolean[][][] shapes = {
         Sshape, Ishape, Jshape, Lshape, Zshape, Oshape, Tshape
     };
+
+    //create different positions for each Tshape for later rotations
+    boolean[][] Tshape2 = {
+        {true, false},
+        {true, true},
+        {true, false}
+    };
+
+    boolean[][] Tshape3 = {
+        {true, true, true},
+        {false, true, false}
+    };
+
+    boolean[][] Tshape4 = {
+        {false, true},
+        {true, true},
+        {false, true}
+    };
+
+    //put all Tshape positions into an array
+    boolean[][][] Tshapes = {
+        Tshape, Tshape2, Tshape3, Tshape4
+    };
+
     //set the variables for the 3D boolean
     int x = 4 * WIDTH / 10;
     int y = 0;
@@ -76,7 +100,7 @@ public class Tetris extends JComponent implements KeyListener {
         g.setColor(Color.YELLOW);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
-        //create grid lines, colour grid lines a different colour
+        //create grid lines, colour grid lines black
         g.setColor(Color.black);
         for (int i = 0; i <= WIDTH; i = i + WIDTH / 10) {
             g.drawLine(i, 0, i, HEIGHT);
@@ -118,7 +142,7 @@ public class Tetris extends JComponent implements KeyListener {
             g.setColor(Color.gray);
         }
 
-        //put the shape in the top of the grid
+        //colour in the shape on the grid
         for (int row = 0; row < shapes[piece].length; row++) {
             for (int col = 0; col < shapes[piece][row].length; col++) {
                 if (shapes[piece][row][col]) {
@@ -147,23 +171,29 @@ public class Tetris extends JComponent implements KeyListener {
 
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
-            //make the piece fall down the screen
-            y++;
-            //collisions
-            //checking to see if the piece collides with other pieces
+            //if the grid is empty, the piece can fall down
             for (int row = 0; row < shapes[piece].length; row++) {
                 for (int col = 0; col < shapes[piece][row].length; col++) {
-                    if (shapes[piece][row][col] && grid[y / (HEIGHT / 16) + row][x / (WIDTH / 10) + col] != null) {
-                        y = 0;
-                        x = 4 * WIDTH / 10;
-                        int randNum = (int) (Math.random() * (6 - 0 + 0)) + 1;
-                        piece = randNum;
-                        System.out.println("hit");
+                    if (shapes[piece][row][col] && grid[y / (HEIGHT / 16) + row][x / (WIDTH / 10) + col] == null) {
+                        y++;
+                    }
 
-                    } 
+                }
+
+            }
+
+            //check to see if the piece collides with other pieces
+            for (int row = 0; row < shapes[piece].length; row++) {
+                for (int col = 0; col < shapes[piece][row].length; col++) {
+                    System.out.println("row: " + row + "   col: " + col);
+                    System.out.println(shapes[piece][row].length);
+                    if (shapes[piece][row][col] && grid[y / (HEIGHT / 16) + row][x / (WIDTH / 10) + col] != null) {
+                        System.out.println("hit");
+                    }
                 }
             }
 
+            //make the piece fall to the bottom of the screen
             if (y >= (HEIGHT / 16) * 14) {
                 if (piece == 0) {
                     //colour grid where the piece fell, same colour as piece
@@ -333,20 +363,44 @@ public class Tetris extends JComponent implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         //make the piece move based on what key is pressed
+        //if the right arrow key is pressed, move the piece one space to the right
         if (key == KeyEvent.VK_RIGHT) {
             if (x <= 360) {
                 x = x + WIDTH / 10;
             }
         }
+        //if the left arrow key is pressed, move the piece one space to the left
         if (key == KeyEvent.VK_LEFT) {
             if (x > 0) {
                 x = x - WIDTH / 10;
             }
         }
+        //if the down arrow key is pressed, move the piece one space down
         if (key == KeyEvent.VK_DOWN) {
             y = y + HEIGHT / 16;
         }
+        //if the up arrow key is pressed, rotate the piece once clockwise
         if (key == KeyEvent.VK_UP) {
+            //if Tshape piece, possible number of rotations is same as possible configurations (4)
+            if (piece == 6) {
+                int i = 0;
+                while (i < 3) {
+                    if (i == 0) {
+                        Tshape = Tshape2;
+                        i = i + 1;
+                    }
+                    if (i == 1) {
+                        Tshape2 = Tshape3;
+                        i = i + 1;
+                    }
+                    if (i == 2) {
+                        Tshape3 = Tshape4;
+                    }
+                    if (i == 3) {
+                        Tshape4 = Tshape;
+                    }
+                }
+            }
         }
     }
 
