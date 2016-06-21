@@ -49,12 +49,14 @@ public class MyGame extends JComponent implements KeyListener {
     int Object4TopSpeed = 0;
     int RunnerHealth = 100;
     int RunnerHealthCounter = 5;
+    int SavedDeath = 0;
     boolean RunnerUP = false;
     boolean RunnerDOWN = false;
     boolean RunnerLEFT = false;
     boolean RunnerRIGHT = false;
     boolean TitleScreen = true;
     boolean DeathScreen = false;
+    
     //Create borders
     //The thickness is so that there is no chance of the player glitching past.
     Rectangle LeftBorder = new Rectangle(0, 0, 4, HEIGHT);
@@ -88,7 +90,7 @@ public class MyGame extends JComponent implements KeyListener {
             g.setColor(Color.RED);
             g.drawString(("YOU"), 590, 150);
             g.drawString(("(D.E.D. - R.I.P.)"), 560, 450);
-            g.drawString(("YOUR SCORE: " + Count), 552, 470);
+            g.drawString(("YOUR SCORE: " + SavedDeath), 552, 470);
             //D
             g.fillRect(340, 180, 25, 220);
             g.fillRect(340, 185, 140, 25);
@@ -166,6 +168,7 @@ public class MyGame extends JComponent implements KeyListener {
             }
             //When runner runs out of health, deathscreen appears
             if (RunnerHealth == 0) {
+                SavedDeath = Count;
                 DeathScreen = true;
             }
             //Regenerate Health every 15 seconds
@@ -210,13 +213,7 @@ public class MyGame extends JComponent implements KeyListener {
                 
             }
             //Triggers Object4 at 25 seconds in
-            if (Count >= 1500) {
-                if (Count == CountSave) {
-                    Object4TopSpeed = Object4TopSpeed + 4;
-                    Random Object4RandSpeed = new Random();
-                    Object4Speed = Object4RandSpeed.nextInt(Object4TopSpeed) + 16;
-                }
-            }
+            
 
             //Reset position to right side of screen
             if (Object1.x < -100) {
@@ -264,10 +261,9 @@ public class MyGame extends JComponent implements KeyListener {
                 Object3.x = 1200;
                 Object4.x = 1200;
                 //Too lazy to remove Runner control, so just going to teleport it to nowhere land
-                RUNNER.x = 1500000;
-                Count = 0;
-                CountSave = 0;
-            }
+                RUNNER.x = 1500000; 
+                RUNNER.y = 2500000;
+                }
 
 
             if (RUNNER.y + RUNNER.height > HEIGHT) {
@@ -435,6 +431,8 @@ public class MyGame extends JComponent implements KeyListener {
             RunnerRIGHT = false;
         } else if (Key == KeyEvent.VK_D) {
             RunnerDOWN = false;
+        } else if (Key == KeyEvent.VK_R) {
+            
         }
     }
 }
