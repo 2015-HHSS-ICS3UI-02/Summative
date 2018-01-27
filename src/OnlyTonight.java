@@ -114,8 +114,9 @@ public class OnlyTonight extends JComponent implements KeyListener {
     boolean gameOver = false;
     boolean winGame = false;
     private boolean pongClue;
-    String typewriterClue = "human";
+    String typewriterClue = "humans";
     String safeClue = "32215";
+    String safeInput = "";
     int enterKey = 0;
     int page = 0;
     int helpPage = 0;
@@ -355,12 +356,12 @@ public class OnlyTonight extends JComponent implements KeyListener {
                 String typewriterInput = (String) JOptionPane.showInputDialog(
                         this,
                         "Which creature walks on four legs in the morning, two legs in the afternoon, and three in the evening?", "Type Writer",
-                        JOptionPane.PLAIN_MESSAGE, null, null, "_ _ _ _ _ _");
+                        JOptionPane.PLAIN_MESSAGE, null, null, "_ _ _ _ _");
                 spaceBar = false;
                 if (typewriterInput.equalsIgnoreCase(typewriterClue)) {
                     String s = (String) JOptionPane.showInputDialog(
                             this,
-                            "Remember your anwer, it's value to you will count towards your escape.", "Clue #2",
+                            "Remember your answer, it's value to you will count towards your escape.", "Clue #2",
                             JOptionPane.PLAIN_MESSAGE, null, null, "Press OK.");
                 } else if (typewriterInput.equalsIgnoreCase("humans")) {
                     String s = (String) JOptionPane.showInputDialog(
@@ -376,11 +377,14 @@ public class OnlyTonight extends JComponent implements KeyListener {
             }
             // safe
             if (spaceBar == true && theo.intersects(safeTrigger)) {
-                String safeInput = (String) JOptionPane.showInputDialog(
+                 safeInput = (String) JOptionPane.showInputDialog(
                         this,
                         "Enter the code.", "Safe",
-                        JOptionPane.PLAIN_MESSAGE, null, null, "_ _ _ _ _");
+                        JOptionPane.PLAIN_MESSAGE, null, null, "_ _ _ _ _")
                 spaceBar = false;
+                
+                safeInput = safeInput == null ? "" : safeInput;
+
                 if (safeInput.equals(safeClue)) {
                     winGame = true;
                 } else if (!safeInput.equals(safeClue)) {
@@ -782,22 +786,33 @@ public class OnlyTonight extends JComponent implements KeyListener {
         int key = e.getKeyCode();
         // figure out what key is pressed
         if (!pong) {
-            if (key == KeyEvent.VK_UP) {
-                theoUp = true;
-            } else if (key == KeyEvent.VK_DOWN) {
-                theoDown = true;
-            } else if (key == KeyEvent.VK_RIGHT) {
-                theoRight = true;
-            } else if (key == KeyEvent.VK_LEFT) {
-                theoLeft = true;
-            } else if (key == KeyEvent.VK_SPACE) {
-                spaceBar = true;
-            } else if (key == KeyEvent.VK_ENTER) {
-                enterKey = 1;
-            } else if (key == KeyEvent.VK_BACK_SPACE) {
-                backspace = true;
-            }
-            // pong cheat
+            switch (key){
+                case KeyEvent.VK_UP: 
+                    theoUp = true;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    theoDown = true;
+                    break;
+                case KeyEvent.VK_RIGHT: 
+                    theoRight = true;
+                    break;
+                case KeyEvent.VK_LEFT:
+                    theoLeft = true;
+                    break;
+                case KeyEvent.VK_SPACE: 
+                    spaceBar = true;
+                    break;
+                case KeyEvent.VK_BACK_SPACE:
+                    backspace = true;
+                    break;
+                case KeyEvent.VK_ENTER:
+                    enterKey = 1;
+                    break;
+                default:
+                    break;
+            }   
+            
+        // pong cheat
         } else if (pong) {
             if (key == KeyEvent.VK_0) {
                 score1 = 9;
